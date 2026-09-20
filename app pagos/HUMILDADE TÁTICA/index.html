@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0c0e14">
+<title>👑 Humildade Tática</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#0c0e14;color:#c8ccd8;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:76px;overflow-x:hidden}
+:root{--bg:#0c0e14;--card:#10131c;--card2:#141822;--border:#1e2436;--bronze:#cd7f32;--bronze2:#a0622a;--ivory:#f0ece0;--marble:#d4d0c8;--steel:#6b7394;--slate:#3e4562;--dim:#2e3448;--blue:#4a6fa5;--gold:#c9a84c;--red:#c0392b;--green:#27ae60;--purple:#7c5cbf;--teal:#45818e}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(205,127,50,.02),transparent 50%);pointer-events:none;z-index:0}
+.z1{position:relative;z-index:1}
+
+/* NAV — HEXAGONAL STYLE */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0e1018e8;backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;z-index:100;padding:4px 8px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0;cursor:pointer;position:relative;border-radius:8px;margin:0 2px;transition:all .2s}
+.nav-btn.active{background:var(--bronze)10}
+.nav-btn.active::after{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--bronze);border-radius:0 0 2px 2px}
+.nav-icon{font-size:18px;margin-bottom:2px}
+.nav-label{font-size:8px;font-weight:700;letter-spacing:1px}
+
+/* HEADER */
+.hdr{padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:center}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-emblem{width:36px;height:36px;border-radius:50%;border:2px solid var(--bronze);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 14px rgba(205,127,50,.15)}
+.hdr-title{font-size:14px;font-weight:800;color:var(--bronze);letter-spacing:2px}
+.hdr-sub{font-size:8px;color:var(--slate);letter-spacing:1px;margin-top:1px}
+.hdr-stats{display:flex;gap:6px}
+.hdr-pill{border:1px solid var(--border);border-radius:20px;padding:4px 10px;text-align:center;background:var(--card)}
+.hdr-pill-val{font-size:11px;font-weight:900;color:var(--bronze)}
+.hdr-pill-label{font-size:6px;color:var(--slate);letter-spacing:1px}
+
+.content{padding:0 14px}
+
+/* BALANCE METER — THE CORE FEATURE */
+.balance-card{background:linear-gradient(135deg,#12162040,var(--card),#18140c20);border:2px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.balance-card::before{content:'';position:absolute;inset:0;border:1px solid var(--bronze)06;border-radius:14px;pointer-events:none}
+.balance-title{font-size:9px;color:var(--bronze);letter-spacing:3px;font-weight:700;text-align:center;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px}
+.balance-bar-wrap{position:relative;height:40px;margin:0 auto;max-width:320px}
+.balance-track{position:absolute;top:16px;left:0;right:0;height:8px;background:var(--dim);border-radius:4px;overflow:hidden}
+.balance-gradient{position:absolute;inset:0;background:linear-gradient(90deg,var(--red),var(--red)20%,var(--bronze)50%,var(--green)80%,var(--green));border-radius:4px;opacity:.4}
+.balance-marker{position:absolute;top:6px;width:28px;height:28px;border-radius:50%;background:var(--card2);border:3px solid var(--bronze);display:flex;align-items:center;justify-content:center;font-size:12px;transform:translateX(-50%);transition:left .8s ease;box-shadow:0 0 12px rgba(205,127,50,.2)}
+.balance-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:8px;font-weight:700;letter-spacing:1px}
+.balance-labels span:first-child{color:var(--red)}
+.balance-labels span:nth-child(2){color:var(--bronze)}
+.balance-labels span:last-child{color:var(--green)}
+.balance-desc{text-align:center;margin-top:14px;font-size:11px;color:var(--steel);line-height:1.6}
+.balance-desc b{color:var(--ivory)}
+
+/* SELF-REFLECTION SLIDER */
+.reflect-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.reflect-q{font-size:13px;color:var(--ivory);font-weight:700;text-align:center;margin-bottom:12px;line-height:1.5;font-family:Georgia,serif;font-style:italic}
+.reflect-slider{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--bronze),var(--green));outline:none;margin:8px 0}
+.reflect-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--card2);border:3px solid var(--bronze);cursor:pointer;box-shadow:0 0 8px rgba(205,127,50,.2)}
+.reflect-labels{display:flex;justify-content:space-between;font-size:8px;color:var(--slate);font-weight:700;letter-spacing:1px}
+.reflect-result{text-align:center;margin-top:10px;font-size:12px;font-weight:700;min-height:20px;transition:color .3s}
+.reflect-btn{width:100%;padding:10px;border:1px solid var(--bronze)40;background:var(--bronze)08;border-radius:8px;color:var(--bronze);font-size:11px;font-weight:700;cursor:pointer;margin-top:10px;letter-spacing:1px;transition:all .3s}
+.reflect-btn:hover{background:var(--bronze)15;border-color:var(--bronze)60}
+.reflect-btn:active{transform:scale(.97)}
+
+/* STOIC CARDS — DOUBLE BORDER */
+.stoic-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;position:relative;overflow:hidden;transition:all .3s}
+.stoic-card::before{content:'';position:absolute;inset:3px;border:1px solid var(--border);border-radius:11px;pointer-events:none;opacity:.4}
+.stoic-card.done{opacity:.4}
+.stoic-top{display:flex;align-items:flex-start;gap:12px}
+
+/* HEXAGONAL CHECK */
+.hex-check{width:30px;height:30px;position:relative;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.hex-check svg{width:30px;height:30px;transition:all .3s}
+.hex-check .hex-bg{fill:transparent;stroke:var(--border);stroke-width:2;transition:all .3s}
+.hex-check.checked .hex-bg{fill:var(--bronze);stroke:var(--bronze)}
+.hex-check .hex-icon{font-size:12px;position:absolute;color:transparent;font-weight:900;transition:color .3s}
+.hex-check.checked .hex-icon{color:#fff}
+
+.s-body{flex:1}
+.s-pillar{font-size:7px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.s-title{font-size:14px;font-weight:700;color:var(--ivory);margin-bottom:4px}
+.s-desc{font-size:11px;color:var(--steel);line-height:1.7}
+.s-teaching{font-size:10px;color:var(--slate);margin-top:8px;padding:10px;background:var(--bg);border-radius:8px;line-height:1.7;border-left:3px solid var(--bronze)30;font-style:italic}
+.s-teaching b{color:var(--bronze);font-style:normal}
+.s-source{font-size:8px;color:var(--dim);margin-top:4px}
+.s-dur{position:absolute;top:16px;right:16px;font-size:7px;color:var(--slate);font-weight:700;letter-spacing:1px;background:var(--bg);padding:2px 6px;border-radius:3px}
+.s-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--gold);margin-top:6px;letter-spacing:1px}
+
+/* PILLAR PILLS */
+.pill-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.pill{flex-shrink:0;padding:6px 12px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--steel);transition:all .3s;white-space:nowrap}
+.pill.active{border-color:var(--bronze);color:var(--bronze);background:var(--bronze)06}
+
+/* ORACLE */
+.oracle{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;position:relative;text-align:center}
+.oracle::before{content:'';position:absolute;inset:3px;border:1px solid var(--border);border-radius:11px;pointer-events:none;opacity:.3}
+.oracle-icon{font-size:28px;margin-bottom:8px;filter:drop-shadow(0 0 8px rgba(205,127,50,.2))}
+.oracle-label{font-size:7px;color:var(--bronze);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.oracle-text{font-size:15px;color:var(--ivory);line-height:1.7;font-family:Georgia,serif;font-style:italic}
+.oracle-author{font-size:10px;color:var(--slate);margin-top:10px;font-style:normal;letter-spacing:1px}
+
+/* LEVEL — COLUMN STYLE */
+.lvl-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+.lvl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.lvl-name{font-size:12px;font-weight:800;color:var(--bronze);display:flex;align-items:center;gap:6px}
+.lvl-info{font-size:8px;color:var(--slate)}
+.lvl-track{height:6px;background:var(--dim);border-radius:3px;overflow:hidden;position:relative}
+.lvl-track::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 24%,var(--bg) 24%,var(--bg) 25%);z-index:1;pointer-events:none}
+.lvl-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--bronze2),var(--bronze),var(--gold));transition:width 1s ease}
+
+/* PROGRESS COLUMNS */
+.col-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.col-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center;position:relative}
+.col-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:var(--bronze)20;border-radius:0 0 2px 2px}
+.col-icon{font-size:20px;margin-bottom:4px}
+.col-val{font-size:18px;font-weight:900;color:var(--ivory)}
+.col-label{font-size:7px;color:var(--slate);letter-spacing:1px;font-weight:700}
+
+/* RANK ITEMS */
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-emblem{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--bg)}
+
+/* LIBRARY CARDS */
+.lib-card{background:var(--card);border:2px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .3s;position:relative}
+.lib-card::before{content:'';position:absolute;inset:3px;border:1px solid var(--border);border-radius:11px;pointer-events:none;opacity:.3}
+.lib-card:hover{border-color:var(--bronze)40}
+.lib-top{padding:16px;display:flex;align-items:flex-start;gap:14px}
+.lib-emblem{width:44px;height:44px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:var(--bg)}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const PILLARS=[
+  {id:'listen',name:'ESCUTA',icon:'👂',color:'#45818e',desc:'Ouvir mais, falar menos'},
+  {id:'ego',name:'EGO',icon:'🪞',color:'#c0392b',desc:'Reconhecer e controlar o ego'},
+  {id:'learn',name:'APRENDIZ',icon:'📖',color:'#4a6fa5',desc:'Mentalidade de eterno aluno'},
+  {id:'serve',name:'SERVIR',icon:'🤲',color:'#27ae60',desc:'Grandeza através do serviço'},
+  {id:'quiet',name:'SILÊNCIO',icon:'🤫',color:'#7c5cbf',desc:'Poder na contenção'},
+  {id:'respect',name:'RESPEITO',icon:'🤝',color:'#cd7f32',desc:'Honra em toda interação'},
+  {id:'truth',name:'VERDADE',icon:'⚖️',color:'#c9a84c',desc:'Honestidade radical consigo'}
+];
+
+const MISSIONS={
+  listen:[
+    {t:"Ouça 1 conversa inteira sem interromper",d:"Em pelo menos 1 conversa hoje, ouça a pessoa até o FIM sem interromper, sem preparar resposta, sem olhar o celular. Depois de ela terminar, espere 2 segundos antes de responder.",w:"Epicteto, escravo que se tornou filósofo estoico, ensinava: 'Temos duas orelhas e uma boca para ouvir o dobro do que falamos.' A escuta ativa é a arma mais subestimada da liderança.",s:"Epicteto — Discursos, Livro I",dur:"Variável",xp:30},
+    {t:"Pergunte 3 vezes antes de opinar",d:"Em toda conversa hoje, faça pelo menos 3 perguntas sobre o que a pessoa está dizendo antes de dar qualquer opinião sua. Demonstre curiosidade genuína.",w:"Sócrates nunca dava respostas — fazia perguntas. O 'Método Socrático' prova que quem pergunta controla a conversa sem precisar dominar. Humildade intelectual é poder disfarçado.",s:"Sócrates — Método Socrático",dur:"Dia todo",xp:35},
+    {t:"Repita o que ouviu antes de responder",d:"Antes de dar sua opinião, parafraseie o que a pessoa disse: 'Se entendi bem, você está dizendo que...' Isso valida o outro e garante que você entendeu.",w:"Carl Rogers, pai da psicologia humanista, chamava isso de 'escuta reflexiva'. Estudos mostram que pessoas se sentem 40% mais conectadas quando se sentem genuinamente ouvidas.",s:"Carl Rogers — Psicologia Humanista",dur:"Dia todo",xp:25},
+    {t:"Descubra algo novo sobre alguém que conhece",d:"Converse com alguém que já conhece (amigo, colega, familiar) e descubra algo sobre essa pessoa que você não sabia. Pergunte sobre sonhos, medos ou história.",w:"Dale Carnegie: 'Você pode fazer mais amigos em 2 meses sendo genuinamente interessado nos outros do que em 2 anos tentando fazer os outros se interessarem por você.'",s:"Dale Carnegie — Como Fazer Amigos",dur:"15 min",xp:30},
+    {t:"Ouça uma perspectiva oposta à sua",d:"Busque deliberadamente 1 argumento, vídeo ou artigo de alguém que pensa diferente de você sobre algo. Ouça sem julgar. Tente entender o ponto de vista.",w:"Marco Aurélio praticava 'steel manning': fortalecer o argumento do outro ao máximo antes de avaliar. A pessoa humilde não busca estar certa — busca compreender.",s:"Marco Aurélio — Meditações",dur:"15 min",xp:35},
+  ],
+  ego:[
+    {t:"Reconheça 1 erro que cometeu recentemente",d:"Identifique 1 erro que cometeu esta semana. Escreva: o que fez, por que fez, e o que faria diferente. Sem racionalizar. Sem culpar outros.",w:"Ryan Holiday: 'O ego é o inimigo. Ele te impede de aprender quando está subindo, de manter quando está no topo, e de se recuperar quando está caindo.' Admitir erro é força — não fraqueza.",s:"Ryan Holiday — O Ego é o Inimigo",dur:"10 min",xp:35},
+    {t:"Deixe alguém receber o crédito",d:"Hoje, em 1 situação onde você poderia reivindicar crédito por algo, fique em silêncio e deixe outra pessoa ser reconhecida.",w:"Lao Tsé: 'O líder é melhor quando as pessoas mal sabem que ele existe. Quando seu trabalho está feito, eles dizem: nós fizemos isso sozinhos.' O crédito cedido volta multiplicado.",s:"Lao Tsé — Tao Te Ching, Cap. 17",dur:"Dia todo",xp:40},
+    {t:"Peça feedback a alguém sobre 1 defeito seu",d:"Pergunte a alguém de confiança: 'Qual é minha maior fraqueza que você percebe?' Ouça sem se defender. Agradeça.",w:"Ray Dalio, fundador da Bridgewater (maior hedge fund do mundo): 'Radical Transparency. Peça às pessoas que apontem seus pontos cegos. O ego que se defende de feedback é o ego que nunca evolui.'",s:"Ray Dalio — Princípios",dur:"10 min",xp:40},
+    {t:"Celebre o sucesso de alguém sem comparar",d:"Quando ouvir sobre uma conquista de alguém hoje, celebre genuinamente sem pensar 'mas eu também...' ou 'eu sou melhor em...'",w:"Os Estoicos chamavam de 'Sympatheia' — a conexão com a humanidade. Invejar o sucesso alheio é admitir que acredita em escassez. Celebrar é abundância emocional.",s:"Estoicismo — Sympatheia",dur:"Dia todo",xp:25},
+    {t:"Faça algo sem postar nas redes",d:"Faça algo significativo hoje (treino, leitura, ato de bondade, trabalho) e NÃO poste sobre isso. Que o ato exista por si — sem validação externa.",w:"Marco Aurélio governou o Império Romano e escreveu Meditações — um diário PRIVADO nunca feito pra publicação. A grandeza que não busca aplausos é a mais pura.",s:"Marco Aurélio — Meditações (diário privado)",dur:"Dia todo",xp:35},
+  ],
+  learn:[
+    {t:"Diga 'eu não sei' 3 vezes hoje",d:"Quando alguém perguntar algo que você não domina, em vez de inventar ou desviar, diga: 'Não sei, mas quero aprender.' 3 vezes no dia.",w:"Sócrates: 'Só sei que nada sei.' A admissão de ignorância é o início de toda sabedoria. O homem que finge saber para de aprender. O que admite que não sabe, começa.",s:"Sócrates — Apologia",dur:"Dia todo",xp:30},
+    {t:"Aprenda 1 coisa com alguém mais jovem ou menos experiente",d:"Peça pra alguém que você consideraria 'inferior' (mais jovem, menos experiente) te ensinar algo. Pode ser tecnologia, gíria, habilidade.",w:"Jeff Bezos implementou 'reverse mentoring' na Amazon: executivos seniores são mentorados por juniores. Quem acha que não pode aprender com os 'abaixo' é arrogante, não sábio.",s:"Jeff Bezos — Amazon Leadership Principles",dur:"15 min",xp:30},
+    {t:"Leia sobre um tema que você 'já domina'",d:"Escolha um assunto que acredita já saber muito e leia algo novo sobre ele. Busque o que NÃO sabe, não o que confirma o que já sabe.",w:"O 'efeito Dunning-Kruger': quanto menos você sabe, mais acha que sabe. Especialistas reais têm humildade — porque sabem o TAMANHO do que não sabem.",s:"Dunning & Kruger — Cornell, 1999",dur:"20 min",xp:25},
+    {t:"Mude de opinião sobre algo hoje",d:"Encontre 1 crença, opinião ou posição que você mantém e busque razões genuínas pra mudar de opinião. Se a evidência justificar, mude.",w:"Adam Grant: 'Inteligência não é a capacidade de pensar e aprender — é a capacidade de REpensar e desaprender.' Os mais sábios mudam de opinião mais rápido.",s:"Adam Grant — Think Again",dur:"Variável",xp:40},
+  ],
+  serve:[
+    {t:"Ajude alguém sem esperar nada em troca",d:"Faça 1 ato de serviço genuíno: carregue algo, ofereça ajuda, compartilhe conhecimento. Sem esperar reconhecimento, retorno ou favor.",w:"Sêneca: 'Onde quer que haja um ser humano, há uma oportunidade de bondade.' O homem verdadeiramente forte serve não por fraqueza — mas porque sua força permite.",s:"Sêneca — Cartas a Lucílio",dur:"Variável",xp:30},
+    {t:"Ensine algo que você sabe a alguém",d:"Compartilhe 1 conhecimento ou habilidade com alguém: pode ser treino, culinária, tecnologia, finanças. Ensinar sem condescendência é humildade aplicada.",w:"Nelson Mandela: 'A educação é a arma mais poderosa que você pode usar para mudar o mundo.' Ensinar com respeito é o ato supremo de confiança humilde.",s:"Nelson Mandela",dur:"20 min",xp:35},
+    {t:"Reconheça publicamente o trabalho de alguém",d:"Elogie genuinamente alguém na frente de outros. Pode ser colega, amigo, familiar. Reconhecimento público é generosidade de ego.",w:"Lincoln era mestre em dar crédito: 'Se eu te elogiar em público, o mérito é teu. Se eu te corrigir, farei em particular. O mérito compartilhado multiplica — o roubado divide.'",s:"Abraham Lincoln",dur:"5 min",xp:25},
+    {t:"Peça desculpas por algo — genuinamente",d:"Identifique alguém que você ofendeu, ignorou ou magoou (mesmo sem intenção). Peça desculpas sem 'mas'. Apenas: 'Errei. Desculpa.'",w:"O Bushido japonês: 'O verdadeiro guerreiro não é aquele que nunca erra — é aquele que reconhece seus erros com a mesma coragem com que empunha a espada.'",s:"Código Bushido — O Caminho do Guerreiro",dur:"5 min",xp:35},
+  ],
+  quiet:[
+    {t:"Contenha 3 opiniões que ia dar",d:"3 vezes hoje, quando estiver prestes a opinar, falar ou corrigir — não fale. Engula. Observe o que acontece quando você não contribui.",w:"Lei 4 de Robert Greene: 'Diga sempre menos que o necessário.' Mas na Humildade Tática, o silêncio não é estratégia de poder — é disciplina de ego. Você não fala porque NÃO PRECISA, não porque quer manipular.",s:"Greene + Estoicismo",dur:"Dia todo",xp:30},
+    {t:"Responda com calma a 1 provocação",d:"Na primeira provocação, crítica ou comentário irritante, NÃO reaja na hora. Respire. Conte até 5. Depois responda com serenidade — ou não responda.",w:"Epicteto: 'Não são as coisas que nos perturbam, mas nossa opinião sobre elas.' Viktor Frankl: 'Entre o estímulo e a resposta existe um espaço. Nesse espaço está sua liberdade.'",s:"Epicteto + Viktor Frankl",dur:"Variável",xp:35},
+    {t:"Não se gabe de nada por 24 horas",d:"Zero autopromoção: não fale sobre suas conquistas, seu dinheiro, seus planos, suas habilidades. Deixe que outros descubram por conta própria.",w:"O Tao Te Ching: 'Aquele que se exibe não brilha. Aquele que se justifica não convence. Aquele que se vangloria não tem mérito.' O silêncio sobre si mesmo é a forma mais refinada de poder.",s:"Lao Tsé — Tao Te Ching, Cap. 22",dur:"24h",xp:40},
+    {t:"Coma 1 refeição em silêncio com alguém",d:"Almoce ou jante com alguém e passe pelo menos 5 minutos em silêncio compartilhado. Sem preencher o espaço. O silêncio entre pessoas confiantes é confortável.",w:"A tradição Quaker pratica 'worship silence': silêncio como forma de conexão profunda. O desconforto no silêncio revela a ansiedade de quem precisa preencher espaço.",s:"Tradição Quaker + Estoicismo",dur:"20 min",xp:25},
+    {t:"Vença 1 discussão saindo dela",d:"Se entrar numa discussão hoje, vença saindo: 'Você pode ter razão. Vou pensar nisso.' E saia. Sem necessidade de vencer verbalmente.",w:"Marco Aurélio: 'A melhor vingança é não ser como seu inimigo.' Vencer uma discussão é perder energia. Sair com dignidade é conservar poder e manter a paz.",s:"Marco Aurélio — Meditações, Livro 6",dur:"Variável",xp:35},
+  ],
+  respect:[
+    {t:"Trate a próxima pessoa que te servir como igual",d:"O garçom, o caixa, o porteiro, o entregador — olhe nos olhos, chame pelo nome (leia o crachá), agradeça com presença real.",w:"Um provérbio de liderança: 'O caráter de um homem se revela não por como trata seus iguais, mas por como trata quem não pode fazer nada por ele.' Humildade é respeito universal.",s:"Provérbio de liderança + Sêneca",dur:"Dia todo",xp:25},
+    {t:"Cumprimente alguém que geralmente é ignorado",d:"Identifique uma pessoa que é geralmente ignorada no seu ambiente (limpeza, segurança, estagiário) e cumprimente com atenção genuína.",w:"Mandela cumprimentava cada guarda pelo nome na prisão — os mesmos que o mantinham preso. Quando saiu, todos o respeitavam. Humanizar quem o mundo desumaniza é força moral pura.",s:"Nelson Mandela — Long Walk to Freedom",dur:"2 min",xp:25},
+    {t:"Aceite uma crítica sem se defender",d:"Na próxima vez que receber uma crítica (justa ou injusta), responda: 'Obrigado por me dizer isso. Vou refletir.' E realmente reflita.",w:"Sêneca: 'Aceitamos a correção com a mesma gratidão com que aceitamos conselhos médicos — porque ambos visam curar.' A defesa automática protege o ego, não o crescimento.",s:"Sêneca — Sobre a Firmeza do Sábio",dur:"Variável",xp:35},
+    {t:"Honre um compromisso pequeno",d:"Cumpra 1 compromisso pequeno com precisão: chegue no horário, entregue o que prometeu, retorne a ligação. Detalhes constroem reputação.",w:"O Código Bushido: 'A palavra do guerreiro é lei. Mesmo nos menores compromissos, a honra está em jogo.' A integridade nos detalhes é o que sustenta a confiança nos grandes.",s:"Código Bushido",dur:"Variável",xp:25},
+  ],
+  truth:[
+    {t:"Admita 1 insegurança pra si mesmo",d:"Escreva: 'Minha maior insegurança agora é ___.' Não compartilhe com ninguém. Apenas reconheça internamente sem julgamento.",w:"Jung: 'Até tornares consciente o inconsciente, ele dirigirá tua vida.' A insegurança negada se torna arrogância compensatória. Reconhecida, se torna material de trabalho.",s:"Carl Jung — Psicologia Analítica",dur:"10 min",xp:30},
+    {t:"Avalie honestamente: onde você é medíocre?",d:"Identifique 1 área da sua vida onde você é medíocre — e que finge ser bom. Escreva. Sem autocompaixão. Sem justificativa.",w:"Jim Collins: 'Bom é inimigo de ótimo. A maioria das empresas nunca se torna ótima porque se contenta em ser boa.' O homem que finge ser bom em tudo é ótimo em nada.",s:"Jim Collins — Good to Great",dur:"10 min",xp:30},
+    {t:"Diga uma verdade difícil pra alguém",d:"Fale pra alguém algo que precisa ser dito mas que você vem evitando. Com respeito, sem agressividade. Verdade com compaixão.",w:"Kim Scott chama de 'Radical Candor': cuidar pessoalmente enquanto desafia diretamente. Nem agressivo (arrogância), nem omisso (covardia). O meio é humildade tática.",s:"Kim Scott — Radical Candor",dur:"Variável",xp:40},
+    {t:"Reconheça que alguém é melhor que você em algo",d:"Identifique 1 pessoa que é melhor que você em algo específico. Reconheça internamente sem ressentimento. Se possível, diga a ela.",w:"Phil Jackson (treinador mais vitorioso da NBA): 'Cerque-se de pessoas mais inteligentes que você. Se você é a pessoa mais inteligente da sala, está na sala errada.'",s:"Phil Jackson + Jim Rohn",dur:"5 min",xp:25},
+  ]
+};
+
+const LEVELS=[
+  {name:'Bruto',icon:'🪨',min:0},
+  {name:'Desperto',icon:'👁️',min:200},
+  {name:'Temperado',icon:'🔨',min:500},
+  {name:'Centrado',icon:'⚖️',min:1000},
+  {name:'Nobre',icon:'🏛️',min:1800},
+  {name:'Sábio',icon:'🦉',min:3000},
+  {name:'Soberano',icon:'👑',min:5000}
+];
+
+const QUOTES=[
+  {t:"Humildade não é pensar menos de si mesmo — é pensar menos EM si mesmo.",a:"C.S. Lewis"},
+  {t:"O verdadeiro teste de um homem não é o poder que exerce, mas a moderação que demonstra.",a:"Sêneca"},
+  {t:"Quando o ego fala, a sabedoria cala. Quando a sabedoria fala, o ego se cura.",a:"Provérbio Estoico"},
+  {t:"Seja como a água: forte o bastante pra cortar pedra, humilde o bastante pra sempre descer.",a:"Lao Tsé"},
+  {t:"Ninguém pode te fazer sentir inferior sem o seu consentimento.",a:"Eleanor Roosevelt"},
+  {t:"A arrogância é a armadura do inseguro. A humildade é a arma do forte.",a:"Ryan Holiday"},
+  {t:"Quem conhece os outros é inteligente. Quem conhece a si mesmo é sábio.",a:"Lao Tsé — Tao Te Ching"},
+  {t:"Confiança é silenciosa. Inseguranças são barulhentas.",a:"Provérbio"},
+  {t:"Fale apenas se for melhorar o silêncio.",a:"Gandhi"},
+  {t:"O homem que se governa é mais poderoso que aquele que conquista cidades.",a:"Provérbio de Salomão"},
+];
+
+const REFLECTIONS=[
+  "Hoje eu falei mais do que ouvi?",
+  "Busquei estar certo ou busquei entender?",
+  "Fiz algo bom e quis que soubessem?",
+  "Tratei todos com o mesmo respeito?",
+  "Meu ego guiou alguma decisão hoje?",
+  "Aprendi algo novo ou só confirmei o que já sabia?",
+  "Fui honesto comigo sobre minhas fraquezas?",
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("ht_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("ht_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('sk')||0,xp:LS.get('xp')||0,ct:LS.get('ct')||{},ld:LS.get('ld')||'',tc:LS.get('tc')||0,da:LS.get('da')||0,pF:'all',balance:LS.get('bal')||50,reflected:LS.get('ref')||false};
+function save(){LS.set('sk',S.streak);LS.set('xp',S.xp);LS.set('ct',S.ct);LS.set('ld',S.ld);LS.set('tc',S.tc);LS.set('da',S.da);LS.set('bal',S.balance);LS.set('ref',S.reflected)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.ld!==t){if(S.ld){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.ld===y.toISOString().slice(0,10)?(S.streak+1):1}else S.streak=1;S.ct={};S.ld=t;S.da++;S.reflected=false;save()}}
+function getDM(){const d=doy(),ms=[],ks=Object.keys(MISSIONS);for(let i=0;i<7;i++){const cI=(d+i)%ks.length,cat=ks[cI],pool=MISSIONS[cat],mI=(d*7+i*13+d%7)%pool.length;ms.push({...pool[mI],pil:cat,id:`${d}-${i}`})}return ms}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlP(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function complete(id,xp){if(S.ct[id])return;S.ct[id]=true;S.xp+=xp;S.tc++;save();render()}
+function todayP(){const m=getDM();return Math.round(m.filter(x=>S.ct[x.id]).length/m.length*100)}
+function getPillar(id){return PILLARS.find(p=>p.id===id)}
+function saveReflection(val){S.balance=parseInt(val);S.reflected=true;S.xp+=20;save();render()}
+function getBalanceState(){if(S.balance<30)return{text:'SUBMISSÃO — Você está cedendo demais. Confiança não é arrogância — é firmeza com respeito.',color:'var(--red)',icon:'📉'};if(S.balance>70)return{text:'ARROGÂNCIA — Ego inflado. Confiança verdadeira não precisa provar nada.',color:'var(--red)',icon:'📈'};return{text:'EQUILÍBRIO — Humildade Tática ativa. Forte por dentro, gentil por fora.',color:'var(--bronze)',icon:'⚖️'}}
+
+const hexSvg=`<svg viewBox="0 0 30 30"><polygon class="hex-bg" points="15,2 27,9 27,21 15,28 3,21 3,9"/></svg>`;
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,progress:renderProgress,wisdom:renderWisdom};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'⚖️',label:'Hoje'},{id:'progress',icon:'📊',label:'Evolução'},{id:'wisdom',icon:'📜',label:'Sabedoria'}];
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div><div class="nav">${nav.map(n=>`<div class="nav-btn ${S.screen===n.id?'active':''}" onclick="S.screen='${n.id}';render()"><div class="nav-icon" style="color:${S.screen===n.id?'var(--bronze)':'var(--slate)'}">${n.icon}</div><div class="nav-label" style="color:${S.screen===n.id?'var(--bronze)':'var(--slate)'}">${n.label}</div></div>`).join('')}</div>`;
+}
+function renderHdr(){const l=getLevel();return`<div class="hdr z1"><div class="hdr-left"><div class="hdr-emblem">👑</div><div><div class="hdr-title">HUMILDADE TÁTICA</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.da||1}</div></div></div><div class="hdr-stats"><div class="hdr-pill"><div class="hdr-pill-val">🔥${S.streak}</div><div class="hdr-pill-label">STREAK</div></div><div class="hdr-pill"><div class="hdr-pill-val">${S.xp}</div><div class="hdr-pill-label">XP</div></div></div></div>`}
+
+function renderHome(){
+  const ms=getDM(),prog=todayP(),q=QUOTES[doy()%QUOTES.length],rq=REFLECTIONS[doy()%REFLECTIONS.length];
+  const filtered=S.pF==='all'?ms:ms.filter(m=>m.pil===S.pF);
+  const done=ms.filter(m=>S.ct[m.id]).length;
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  const bs=getBalanceState();
+  let h='';
+
+  // Balance meter
+  h+=`<div class="balance-card"><div class="balance-title">⚖️ MEDIDOR DE EQUILÍBRIO</div><div class="balance-bar-wrap"><div class="balance-track"><div class="balance-gradient"></div></div><div class="balance-marker" style="left:${S.balance}%">⚖️</div></div><div class="balance-labels"><span>SUBMISSÃO</span><span>EQUILÍBRIO</span><span>ARROGÂNCIA</span></div><div class="balance-desc">${bs.icon} <b>${bs.text}</b></div></div>`;
+
+  // Self reflection
+  if(!S.reflected){
+    h+=`<div class="reflect-card"><div class="reflect-q">"${rq}"</div><input type="range" class="reflect-slider" id="ref-slider" min="0" max="100" value="50" oninput="document.getElementById('ref-result').textContent=['Muito submisso','Submisso','Levemente submisso','Equilibrado','Levemente arrogante','Arrogante','Muito arrogante'][Math.floor(this.value/15)]||'Equilibrado';document.getElementById('ref-result').style.color=this.value<30||this.value>70?'var(--red)':'var(--bronze)'"><div class="reflect-labels"><span>Cedi demais</span><span>Perfeito</span><span>Exagerei no ego</span></div><div class="reflect-result" id="ref-result" style="color:var(--bronze)">Equilibrado</div><button class="reflect-btn" onclick="saveReflection(document.getElementById('ref-slider').value)">✦ REGISTRAR REFLEXÃO (+20 XP)</button></div>`;
+  }else{
+    h+=`<div class="reflect-card" style="text-align:center;border-color:var(--bronze)20"><div style="font-size:24px;margin-bottom:6px">✓</div><div style="font-size:11px;color:var(--bronze);font-weight:700;letter-spacing:1px">REFLEXÃO DO DIA REGISTRADA</div></div>`;
+  }
+
+  // Level
+  h+=`<div class="lvl-card"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?nx.icon+' '+nx.name+' →':''} ${S.xp} XP</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Oracle
+  h+=`<div class="oracle"><div class="oracle-icon">🏛️</div><div class="oracle-label">✦ ENSINAMENTO DO DIA</div><div class="oracle-text">"${q.t}"</div><div class="oracle-author">— ${q.a}</div></div>`;
+
+  // Pillar filter
+  h+=`<div class="pill-scroll"><div class="pill ${S.pF==='all'?'active':''}" onclick="S.pF='all';render()">TODOS</div>`;
+  PILLARS.forEach(p=>{h+=`<div class="pill ${S.pF===p.id?'active':''}" onclick="S.pF='${p.id}';render()" style="${S.pF===p.id?'border-color:'+p.color+';color:'+p.color:''}">${p.icon} ${p.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const p=getPillar(m.pil),dn=S.ct[m.id];
+    h+=`<div class="stoic-card ${dn?'done':''}"><div class="s-dur">${m.dur}</div><div class="stoic-top"><div class="hex-check ${dn?'checked':''}" onclick="complete('${m.id}',${m.xp})">${hexSvg}<span class="hex-icon">✓</span></div><div class="s-body"><div class="s-pillar" style="color:${p.color}">${p.icon} ${p.name}</div><div class="s-title" style="${dn?'text-decoration:line-through':''}">${m.t}</div><div class="s-desc">${m.d}</div><div class="s-teaching">🏛️ <b>Ensinamento:</b> ${m.w}</div><div class="s-source">— ${m.s}</div><div class="s-xp">✦ +${m.xp} XP</div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  let h=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;filter:drop-shadow(0 0 16px rgba(205,127,50,.3))">${lv.icon}</div><div style="font-size:20px;font-weight:900;color:var(--bronze);margin-top:6px;font-family:Georgia,serif">${lv.name}</div><div style="font-size:11px;color:var(--slate);margin-top:4px">${S.xp} XP</div></div>`;
+  h+=`<div class="lvl-card"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?'→ '+nx.icon+' '+nx.name+' ('+nx.min+')':'MÁXIMO'}</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="col-grid"><div class="col-card"><div class="col-icon">🔥</div><div class="col-val">${S.streak}</div><div class="col-label">STREAK</div></div><div class="col-card"><div class="col-icon">📅</div><div class="col-val">${S.da||1}</div><div class="col-label">DIAS</div></div><div class="col-card"><div class="col-icon">✅</div><div class="col-val">${S.tc}</div><div class="col-label">MISSÕES</div></div></div>`;
+
+  // Balance history
+  const bs=getBalanceState();
+  h+=`<div class="card" style="text-align:center"><div style="font-size:9px;color:var(--bronze);letter-spacing:2px;font-weight:700;margin-bottom:10px">⚖️ SEU EQUILÍBRIO ATUAL</div><div style="font-size:40px;margin-bottom:6px">${bs.icon}</div><div style="font-size:12px;color:var(--ivory);font-weight:700">${S.balance<30?'SUBMISSÃO':S.balance>70?'ARROGÂNCIA':'EQUILÍBRIO'}</div><div style="font-size:10px;color:var(--slate);margin-top:4px">Posição: ${S.balance}% no espectro</div></div>`;
+
+  h+=`<div class="card"><div style="font-size:9px;color:var(--bronze);letter-spacing:2px;font-weight:700;margin-bottom:10px">🏛️ CAMINHO DA SABEDORIA</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><div class="rank-emblem" style="border-color:${u?'var(--bronze)':'var(--border)'}">${l.icon}</div><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${u?'var(--ivory)':'var(--slate)'}">${l.name}</div><div style="font-size:9px;color:var(--slate)">${l.min} XP</div></div>${u?'<span style="color:var(--bronze)">✦</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div class="card"><div style="font-size:9px;color:var(--bronze);letter-spacing:2px;font-weight:700;margin-bottom:10px">📊 PILARES</div>`;
+  PILLARS.forEach(p=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:16px">${p.icon}</span><div style="flex:1"><div style="font-size:11px;font-weight:700;color:${p.color}">${p.name}</div><div style="font-size:9px;color:var(--slate)">${p.desc}</div></div></div>`});
+  h+=`</div><div class="card" style="text-align:center"><button onclick="if(confirm('Resetar?')){Object.keys(localStorage).filter(k=>k.startsWith('ht_')).forEach(k=>localStorage.removeItem(k));location.reload()}" style="background:var(--bronze);color:#000;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:11px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+function renderWisdom(){
+  const teachings=[
+    {icon:'🏛️',color:'var(--bronze)',emb:'var(--bronze)20',name:'Os Estoicos',sub:'Marco Aurélio, Sêneca, Epicteto',desc:'A humildade não é fraqueza — é a fortaleza interior de quem não precisa provar nada. O Estoicismo ensina que a única coisa que controlamos são nossas reações.',principles:['Não controle os outros — controle a si mesmo','O ego que se defende não cresce','Aceite o que não pode mudar com dignidade','A morte nos iguala — viva com essa clareza']},
+    {icon:'☯️',color:'#45818e',emb:'#45818e20',name:'Taoísmo — Lao Tsé',sub:'Tao Te Ching',desc:'A água é o elemento mais humilde e mais poderoso. Não confronta a pedra — contorna e a dissolve. A humildade tática é como água: adapta sem perder força.',principles:['Seja como a água — forte e flexível','O que se curva não se quebra','Lidere de forma que digam: fizemos nós mesmos','No silêncio está a resposta']},
+    {icon:'⚔️',color:'#c0392b',emb:'#c0392b20',name:'Bushido — Código Samurai',sub:'O Caminho do Guerreiro',desc:'O verdadeiro guerreiro empunha a espada com humildade. Sabe que qualquer luta pode ser a última. A cortesia do samurai não é educação social — é respeito pela impermanência.',principles:['A cortesia é a espada mais afiada','O guerreiro que se conhece não teme a derrota','Honre até quem te combate','A espada guardada é mais temida que a desembainhada']},
+    {icon:'🕊️',color:'#4a6fa5',emb:'#4a6fa520',name:'Mandela e Lincoln',sub:'Liderança com Humildade',desc:'Mandela perdoou quem o prendeu por 27 anos. Lincoln promoveu quem o criticava. Os maiores líderes da história não governaram pelo ego — mas pela grandeza de caráter.',principles:['Perdoe quem te aprisionou','Promova quem te desafiou','O poder verdadeiro não precisa demonstrar poder','Sirva para liderar — não lidere para ser servido']},
+    {icon:'🦉',color:'#7c5cbf',emb:'#7c5cbf20',name:'Sócrates e a Ignorância',sub:'A Sabedoria de Não Saber',desc:'O homem mais sábio da Grécia foi declarado sábio pelo Oráculo de Delfos — porque era o único que sabia que nada sabia. A humildade intelectual é a porta de entrada de todo conhecimento.',principles:['Só sei que nada sei — e isso me liberta','Quem acha que sabe tudo parou de aprender','Perguntar é mais poderoso que afirmar','O ignorante fala — o sábio escuta']},
+    {icon:'📕',color:'#c9a84c',emb:'#c9a84c20',name:'Ryan Holiday',sub:'O Ego é o Inimigo',desc:'Holiday documenta como o ego destruiu Alexandre, o Grande, e como a humildade construiu George Marshall e Genghis Khan. O ego é o inimigo mais perigoso porque mora dentro de você.',principles:['O ego não é confiança — é compensação','Esteja sempre aprendendo, nunca "já sei"','Faça o trabalho, não o marketing de si mesmo','A humildade é o combustível do crescimento']},
+  ];
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(205,127,50,.2))">📜</div><div style="font-size:18px;font-weight:900;color:var(--bronze);font-family:Georgia,serif">FONTES DE SABEDORIA</div><div style="font-size:10px;color:var(--slate);margin-top:4px">Tradições que ensinam humildade como força</div></div>`;
+  teachings.forEach((t,i)=>{
+    const isOpen=S.openTeach===i;
+    h+=`<div class="lib-card" onclick="S.openTeach=${isOpen?'null':i};render()" style="border-color:${isOpen?t.color+'30':'var(--border)'}"><div class="lib-top"><div class="lib-emblem" style="border-color:${t.color};background:${t.emb}">${t.icon}</div><div style="flex:1"><div style="font-size:15px;font-weight:800;color:var(--ivory)">${t.name}</div><div style="font-size:9px;color:${t.color};font-weight:700;letter-spacing:1px;margin-top:2px">${t.sub}</div>${!isOpen?`<div style="font-size:10px;color:var(--slate);margin-top:6px;display:flex;justify-content:space-between"><span>${t.principles.length} princípios</span><span style="color:${t.color}">Abrir →</span></div>`:''}</div></div>${isOpen?`<div style="padding:0 16px 16px"><div style="font-size:11px;color:var(--steel);line-height:1.8;margin-bottom:14px;padding-top:12px;border-top:1px solid var(--border)">${t.desc}</div><div style="font-size:8px;color:${t.color};letter-spacing:2px;font-weight:700;margin-bottom:8px">✦ PRINCÍPIOS</div>${t.principles.map((p,j)=>`<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px"><div style="width:22px;height:22px;border-radius:50%;border:1px solid ${t.color}30;background:${t.color}08;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:${t.color};flex-shrink:0">${j+1}</div><div style="font-size:12px;color:var(--marble);line-height:1.6;padding-top:2px">${p}</div></div>`).join('')}</div>`:''}</div>`;
+  });
+  return h;
+}
+S.openTeach=null;
+checkDay();render();
+</script>
+</body>
+</html>

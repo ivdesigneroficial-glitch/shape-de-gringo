@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0c10">
+<title>💸 Desapego Tático</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#0a0c10;color:#b8c0d0;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:76px;overflow-x:hidden}
+:root{--bg:#0a0c10;--card:#0e1118;--card2:#121620;--border:#1a1e2c;--ice:#60a5fa;--ice2:#3b82f6;--frost:#93c5fd;--snow:#e8eef8;--steel:#6878a0;--slate:#3a4468;--dim:#252a3a;--green:#34d399;--red:#f87171;--amber:#fbbf24;--purple:#a78bfa;--teal:#2dd4bf}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(96,165,250,.02),transparent 50%);pointer-events:none;z-index:0}
+.z1{position:relative;z-index:1}
+
+/* NAV — MINIMAL UNDERLINE */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0c0e14e8;backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;z-index:100;padding:2px 6px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0;cursor:pointer;position:relative;border-radius:6px;margin:0 2px;transition:all .2s}
+.nav-btn.active::after{content:'';position:absolute;bottom:4px;left:30%;right:30%;height:2px;background:var(--ice);border-radius:1px}
+.nav-icon{font-size:17px;margin-bottom:2px}
+.nav-lbl{font-size:7px;font-weight:700;letter-spacing:1px}
+
+/* HEADER */
+.hdr{padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:center}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--ice2),var(--ice));display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 14px rgba(96,165,250,.2)}
+.hdr-title{font-size:13px;font-weight:800;color:var(--ice);letter-spacing:2px}
+.hdr-sub{font-size:8px;color:var(--slate);letter-spacing:1px;margin-top:1px}
+.hdr-stats{display:flex;gap:6px}
+.hdr-chip{border:1px solid var(--border);border-radius:6px;padding:4px 10px;text-align:center;background:var(--card)}
+.hdr-chip-val{font-size:11px;font-weight:900;color:var(--ice)}
+.hdr-chip-lbl{font-size:6px;color:var(--slate);letter-spacing:1px}
+.content{padding:0 14px}
+
+/* VAULT — MONEY SAVED COUNTER */
+.vault{background:linear-gradient(135deg,#0e1220,var(--card),#101828);border:1px solid var(--ice)12;border-radius:16px;padding:22px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden}
+.vault::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(96,165,250,.04),transparent 70%);pointer-events:none}
+.vault-label{font-size:8px;color:var(--ice);letter-spacing:3px;font-weight:700;margin-bottom:6px}
+.vault-amount{font-size:clamp(32px,8vw,48px);font-weight:900;color:var(--snow);font-variant-numeric:tabular-nums;line-height:1}
+.vault-amount small{font-size:16px;color:var(--ice);font-weight:700}
+.vault-sub{font-size:10px;color:var(--slate);margin-top:6px;letter-spacing:1px}
+.vault-add{display:inline-flex;align-items:center;gap:6px;background:var(--ice)10;border:1px solid var(--ice)25;border-radius:8px;padding:8px 16px;margin-top:12px;cursor:pointer;transition:all .3s;font-size:11px;color:var(--ice);font-weight:700;letter-spacing:1px}
+.vault-add:hover{background:var(--ice)18;border-color:var(--ice)40}
+.vault-add:active{transform:scale(.96)}
+
+/* VAULT INPUT MODAL */
+.vault-input{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;display:none}
+.vault-input.show{display:block}
+.vault-input-title{font-size:10px;color:var(--ice);letter-spacing:2px;font-weight:700;margin-bottom:10px;text-align:center}
+.vault-input input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--snow);font-size:18px;font-weight:700;text-align:center;outline:none;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.vault-input input::-webkit-outer-spin-button,.vault-input input::-webkit-inner-spin-button{-webkit-appearance:none}
+.vault-input input:focus{border-color:var(--ice)}
+.vault-input input::placeholder{color:var(--slate);font-size:14px}
+.vault-input-desc{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--steel);font-size:12px;outline:none;margin-top:8px;font-family:inherit;resize:none;height:36px}
+.vault-input-desc:focus{border-color:var(--ice)}
+.vault-btns{display:flex;gap:8px;margin-top:10px}
+.vault-btn-save{flex:1;padding:10px;border:none;border-radius:8px;background:var(--ice);color:#000;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:1px}
+.vault-btn-save:active{transform:scale(.96)}
+.vault-btn-cancel{padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--slate);font-size:11px;font-weight:700;cursor:pointer}
+
+/* IMPULSE TRACKER */
+.impulse-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.impulse-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.impulse-title{font-size:9px;color:var(--red);letter-spacing:2px;font-weight:700;display:flex;align-items:center;gap:6px}
+.impulse-score{font-size:9px;color:var(--slate);font-weight:700}
+.impulse-row{display:flex;gap:8px}
+.imp-btn{flex:1;padding:12px 8px;border:1px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer;text-align:center;transition:all .3s}
+.imp-btn:active{transform:scale(.95)}
+.imp-btn-icon{font-size:20px;margin-bottom:3px}
+.imp-btn-lbl{font-size:8px;font-weight:700;letter-spacing:1px}
+.imp-btn.resist{border-color:var(--green)30}.imp-btn.resist .imp-btn-lbl{color:var(--green)}
+.imp-btn.gave{border-color:var(--red)30}.imp-btn.gave .imp-btn-lbl{color:var(--red)}
+.imp-log{margin-top:10px;max-height:100px;overflow-y:auto}
+.imp-log-item{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--dim);font-size:9px;color:var(--slate)}
+
+/* PROGRESS RING */
+.ring-card{text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
+.ring-wrap{position:relative;width:130px;height:130px;margin:0 auto}
+.ring-svg{width:130px;height:130px;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:var(--dim);stroke-width:6}
+.ring-fill{fill:none;stroke:var(--ice);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-val{font-size:28px;font-weight:900;color:var(--snow)}
+.ring-lbl{font-size:7px;color:var(--slate);letter-spacing:2px;font-weight:700;margin-top:2px}
+.ring-status{margin-top:10px;font-size:10px;font-weight:700;letter-spacing:1px}
+
+/* ORACLE — PAPER-TORN STYLE */
+.oracle{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;position:relative;border-left:3px solid var(--ice)30}
+.oracle-lbl{font-size:7px;color:var(--ice);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.oracle-text{font-size:14px;color:var(--snow);line-height:1.8;font-family:Georgia,serif;font-style:italic}
+.oracle-author{font-size:9px;color:var(--slate);margin-top:8px;font-style:normal;letter-spacing:1px}
+
+/* LEVEL */
+.lvl{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.lvl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lvl-name{font-size:12px;font-weight:800;color:var(--ice)}
+.lvl-info{font-size:8px;color:var(--slate)}
+.lvl-track{height:5px;background:var(--dim);border-radius:3px;overflow:hidden}
+.lvl-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ice2),var(--ice),var(--frost));transition:width 1s ease}
+
+/* PILL FILTERS */
+.pill-scroll{display:flex;gap:5px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.pill{flex-shrink:0;padding:5px 12px;border-radius:6px;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--steel);transition:all .3s;white-space:nowrap}
+.pill.active{border-color:var(--ice);color:var(--ice);background:var(--ice)06}
+
+/* MISSION — FROST CARD */
+.frost-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;position:relative;transition:all .3s;overflow:hidden}
+.frost-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(96,165,250,.02),transparent 70%);pointer-events:none}
+.frost-card.done{opacity:.35}
+.frost-top{display:flex;align-items:flex-start;gap:10px}
+
+/* DIAMOND CHECK */
+.dia-check{width:24px;height:24px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative}
+.dia-check svg{width:24px;height:24px;transition:all .3s}
+.dia-bg{fill:transparent;stroke:var(--border);stroke-width:1.5;transition:all .3s}
+.dia-check.checked .dia-bg{fill:var(--ice);stroke:var(--ice)}
+.dia-icon{position:absolute;font-size:10px;color:transparent;font-weight:900;transition:color .3s}
+.dia-check.checked .dia-icon{color:#fff}
+
+.f-body{flex:1}
+.f-pillar{font-size:7px;font-weight:700;letter-spacing:2px;margin-bottom:2px}
+.f-title{font-size:13px;font-weight:700;color:var(--snow);margin-bottom:3px}
+.f-desc{font-size:10px;color:var(--steel);line-height:1.7}
+.f-wisdom{font-size:9px;color:var(--slate);margin-top:6px;padding:8px;background:var(--bg);border-radius:6px;line-height:1.7;font-style:italic;border-left:2px solid var(--ice)20}
+.f-wisdom b{color:var(--ice);font-style:normal}
+.f-source{font-size:7px;color:var(--dim);margin-top:3px}
+.f-dur{position:absolute;top:14px;right:14px;font-size:7px;color:var(--slate);font-weight:700;letter-spacing:1px}
+.f-xp{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:700;color:var(--amber);margin-top:5px;letter-spacing:1px}
+
+/* SAVED LOG */
+.saved-log{margin-top:12px}
+.saved-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--dim);font-size:11px}
+.saved-item:last-child{border-bottom:none}
+.saved-item-left{display:flex;align-items:center;gap:8px;color:var(--steel)}
+.saved-item-amount{color:var(--green);font-weight:800;font-variant-numeric:tabular-nums}
+.saved-item-date{font-size:9px;color:var(--slate)}
+
+/* PROGRESS CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.stat-icon{font-size:18px;margin-bottom:3px}
+.stat-val{font-size:16px;font-weight:900;color:var(--snow)}
+.stat-lbl{font-size:7px;color:var(--slate);letter-spacing:1px;font-weight:700}
+
+/* RANK */
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-emb{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--bg)}
+
+/* LIBRARY */
+.lib-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .3s}
+.lib-card:hover{border-color:var(--ice)25}
+.lib-top{padding:14px;display:flex;align-items:flex-start;gap:12px}
+.lib-emb{width:40px;height:40px;border-radius:8px;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--bg)}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const PILLARS=[
+  {id:'impulse',name:'IMPULSO',icon:'⚡',color:'#f87171',desc:'Controlar a urgência de comprar'},
+  {id:'need',name:'NECESSIDADE',icon:'🎯',color:'#60a5fa',desc:'Separar desejo de necessidade'},
+  {id:'detox',name:'DETOX',icon:'🧹',color:'#2dd4bf',desc:'Limpar excessos e acúmulo'},
+  {id:'mind',name:'MENTE',icon:'🧠',color:'#a78bfa',desc:'Psicologia do consumo'},
+  {id:'money',name:'FINANÇAS',icon:'💰',color:'#34d399',desc:'Relação saudável com dinheiro'},
+  {id:'freedom',name:'LIBERDADE',icon:'🕊️',color:'#fbbf24',desc:'Menos coisas, mais vida'},
+  {id:'stoic',name:'ESTOICISMO',icon:'🏛️',color:'#94a3b8',desc:'Filosofia do essencial'}
+];
+
+const MISSIONS={
+  impulse:[
+    {t:"Regra das 72 horas",d:"Quer comprar algo não-essencial? Anote e espere 72 horas. Se depois de 3 dias ainda quiser E puder justificar — compre. A maioria dos desejos morre em 48h.",w:"Estudo de Princeton: 72h é o tempo médio para o córtex pré-frontal 'alcançar' a decisão impulsiva do sistema límbico. A espera não é privação — é inteligência.",s:"Kahneman, D. — Thinking, Fast and Slow, Princeton",dur:"72h",xp:40},
+    {t:"Delete 1 app de compras do celular",d:"Remova 1 app de marketplace ou loja do celular: Shopee, Amazon, Shein, Mercado Livre, AliExpress. Adicionar atrito = menos impulso.",w:"Estudos de comportamento digital mostram que remover o app reduz compras por impulso em 40%. A distância entre desejo e ação é a barreira mais eficaz que existe.",s:"Behavioral Design — Friction Theory",dur:"2 min",xp:30},
+    {t:"Identifique 3 gatilhos de compra",d:"Escreva os 3 momentos que mais te fazem comprar por impulso: tédio? redes sociais? estresse? promoção? dia de pagamento? Identifique o padrão.",w:"O modelo Gatilho-Rotina-Recompensa de Charles Duhigg se aplica ao consumo: o gatilho dispara, a rotina é comprar, a recompensa é dopamina. Mudar começa por mapear o gatilho.",s:"Duhigg, C. — O Poder do Hábito",dur:"10 min",xp:30},
+    {t:"Antes de comprar, pergunte: 'Quanto tempo de trabalho isso custa?'",d:"Converta o preço em horas de trabalho. Ex: R$200 ÷ R$25/hora = 8 horas de vida. Vale 8 horas do seu tempo finito?",w:"Vicki Robin em 'Dinheiro ou Vida': 'Dinheiro é energia vital. Cada real que gasta é uma hora da sua vida que não volta. Quando converte preço em tempo, a realidade muda.'",s:"Vicki Robin — Your Money or Your Life",dur:"Dia todo",xp:25},
+    {t:"Coloque o item no carrinho e feche o app",d:"Quando quiser comprar algo online, coloque no carrinho — e feche. Não compre. Amanhã veja se ainda quer. O carrinho abandonado é treinamento de autocontrole.",w:"Dados do Baymard Institute: 70% dos carrinhos online são abandonados. A maioria das pessoas percebe que não precisava do item. Use isso a seu favor CONSCIENTEMENTE.",s:"Baymard Institute — Cart Abandonment Research",dur:"5 min",xp:25},
+    {t:"Desative notificações de promoção",d:"Vá nas configurações e desative notificações push de TODOS os apps/sites de compras. Sem notificação = sem gatilho externo.",w:"Cada notificação de 'oferta imperdível' é um gatilho dopaminérgico projetado por times de psicólogos comportamentais. Desativar é retomar o controle da sua atenção.",s:"Nir Eyal — Hooked: How to Build Habit-Forming Products",dur:"5 min",xp:25},
+    {t:"Unsubscribe de 5 e-mails de lojas",d:"Abra seu e-mail e cancele a inscrição (unsubscribe) de pelo menos 5 newsletters de lojas/promoções.",w:"A média de emails promocionais recebidos por pessoa é 121/mês. Cada um é um gatilho. Reduzir em 50% reduz compras por impulso em 23%.",s:"McKinsey Consumer Report, 2022",dur:"10 min",xp:20},
+  ],
+  need:[
+    {t:"Lista de NECESSIDADES vs DESEJOS",d:"Pegue papel. Divida em 2 colunas: NECESSIDADE (sobrevivência, saúde, trabalho) e DESEJO (conforto, status, prazer). Classifique suas últimas 5 compras.",w:"Os Estoicos separavam 'necessário' de 'preferível'. Epicteto: 'Não são as coisas que possuímos que nos fazem ricos — é a ausência de necessidade de possuí-las.'",s:"Epicteto — Discursos",dur:"15 min",xp:30},
+    {t:"Regra do 1-entra-1-sai",d:"Se comprar algo novo hoje, deve se desfazer de algo que já tem da mesma categoria. Camisa nova = camisa velha sai. Sem exceção.",w:"Joshua Becker, fundador do Becoming Minimalist: 'A regra 1-entra-1-sai mantém o equilíbrio material. Sem ela, a acumulação é matemática inevitável.'",s:"Joshua Becker — The More of Less",dur:"Dia todo",xp:25},
+    {t:"Use algo que já tem em vez de comprar novo",d:"Identifique 1 coisa que ia comprar e encontre a solução no que já possui. Já tem roupa boa? Vista ela. Já tem livro? Leia. Tem comida? Cozinhe.",w:"A cultura do consumo ensina que NOVO = MELHOR. Na realidade, 80% do que compramos poderia ser substituído pelo que já temos — se olhássemos com atenção.",s:"Filosofia Minimalista — The Minimalists",dur:"Dia todo",xp:25},
+    {t:"Antes de comprar, espere 30 dias",d:"Para compras acima de R$100: anote no calendário e espere 30 dias. Se depois de 1 mês ainda quiser e tiver dinheiro sem apertar — compre.",w:"Warren Buffett: 'Se você compra coisas que não precisa, em breve terá que vender coisas que precisa.' A regra dos 30 dias elimina 85% das compras por impulso de valor alto.",s:"Warren Buffett + Regra dos 30 Dias",dur:"30 dias",xp:40},
+    {t:"Questione: 'Daqui 1 ano, vou me importar com isso?'",d:"Para cada desejo de compra, pergunte: 'Daqui a 1 ano, esse item ainda vai ser importante pra mim?' Se a resposta é não — o desejo é passageiro.",w:"Minimalistas aplicam o 'Teste do Futuro': projetar-se no tempo revela a irrelevância de 90% dos desejos materiais. O que importa daqui a 1 ano é o que realmente importa.",s:"Marie Kondo + Minimalismo",dur:"Dia todo",xp:25},
+  ],
+  detox:[
+    {t:"Desapegue de 5 objetos hoje",d:"Encontre 5 coisas na sua casa que não usa há 6+ meses. Doe, venda ou descarte. Cada objeto que sai libera espaço físico E mental.",w:"Estudos da UCLA mostram que excesso de objetos eleva cortisol em 40% em mulheres e 25% em homens. Menos coisas = literalmente menos estresse.",s:"UCLA Center on Everyday Lives, 2012",dur:"20 min",xp:35},
+    {t:"Desapegue de 1 peça de roupa",d:"Abra o guarda-roupa. Tire 1 peça que não te representa mais: desbotada, apertada, velha, ou que comprou por impulso e nunca usou. Doe.",w:"A média de roupas no guarda-roupa brasileiro é 130 peças. A maioria usa apenas 20% delas regularmente. 80% é peso morto emocional e físico.",s:"Pesquisa ThredUp + Minimalismo de Vestuário",dur:"5 min",xp:20},
+    {t:"Organize 1 gaveta ou prateleira",d:"Escolha 1 gaveta ou 1 prateleira. Tire TUDO. Limpe. Devolva apenas o que realmente usa/precisa. O resto: fora.",w:"Marie Kondo: 'A desordem exterior é reflexo da desordem interior. Organizar o espaço físico clareia a mente.' O ato de curadoria material é prática de autoconhecimento.",s:"Marie Kondo — A Mágica da Arrumação",dur:"15 min",xp:25},
+    {t:"Dia sem comprar NADA",d:"24 horas sem gastar um centavo. Sem café fora, sem delivery, sem compra online, sem nada. Use apenas o que já tem.",w:"O 'Buy Nothing Day' (Dia de Não Comprar) é praticado mundialmente em novembro. Mas um dia por semana sem compras recalibra a relação com consumo e revela padrões.",s:"Buy Nothing Movement + Adbusters",dur:"24h",xp:45},
+    {t:"Cancele 1 assinatura que não usa",d:"Revise assinaturas: streaming, app, academia, clube. Cancele 1 que não usa há 30+ dias. Dinheiro parado sangrando = consumo invisível.",w:"Pesquisa do C6 Bank: brasileiros gastam em média R$140/mês em assinaturas que não usam. Isso é R$1.680/ano de dinheiro queimado invisível.",s:"C6 Bank + Pesquisa de Assinaturas Fantasmas",dur:"5 min",xp:25},
+    {t:"Limpe 20 fotos do celular",d:"Abra a galeria e delete 20 fotos: prints inúteis, duplicadas, memes velhos, screenshots. Desapego digital é tão importante quanto físico.",w:"O acúmulo digital gera a mesma ansiedade que o físico. Pesquisas de UX mostram que celulares desorganizados aumentam ansiedade basal em 18%.",s:"Psicologia Digital — Digital Hoarding Studies",dur:"5 min",xp:15},
+  ],
+  mind:[
+    {t:"Observe 1 impulso sem agir",d:"Quando sentir vontade de comprar algo, NÃO compre e NÃO lute contra. Observe o desejo como sensação. Onde está no corpo? Quanto dura? Ele passa?",w:"A técnica de 'urge surfing' de Alan Marlatt: desejos duram 15-20 minutos em média. Se você observar sem reagir, a onda passa. Cada onda surfada enfraquece a próxima.",s:"Marlatt, A. — Relapse Prevention, UW",dur:"20 min",xp:30},
+    {t:"Identifique a emoção por trás da compra",d:"Na próxima vez que quiser comprar algo, pergunte: 'O que estou SENTINDO agora?' Tédio? Tristeza? Ansiedade? Inadequação? A compra é anestesia — não é solução.",w:"Estudos de psicologia do consumo mostram que 62% das compras por impulso são motivadas por estados emocionais negativos. A compra oferece dopamina temporária — e depois culpa.",s:"Psychologie des Konsumverhaltens — Consumer Psychology",dur:"Dia todo",xp:30},
+    {t:"Visualize o item 6 meses depois",d:"Antes de comprar, visualize o item daqui a 6 meses: onde está? Ainda usa? Já esqueceu? Provavelmente está numa gaveta. Economize agora.",w:"Daniel Kahneman provou que humanos são péssimos em prever prazer futuro (miswanting). Achamos que o item vai nos fazer mais felizes do que realmente fará.",s:"Kahneman & Gilbert — Miswanting, Harvard",dur:"5 min",xp:25},
+    {t:"Jogue o jogo do 'E depois?'",d:"Quero comprar um tênis. E depois? Uso 3 vezes e enjoo. E depois? Fica no fundo do armário. E depois? Compro outro. E depois? Dívida. Trace a cadeia COMPLETA.",w:"O 'future chaining' ativa o córtex pré-frontal e conecta decisão presente com consequência futura. A maioria das pessoas não pensa além do 'carrinho → pagar'.",s:"Neurociência Comportamental — Future Chaining",dur:"5 min",xp:25},
+    {t:"Substitua scrollar vitrines por 1 atividade",d:"Toda vez que pegar o celular pra 'olhar o que tem de novo' numa loja, feche e faça outra coisa: leia, caminhe, exercite, produza.",w:"O comportamento de 'browsing' (olhar sem intenção de comprar) resulta em compra 33% das vezes. Não é 'só olhar' — é se expor ao gatilho deliberadamente.",s:"Behavioral Economics — Browsing-to-Buying Effect",dur:"Dia todo",xp:25},
+  ],
+  money:[
+    {t:"Registre TODO gasto do dia",d:"Anote cada centavo que gastar hoje: café, transporte, almoço, impulso, assinatura. Sem julgamento. Apenas registre.",w:"O que não é medido não é gerenciado. Pesquisa do Kaiser Permanente mostra que o simples ato de registrar reduz gasto desnecessário em 15-20% automaticamente.",s:"Kaiser Permanente + Dave Ramsey",dur:"Dia todo",xp:25},
+    {t:"Calcule quanto gastou por impulso este mês",d:"Revise seu extrato/app bancário. Identifique TODA compra que não era necessária. Some. O número vai doer — e é esse o ponto.",w:"Pesquisa Slickdeals: americanos gastam em média US$276/mês por impulso. No Brasil, estimativas apontam R$300-500/mês. É dinheiro que poderia estar investido gerando juros compostos.",s:"Slickdeals Research + SPC Brasil",dur:"20 min",xp:35},
+    {t:"Transfira pra poupança o valor de algo que ia comprar",d:"Na próxima vez que desistir de comprar algo, transfira o EXATO valor pra poupança ou investimento. Transforme economia em patrimônio visível.",w:"A técnica 'Pay Yourself First' (pague-se primeiro) aplicada ao desapego: cada compra evitada é dinheiro redirecionado. Ver o investimento crescer reforça o comportamento.",s:"George Clason — O Homem Mais Rico da Babilônia",dur:"5 min",xp:30},
+    {t:"Defina 1 meta financeira que vale mais que a compra",d:"Escreva 1 meta financeira concreta: viagem, reserva de emergência, investimento. Quando quiser comprar por impulso, relembre a meta. 'Isso me aproxima ou afasta?'",w:"Ter uma meta financeira visível reduz gastos por impulso em 30%. O cérebro precisa de um DESTINO melhor pra dizer não ao prazer imediato.",s:"Psicologia Financeira — Goal-Setting Theory",dur:"10 min",xp:25},
+  ],
+  freedom:[
+    {t:"Liste 10 experiências melhores que coisas",d:"Escreva 10 experiências (viagem, jantar, aula, conversa, pôr do sol) que te trouxeram mais felicidade que qualquer objeto. A lista prova: experiências > coisas.",w:"Dr. Thomas Gilovich, Cornell: '57% das pessoas relatam mais felicidade com experiências do que com bens materiais. A diferença aumenta com o tempo — objetos depreciam, memórias apreciam.'",s:"Gilovich, T. — Journal of Personality and Social Psychology, Cornell",dur:"10 min",xp:25},
+    {t:"Passe 1 hora sem consumir nada",d:"1 hora sem celular, sem comer, sem comprar, sem consumir conteúdo. Apenas exista. Caminhe, observe, pense, respire.",w:"Sêneca: 'Não é o homem que possui pouco que é pobre — mas o que deseja mais.' A liberdade começa quando você descobre que pode existir sem consumir constantemente.",s:"Sêneca — Cartas a Lucílio",dur:"60 min",xp:30},
+    {t:"Empreste em vez de comprar",d:"Algo que precisa usar 1-2 vezes: peça emprestado em vez de comprar. Ferramenta, livro, roupa pra evento. Nem tudo precisa ser seu.",w:"A economia do compartilhamento prova que posse é sobrestimada. 80% das ferramentas em casa são usadas menos de 1x por ano. Emprestar é inteligência, não pobreza.",s:"Economia do Compartilhamento + Minimalismo",dur:"Variável",xp:20},
+    {t:"Agradeça por 5 coisas que já tem",d:"Escreva 5 coisas que possui e que são suficientes. Teto? Roupa? Comida? Celular? Saúde? Gratidão pelo que tem é o antídoto do desejo pelo que não tem.",w:"Epicuro: 'Não é o que temos, mas o que aproveitamos, que constitui nossa riqueza.' A gratidão recalibra o cérebro de modo escassez pra modo abundância.",s:"Epicuro + Psicologia Positiva",dur:"5 min",xp:20},
+    {t:"Defina: o que é 'suficiente' pra você?",d:"Escreva: 'Eu tenho suficiente quando ___.' Complete com honestidade. A maioria nunca define — e por isso nunca chega. Sem definição de 'suficiente', a busca é infinita.",w:"Naval Ravikant: 'A armadilha é que 'mais' nunca é suficiente quando você não definiu o que suficiente significa. Defina o número e pare quando chegar.'",s:"Naval Ravikant — The Almanack",dur:"10 min",xp:30},
+  ],
+  stoic:[
+    {t:"Pratique a Pobreza Voluntária — 1 refeição simples",d:"Faça 1 refeição extremamente simples hoje: arroz, ovo e sal. Sem incrementos. Sinta como é comer o mínimo — e perceba que é suficiente.",w:"Sêneca praticava 'premeditatio malorum': experimentar voluntariamente o que teme. 'Reserva alguns dias em que te contentes com o mínimo de comida, a mais barata, e roupa áspera.'",s:"Sêneca — Cartas a Lucílio, Carta 18",dur:"1 refeição",xp:30},
+    {t:"Vista a mesma roupa 2 dias seguidos",d:"Use a mesma roupa que usou ontem. Perceba: ninguém nota. O medo de repetir roupa é construção social — não necessidade.",w:"Steve Jobs, Mark Zuckerberg e Obama usavam 'uniforme' diário. Decisões de roupa consomem energia mental. Reduzir opções = mais foco pro que importa.",s:"Decision Fatigue — Baumeister, 2011",dur:"Dia todo",xp:25},
+    {t:"Memento Mori — Nada disso vai junto",d:"Medite 5 min sobre o fato de que quando você morrer, NENHUM objeto vai junto. Nenhum tênis, nenhum celular, nenhum carro. O que fica é quem você foi — não o que teve.",w:"Marco Aurélio: 'Alexandre o Grande e seu condutor de mulas foram levados ao mesmo lugar pela morte.' O desapego supremo é lembrar que tudo é temporário.",s:"Marco Aurélio — Meditações, Livro 6",dur:"5 min",xp:30},
+    {t:"Negação voluntária — diga NÃO a 1 desejo",d:"Identifique algo que quer (não precisa) e deliberadamente negue a si mesmo. Não por falta — por ESCOLHA. A liberdade de dizer não é a forma mais elevada de poder.",w:"Diógenes, o Cínico, vivia num barril e disse a Alexandre o Grande: 'Saia da minha luz do sol.' Não precisava de NADA de ninguém. Essa é a liberdade absoluta.",s:"Diógenes de Sinope — Filosofia Cínica",dur:"Dia todo",xp:35},
+    {t:"Observe uma propaganda e decodifique",d:"Veja 1 anúncio (TV, Instagram, YouTube) e identifique: que emoção está tentando ativar? Medo? Inadequação? Inveja? FOMO? Decodifique a manipulação.",w:"As 48 Leis do Poder aplicadas ao marketing: toda propaganda é persuasão emocional disfarçada. Quando você vê o mecanismo, ele perde o poder sobre você.",s:"Robert Greene + Edward Bernays — Propaganda, 1928",dur:"5 min",xp:25},
+  ]
+};
+
+const LEVELS=[
+  {name:'Acumulador',icon:'📦',min:0},
+  {name:'Questionador',icon:'❓',min:200},
+  {name:'Consciente',icon:'👁️',min:500},
+  {name:'Desapegado',icon:'🍃',min:1000},
+  {name:'Essencialista',icon:'🎯',min:1800},
+  {name:'Livre',icon:'🕊️',min:3000},
+  {name:'Sábio',icon:'🏛️',min:5000}
+];
+
+const QUOTES=[
+  {t:"Não é o homem que possui pouco que é pobre — mas o que deseja mais.",a:"Sêneca"},
+  {t:"As coisas que possuímos acabam nos possuindo.",a:"Tyler Durden — Fight Club"},
+  {t:"Riqueza não é ter muitas posses. Riqueza é ter poucas necessidades.",a:"Epicteto"},
+  {t:"A propaganda te convence de que você é inadequado pra te vender a solução.",a:"Banksy"},
+  {t:"Simplifique, simplifique, simplifique.",a:"Henry David Thoreau"},
+  {t:"O supérfluo é o mais caro — porque custa sua liberdade.",a:"Provérbio Estoico"},
+  {t:"Compre memórias, não coisas. Invista em experiências, não em objetos.",a:"Thomas Gilovich, Cornell"},
+  {t:"Cada coisa que possuo me possui de volta.",a:"Filosofia Minimalista"},
+  {t:"Quem sabe que o suficiente é suficiente terá sempre o suficiente.",a:"Lao Tsé — Tao Te Ching"},
+  {t:"O segredo da felicidade não é buscar mais — é desenvolver a capacidade de aproveitar menos.",a:"Sócrates"},
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("dt_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("dt_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('sk')||0,xp:LS.get('xp')||0,ct:LS.get('ct')||{},ld:LS.get('ld')||'',tc:LS.get('tc')||0,da:LS.get('da')||0,pF:'all',
+vault:LS.get('vault')||0,vaultLog:LS.get('vLog')||[],showVaultInput:false,
+impResist:LS.get('impR')||0,impGave:LS.get('impG')||0,impLog:LS.get('impL')||[]};
+function save(){LS.set('sk',S.streak);LS.set('xp',S.xp);LS.set('ct',S.ct);LS.set('ld',S.ld);LS.set('tc',S.tc);LS.set('da',S.da);LS.set('vault',S.vault);LS.set('vLog',S.vaultLog);LS.set('impR',S.impResist);LS.set('impG',S.impGave);LS.set('impL',S.impLog)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.ld!==t){if(S.ld){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.ld===y.toISOString().slice(0,10)?(S.streak+1):1}else S.streak=1;S.ct={};S.ld=t;S.da++;save()}}
+function getDM(){const d=doy(),ms=[],ks=Object.keys(MISSIONS);for(let i=0;i<7;i++){const cI=(d+i)%ks.length,cat=ks[cI],pool=MISSIONS[cat],mI=(d*7+i*11+d%7)%pool.length;ms.push({...pool[mI],pil:cat,id:`${d}-${i}`})}return ms}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlP(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function complete(id,xp){if(S.ct[id])return;S.ct[id]=true;S.xp+=xp;S.tc++;save();render()}
+function todayP(){const m=getDM();return Math.round(m.filter(x=>S.ct[x.id]).length/m.length*100)}
+function getPil(id){return PILLARS.find(p=>p.id===id)}
+function addToVault(){
+  const val=parseFloat(document.getElementById('vault-val').value);
+  const desc=document.getElementById('vault-desc').value.trim()||'Compra evitada';
+  if(!val||val<=0)return;
+  S.vault+=val;S.xp+=Math.round(val/5);
+  S.vaultLog.unshift({amount:val,desc,date:today()});
+  if(S.vaultLog.length>30)S.vaultLog=S.vaultLog.slice(0,30);
+  S.showVaultInput=false;save();render();
+}
+function logImpulse(resisted){
+  if(resisted){S.impResist++;S.xp+=15}else{S.impGave++}
+  S.impLog.unshift({type:resisted?'resist':'gave',time:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),date:today()});
+  if(S.impLog.length>50)S.impLog=S.impLog.slice(0,50);
+  save();render();
+}
+
+const diaSvg=`<svg viewBox="0 0 24 24"><polygon class="dia-bg" points="12,1 23,7 23,17 12,23 1,17 1,7"/></svg>`;
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,progress:renderProgress,wisdom:renderWisdom};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'🕊️',label:'Hoje'},{id:'progress',icon:'📊',label:'Evolução'},{id:'wisdom',icon:'📜',label:'Filosofia'}];
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div><div class="nav">${nav.map(n=>`<div class="nav-btn ${S.screen===n.id?'active':''}" onclick="S.screen='${n.id}';render()"><div class="nav-icon" style="color:${S.screen===n.id?'var(--ice)':'var(--slate)'}">${n.icon}</div><div class="nav-lbl" style="color:${S.screen===n.id?'var(--ice)':'var(--slate)'}">${n.label}</div></div>`).join('')}</div>`;
+}
+function renderHdr(){const l=getLevel();return`<div class="hdr z1"><div class="hdr-left"><div class="hdr-mark">🕊️</div><div><div class="hdr-title">DESAPEGO TÁTICO</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.da||1}</div></div></div><div class="hdr-stats"><div class="hdr-chip"><div class="hdr-chip-val">🔥${S.streak}</div><div class="hdr-chip-lbl">STREAK</div></div><div class="hdr-chip"><div class="hdr-chip-val">R$${S.vault.toFixed(0)}</div><div class="hdr-chip-lbl">COFRE</div></div></div></div>`}
+
+function renderHome(){
+  const ms=getDM(),prog=todayP(),q=QUOTES[doy()%QUOTES.length];
+  const filtered=S.pF==='all'?ms:ms.filter(m=>m.pil===S.pF);
+  const done=ms.filter(m=>S.ct[m.id]).length;
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  const todayImp=S.impLog.filter(l=>l.date===today());
+  let h='';
+
+  // Vault
+  h+=`<div class="vault"><div class="vault-label">🔐 COFRE DO DESAPEGO</div><div class="vault-amount"><small>R$</small>${S.vault.toFixed(2).replace('.',',')}</div><div class="vault-sub">Total economizado ao NÃO comprar por impulso</div><div class="vault-add" onclick="S.showVaultInput=!S.showVaultInput;render()">＋ REGISTRAR ECONOMIA</div></div>`;
+
+  // Vault input
+  if(S.showVaultInput){
+    h+=`<div class="vault-input show"><div class="vault-input-title">💰 QUANTO DEIXOU DE GASTAR?</div><input type="number" id="vault-val" placeholder="R$ 0,00" step="0.01" min="0"><textarea class="vault-input-desc" id="vault-desc" placeholder="O que ia comprar? (opcional)"></textarea><div class="vault-btns"><button class="vault-btn-cancel" onclick="S.showVaultInput=false;render()">CANCELAR</button><button class="vault-btn-save" onclick="addToVault()">💰 SALVAR</button></div></div>`;
+  }
+
+  // Impulse tracker
+  h+=`<div class="impulse-card"><div class="impulse-header"><div class="impulse-title">⚡ TRACKER DE IMPULSOS</div><div class="impulse-score">💪${S.impResist} resistidos · 💸${S.impGave} cedidos</div></div><div style="font-size:9px;color:var(--steel);margin-bottom:8px">Sentiu vontade de comprar? Registre:</div><div class="impulse-row"><div class="imp-btn resist" onclick="logImpulse(true)"><div class="imp-btn-icon">💪</div><div class="imp-btn-lbl" style="color:var(--green)">RESISTI</div></div><div class="imp-btn gave" onclick="logImpulse(false)"><div class="imp-btn-icon">💸</div><div class="imp-btn-lbl" style="color:var(--red)">CEDI</div></div></div>`;
+  if(todayImp.length>0){h+=`<div class="imp-log">`;todayImp.forEach(l=>{h+=`<div class="imp-log-item"><span>${l.type==='resist'?'💪 Resistido':'💸 Cedido'}</span><span>${l.time}</span></div>`});h+=`</div>`}
+  h+=`</div>`;
+
+  // Level
+  h+=`<div class="lvl"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?nx.icon+' '+nx.name+' →':''} ${S.xp} XP</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Oracle
+  h+=`<div class="oracle"><div class="oracle-lbl">🏛️ REFLEXÃO DO DIA</div><div class="oracle-text">"${q.t}"</div><div class="oracle-author">— ${q.a}</div></div>`;
+
+  // Pills
+  h+=`<div class="pill-scroll"><div class="pill ${S.pF==='all'?'active':''}" onclick="S.pF='all';render()">TODOS</div>`;
+  PILLARS.forEach(p=>{h+=`<div class="pill ${S.pF===p.id?'active':''}" onclick="S.pF='${p.id}';render()" style="${S.pF===p.id?'border-color:'+p.color+';color:'+p.color:''}">${p.icon} ${p.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const p=getPil(m.pil),dn=S.ct[m.id];
+    h+=`<div class="frost-card ${dn?'done':''}"><div class="f-dur">${m.dur}</div><div class="frost-top"><div class="dia-check ${dn?'checked':''}" onclick="complete('${m.id}',${m.xp})">${diaSvg}<span class="dia-icon">✓</span></div><div class="f-body"><div class="f-pillar" style="color:${p.color}">${p.icon} ${p.name}</div><div class="f-title" style="${dn?'text-decoration:line-through':''}">${m.t}</div><div class="f-desc">${m.d}</div><div class="f-wisdom">🏛️ <b>Sabedoria:</b> ${m.w}</div><div class="f-source">— ${m.s}</div><div class="f-xp">✦ +${m.xp} XP</div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  const totalImp=S.impResist+S.impGave;
+  const rate=totalImp>0?Math.round(S.impResist/totalImp*100):0;
+  let h=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;filter:drop-shadow(0 0 16px rgba(96,165,250,.3))">${lv.icon}</div><div style="font-size:20px;font-weight:900;color:var(--ice);margin-top:6px">${lv.name}</div><div style="font-size:11px;color:var(--slate);margin-top:4px">${S.xp} XP</div></div>`;
+  h+=`<div class="lvl"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?'→ '+nx.icon+' '+nx.name:'MÁX'}</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Vault summary
+  h+=`<div class="vault" style="margin-bottom:12px"><div class="vault-label">🔐 TOTAL ECONOMIZADO</div><div class="vault-amount"><small>R$</small>${S.vault.toFixed(2).replace('.',',')}</div><div class="vault-sub">${S.vaultLog.length} compras evitadas registradas</div></div>`;
+
+  if(S.vaultLog.length>0){
+    h+=`<div class="card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px"><div style="font-size:9px;color:var(--ice);letter-spacing:2px;font-weight:700;margin-bottom:8px">📋 ÚLTIMAS ECONOMIAS</div><div class="saved-log">`;
+    S.vaultLog.slice(0,8).forEach(v=>{
+      h+=`<div class="saved-item"><div class="saved-item-left">🕊️ ${v.desc}</div><div><span class="saved-item-amount">+R$${v.amount.toFixed(2).replace('.',',')}</span> <span class="saved-item-date">${v.date.slice(5).replace('-','/')}</span></div></div>`;
+    });
+    h+=`</div></div>`;
+  }
+
+  h+=`<div class="stat-grid"><div class="stat-card"><div class="stat-icon">🔥</div><div class="stat-val">${S.streak}</div><div class="stat-lbl">STREAK</div></div><div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val">${S.da||1}</div><div class="stat-lbl">DIAS</div></div><div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">${S.tc}</div><div class="stat-lbl">MISSÕES</div></div><div class="stat-card"><div class="stat-icon">💪</div><div class="stat-val">${S.impResist}</div><div class="stat-lbl">RESISTIDOS</div></div><div class="stat-card"><div class="stat-icon">💸</div><div class="stat-val" style="color:var(--red)">${S.impGave}</div><div class="stat-lbl">CEDIDOS</div></div><div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" style="color:${rate>=70?'var(--green)':rate>=40?'var(--amber)':'var(--red)'}">${rate}%</div><div class="stat-lbl">TAXA</div></div></div>`;
+
+  h+=`<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px"><div style="font-size:9px;color:var(--ice);letter-spacing:2px;font-weight:700;margin-bottom:10px">🏛️ CAMINHO DO DESAPEGO</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><div class="rank-emb" style="border-color:${u?'var(--ice)':'var(--border)'}">${l.icon}</div><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${u?'var(--snow)':'var(--slate)'}">${l.name}</div><div style="font-size:8px;color:var(--slate)">${l.min} XP</div></div>${u?'<span style="color:var(--ice)">✦</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><button onclick="if(confirm('Resetar tudo?')){Object.keys(localStorage).filter(k=>k.startsWith('dt_')).forEach(k=>localStorage.removeItem(k));location.reload()}" style="background:var(--ice);color:#000;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:11px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+function renderWisdom(){
+  const teachings=[
+    {icon:'🏛️',color:'var(--steel)',name:'Estoicismo',sub:'Sêneca, Epicteto, Marco Aurélio',desc:'Os Estoicos ensinavam que a riqueza verdadeira não está no que se tem — mas na redução do que se deseja. Sêneca praticava a pobreza voluntária regularmente para se libertar do medo de perder.',principles:['Deseje menos e terá mais','Pratique a pobreza voluntária','O que você teme perder, já te possui','Virtude é a única riqueza real']},
+    {icon:'☯️',color:'var(--teal)',name:'Taoísmo',sub:'Lao Tsé — Tao Te Ching',desc:'O Tao Te Ching ensina que o sábio acumula pouco e, por isso, sempre tem o suficiente. A água — o elemento mais poderoso — sempre flui para o lugar mais baixo.',principles:['Quem sabe que o suficiente é suficiente sempre terá o suficiente','O sábio não acumula — e quanto mais dá, mais tem','Simplicidade, paciência e compaixão são os três maiores tesouros','Quem se contenta é rico']},
+    {icon:'🪵',color:'#a78bfa',name:'Wabi-Sabi',sub:'Estética Japonesa da Imperfeição',desc:'Wabi-Sabi é a filosofia japonesa que encontra beleza na imperfeição, na simplicidade e na transitoriedade. Não precisa ser novo pra ser belo. Não precisa ser perfeito pra ter valor.',principles:['A beleza está na simplicidade','O imperfeito é mais autêntico que o perfeito','Nada dura — aceite a impermanência','Menos ornamento, mais essência']},
+    {icon:'🎯',color:'#60a5fa',name:'Essencialismo',sub:'Greg McKeown',desc:'Essencialismo é a busca disciplinada por menos. Não é fazer mais com menos — é fazer APENAS o que realmente importa. Aplicado ao consumo: compre apenas o essencial.',principles:['Se não é um "SIM absoluto", é um não','Quase tudo é ruído — pouquíssimo é sinal','A clareza vem de eliminar, não de adicionar','Faça menos, melhor']},
+    {icon:'📦',color:'#f87171',name:'Minimalismo',sub:'The Minimalists, Marie Kondo, Joshua Becker',desc:'O minimalismo não é viver sem nada — é viver apenas com o que acrescenta valor. Cada objeto que não serve é peso que drena energia silenciosamente.',principles:['Ame pessoas e use coisas — não o contrário','Menos coisas = mais tempo, dinheiro e espaço mental','Possuir é responsabilidade — não troféu','A liberdade está na subtração']},
+  ];
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(96,165,250,.2))">📜</div><div style="font-size:18px;font-weight:900;color:var(--ice)">FILOSOFIAS DO DESAPEGO</div><div style="font-size:10px;color:var(--slate);margin-top:4px">Tradições que ensinam a ter menos e ser mais</div></div>`;
+  teachings.forEach((t,i)=>{
+    const isOpen=S.openTeach===i;
+    h+=`<div class="lib-card" onclick="S.openTeach=${isOpen?'null':i};render()" style="border-color:${isOpen?t.color+'30':'var(--border)'}"><div class="lib-top"><div class="lib-emb" style="border-color:${t.color}">${t.icon}</div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--snow)">${t.name}</div><div style="font-size:9px;color:${t.color};font-weight:700;letter-spacing:1px;margin-top:2px">${t.sub}</div>${!isOpen?`<div style="font-size:10px;color:var(--slate);margin-top:6px;display:flex;justify-content:space-between"><span>${t.principles.length} princípios</span><span style="color:${t.color}">Abrir →</span></div>`:''}</div></div>${isOpen?`<div style="padding:0 14px 14px"><div style="font-size:11px;color:var(--steel);line-height:1.8;margin-bottom:12px;padding-top:10px;border-top:1px solid var(--border)">${t.desc}</div><div style="font-size:8px;color:${t.color};letter-spacing:2px;font-weight:700;margin-bottom:8px">✦ PRINCÍPIOS</div>${t.principles.map((p,j)=>`<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><div style="width:20px;height:20px;border-radius:4px;border:1px solid ${t.color}30;background:${t.color}08;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:${t.color};flex-shrink:0">${j+1}</div><div style="font-size:11px;color:var(--snow);line-height:1.6;padding-top:2px">${p}</div></div>`).join('')}</div>`:''}</div>`;
+  });
+  return h;
+}
+S.openTeach=null;
+checkDay();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#06050d">
+<title>🔥 Energia Masculina</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#06050d;color:#d8d0e8;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px;overflow-x:hidden}
+:root{--bg:#06050d;--card:#0c0a16;--border:#1a1528;--indigo:#6d28d9;--violet:#8b5cf6;--gold:#d4a017;--gold2:#b8941a;--amber:#f59e0b;--cream:#f0e8d8;--bone:#d8d0e8;--muted:#7a6f8a;--dim:#4a4258;--green:#34d399;--red:#f87171;--cyan:#22d3ee;--rose:#fb7185}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
+
+/* SUBTLE GRADIENT OVERLAY */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(109,40,217,.04),transparent 60%);pointer-events:none;z-index:0}
+
+.z1{position:relative;z-index:1}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#09081260;backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer;transition:color .2s}
+
+/* HEADER */
+.hdr{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--violet));display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(109,40,217,.3)}
+.hdr-title{font-size:14px;font-weight:800;color:var(--violet);letter-spacing:2px}
+.hdr-sub{font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:1px}
+.hdr-energy{background:linear-gradient(135deg,rgba(109,40,217,.1),rgba(139,92,246,.05));border:1px solid var(--indigo)25;border-radius:12px;padding:6px 14px;text-align:center}
+.hdr-energy-val{font-size:14px;font-weight:900;color:var(--violet)}
+.hdr-energy-label{font-size:7px;color:var(--dim);letter-spacing:1px}
+
+.content{padding:0 16px}
+
+/* ENERGY ORB */
+.orb-card{text-align:center;background:linear-gradient(135deg,#0e0820,var(--card));border:1px solid var(--indigo)12;border-radius:20px;padding:28px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+.orb-card::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(109,40,217,.08),transparent 70%);pointer-events:none}
+.orb-wrap{position:relative;width:150px;height:150px;margin:0 auto}
+.orb-svg{width:150px;height:150px;transform:rotate(-90deg)}
+.orb-track{fill:none;stroke:var(--border);stroke-width:6}
+.orb-fill{fill:none;stroke:url(#orbGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.orb-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.orb-val{font-size:34px;font-weight:900;color:#fff;font-family:Georgia,serif}
+.orb-label{font-size:8px;color:var(--dim);letter-spacing:2px;font-weight:700;margin-top:2px}
+.orb-status{margin-top:14px;font-size:11px;font-weight:700;letter-spacing:1px}
+
+/* DOMAIN PILLS */
+.dom-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.dom-pill{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;white-space:nowrap}
+.dom-pill.active{border-color:var(--violet);color:var(--violet);background:var(--violet)08}
+
+/* MISSION */
+.mission{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:all .3s;position:relative;overflow:hidden}
+.mission.done{opacity:.4}
+.mission-top{display:flex;align-items:flex-start;gap:12px}
+.mission-orb{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;font-size:11px;color:transparent}
+.mission-orb.checked{border-color:var(--violet);background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;box-shadow:0 0 12px rgba(109,40,217,.3)}
+.mission-body{flex:1}
+.mission-domain{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.mission-title{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.mission-desc{font-size:11px;color:var(--muted);line-height:1.7}
+.mission-wisdom{font-size:10px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6;font-style:italic}
+.mission-wisdom b{color:var(--gold);font-style:normal}
+.mission-source{font-size:8px;color:var(--dim);margin-top:4px;letter-spacing:.5px}
+.mission-dur{position:absolute;top:16px;right:16px;font-size:8px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.mission-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--amber);margin-top:6px;letter-spacing:1px}
+
+/* DAILY ORACLE */
+.oracle{background:linear-gradient(135deg,#100820,#0a0618);border:1px solid var(--gold)12;border-radius:16px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.oracle::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(212,160,23,.06),transparent 70%);pointer-events:none}
+.oracle-label{font-size:8px;color:var(--gold);letter-spacing:3px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.oracle-text{font-size:15px;color:var(--cream);line-height:1.8;font-family:Georgia,serif;font-style:italic}
+.oracle-author{font-size:10px;color:var(--dim);margin-top:10px;font-style:normal}
+
+/* LEVEL */
+.level-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.level-name{font-size:13px;font-weight:800;color:var(--violet)}
+.level-next{font-size:9px;color:var(--dim)}
+.level-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.level-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--indigo),var(--violet),var(--gold));transition:width 1s ease}
+
+/* PROGRESS */
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.prog-icon{font-size:24px;margin-bottom:4px}
+.prog-val{font-size:20px;font-weight:900;color:#fff}
+.prog-label{font-size:8px;color:var(--dim);letter-spacing:1px;font-weight:700}
+
+/* RANKS */
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-ico{font-size:22px}
+.rank-name{font-size:13px;font-weight:700;color:var(--cream)}
+.rank-req{font-size:9px;color:var(--dim)}
+
+/* LIBRARY */
+.lib-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;cursor:pointer;transition:border-color .3s}
+.lib-card:hover{border-color:var(--violet)30}
+.lib-banner{height:70px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
+.lib-body{padding:14px 16px}
+.lib-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
+.lib-title{font-size:14px;font-weight:800;color:var(--cream);margin-bottom:4px}
+.lib-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.lib-meta{font-size:9px;color:var(--dim);margin-top:6px;display:flex;gap:10px}
+.lib-tag{display:inline-block;font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:1px;margin-right:4px}
+
+/* SETTINGS */
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.set-row:last-child{border-bottom:none}
+.set-left{display:flex;align-items:center;gap:10px}
+.set-icon{font-size:18px}
+.set-name{font-size:13px;font-weight:600;color:var(--bone)}
+.toggle{width:42px;height:24px;border-radius:12px;background:var(--border);cursor:pointer;position:relative;transition:background .3s}
+.toggle.on{background:var(--violet)}
+.toggle-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:transform .3s}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.screen{display:none}.screen.active{display:block}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ====================================
+// ENERGIA MASCULINA — ENGINE SUPREMO
+// ====================================
+
+const DOMAINS=[
+  {id:'transmute',name:'TRANSMUTAÇÃO',icon:'🔥',color:'#f97316',desc:'Canalização da energia sexual'},
+  {id:'mind',name:'MENTE',icon:'🧠',color:'#8b5cf6',desc:'Domínio do pensamento'},
+  {id:'presence',name:'PRESENÇA',icon:'🗿',color:'#06b6d4',desc:'Linguagem corporal e poder'},
+  {id:'power',name:'PODER',icon:'👑',color:'#d4a017',desc:'Influência e liderança'},
+  {id:'discipline',name:'DISCIPLINA',icon:'⚔️',color:'#ef4444',desc:'Estoicismo e autocontrole'},
+  {id:'energy',name:'VITALIDADE',icon:'⚡',color:'#22c55e',desc:'Corpo, saúde e vigor'},
+  {id:'shadow',name:'SOMBRA',icon:'🌑',color:'#a855f7',desc:'Integração e autoconhecimento'}
+];
+
+const MISSIONS={
+  transmute:[
+    {t:"Retenção consciente — Dia completo",d:"Sem ejaculação hoje. Quando sentir impulso, faça 20 respirações profundas pelo nariz e direcione a atenção pro plexo solar.",w:"Napoleon Hill em 'Quem Pensa Enriquece' documentou que as pessoas mais bem-sucedidas da história praticavam transmutação da energia sexual. O capítulo 11 revela que a energia sexual é a força criativa mais poderosa do homem — quando canalizada.",s:"Napoleon Hill — Think and Grow Rich, Cap. 11",dur:"24h",xp:50},
+    {t:"Respiração de fogo — 3 rounds",d:"Sente ereto. 30 respirações rápidas pelo nariz (1 por segundo). Na última, expire e segure vazio o máximo. Inspire e segure 15s. Repita 3x.",w:"O Tantra e o Taoísmo ensinam que a respiração é o veículo da energia Kundalini. A respiração de fogo (Kapalabhati) aquece o centro vital e sublima a energia sexual ascendendo-a pela coluna.",s:"Alquimia da Transmutação — Tradição Tântrica",dur:"12 min",xp:40},
+    {t:"Contração Mula Bandha — 50 reps",d:"Contraia os músculos do períneo (como se fosse segurar a urina) por 3s, solte por 3s. Faça 50 repetições sentado com coluna reta.",w:"O Mula Bandha é o 'selo raiz' do Yoga. Os textos tântricos dizem que essa contração sela a energia no corpo e impede que ela escape. Taoístas chamam de 'trancar o portão jade'.",s:"Tantra Yoga + Taoísmo Sexual",dur:"8 min",xp:30},
+    {t:"Meditação da órbita microcósmica",d:"Sente ereto, olhos fechados. Visualize energia subindo pela coluna (inspiração) e descendo pelo peito/abdômen (expiração). Circule por 10 minutos.",w:"A Órbita Microcósmica é a prática central do Taoísmo sexual. Mestre Mantak Chia ensina que circular a energia sexual pelos meridianos Du Mai e Ren Mai transforma desejo bruto em poder espiritual e criativo.",s:"Mantak Chia — O Homem Multi-Orgásmico",dur:"10 min",xp:45},
+    {t:"Banho frio — Transmute a tensão",d:"Banho gelado por 3 minutos mínimo. Quando a água bater, respire controlado e visualize a energia sexual se transformando em foco mental.",w:"A Alquimia Hermética ensina que o fogo (desejo) precisa ser temperado pela água (disciplina) para produzir o 'ouro interior'. O frio é o agente de transmutação física mais direto.",s:"Alquimia Hermética Ocidental",dur:"3 min",xp:35},
+    {t:"Journaling de sublimação",d:"Escreva por 10 min: 'Onde minha energia sexual está indo?' Identifique vazamentos: pornografia, fantasias improdutivas, redes sociais, procrastinação.",w:"Markko Ferrera em 'Transmutação da Energia Sexual' ensina que o primeiro passo da transmutação é IDENTIFICAR os vazamentos de energia vital. Sem diagnóstico, não há cura.",s:"Markko Ferrera — Transmutação da Energia Sexual",dur:"10 min",xp:30},
+    {t:"Canalização criativa — 30 min",d:"Pegue toda a tensão sexual que sentir hoje e canalize em 30 minutos de trabalho focado no seu projeto mais importante. Sem distração.",w:"Hill documentou que Edison, Lincoln e Napoleon canalizavam energia sexual em produtividade criativa. A mesma energia que cria vida biológica pode criar impérios.",s:"Napoleon Hill — Think and Grow Rich",dur:"30 min",xp:40},
+    {t:"Visualização do vaso alquímico",d:"Deite, olhos fechados. Visualize seu corpo como um atanor (vaso alquímico). A energia sexual é o fogo na base. Veja-a subindo, transformando-se em luz dourada no coração e clareza na mente.",w:"Na Grande Obra alquímica, o 'Solve et Coagula' — dissolver e recristalizar — é o processo de transformar energia bruta (chumbo/desejo) em energia refinada (ouro/sabedoria).",s:"Alquimia Hermética — A Grande Obra",dur:"15 min",xp:40},
+  ],
+  mind:[
+    {t:"Meditação do observador — 15 min",d:"Sente imóvel, olhos fechados. Observe cada pensamento SEM reagir. Não lute, não siga. Apenas observe como nuvens passando.",w:"Marco Aurélio em Meditações: 'Você tem poder sobre sua mente — não sobre eventos externos. Perceba isso, e encontrará força.' O Estoicismo ensina que sofrimento é reação, não evento.",s:"Marco Aurélio — Meditações",dur:"15 min",xp:35},
+    {t:"Elimine 1 opinião alheia da sua mente",d:"Identifique 1 crença que você carrega porque OUTROS te disseram. Questione: 'Isso é MEU ou me foi dado?' Se não é seu, solte.",w:"'Questione sempre o senso comum. O leão não pergunta às ovelhas como caçar.' O homem inabalável examina cada crença e descarta o que enfraquece.",s:"300 Conselhos para Ser Inabalável — Pt. 2",dur:"10 min",xp:30},
+    {t:"Leia 15 páginas de um livro denso",d:"Não audiobook, não resumo. Texto impresso ou digital. Leia devagar, sublinhe, reflita. 15 páginas mínimo.",w:"A mente masculina se fortalece pela resistência cognitiva — como músculo, precisa de carga. Conteúdo fácil atrofia. Leitura densa é o treino do intelecto.",s:"O Código dos Homens — Castro & Magalhães",dur:"30 min",xp:30},
+    {t:"Visualização do eu ideal — 10 min",d:"Feche os olhos. Veja você daqui a 5 anos na melhor versão: corpo, mente, finanças, relacionamentos. Sinta como se já fosse real.",w:"Napoleon Hill: 'Todos os pensamentos que foram emocionalizados e misturados com fé começam imediatamente a se traduzir em seu equivalente físico.'",s:"Napoleon Hill — Think and Grow Rich",dur:"10 min",xp:30},
+    {t:"Jejum de informação — 4 horas",d:"Sem notícias, sem redes sociais, sem YouTube, sem podcast por 4 horas. Apenas seus próprios pensamentos.",w:"Thomas Shelby mantém a mente sã controlando o que ENTRA nela. 'O barulho externo se torna barulho interno.' Silêncio informacional é proteção mental.",s:"Conduta Shelby — Controle Mental",dur:"4h",xp:40},
+    {t:"Escreva sua missão de vida em 1 frase",d:"Pegue papel e caneta. Escreva sua razão de existir em UMA frase. Reescreva até sentir arrepio.",w:"O Código dos Homens: 'Homem sem missão é navio sem leme.' José no Egito sobreviveu à escravidão porque tinha convicção do destino. A missão é sua âncora.",s:"O Código dos Homens + 300 Conselhos Pt.1",dur:"15 min",xp:35},
+    {t:"Pratique o vazio mental — 5 min",d:"Fique de pé, olhos abertos. Não pense em nada. Quando um pensamento surgir, diga 'não' internamente e volte ao vazio.",w:"Miyamoto Musashi em 'O Livro dos Cinco Anéis': 'No vazio está a virtude, e nenhum mal. Na sabedoria existe razão. Na razão existe princípio. No vazio, nada.'",s:"O Código dos Homens — Musashi",dur:"5 min",xp:25},
+    {t:"Confronte 1 medo hoje",d:"Identifique algo que te causa desconforto e FAÇA. Ligação difícil, conversa evitada, exposição pública. Faça o que teme.",w:"'O homem que vence o medo vence a si mesmo. E quem vence a si mesmo é invencível.' Coragem não é ausência de medo — é ação apesar dele.",s:"Sendo Um Homem — 5 Bússolas, Loiola",dur:"Variável",xp:45},
+  ],
+  presence:[
+    {t:"Ombros abertos o dia todo",d:"Mantenha ombros levemente puxados pra trás e pra baixo. Peito projetado. Core leve. O dia inteiro.",w:"93% da comunicação é não-verbal. A postura é o primeiro sinal que seu corpo envia. Ombros caídos = submissão. Ombros abertos = domínio do espaço.",s:"Encantador de Pessoas — Comunicação Não-Verbal",dur:"Dia todo",xp:30},
+    {t:"Contato visual de 3 segundos",d:"Em toda interação, mantenha olhar firme por 3 segundos antes de desviar. Sem piscar excessivamente.",w:"'A primeira impressão é formada em 3 segundos baseado na aparência e linguagem corporal.' Olhar firme transmite confiança e é percebido como dominância social.",s:"Encantador de Pessoas + Postura Corporal",dur:"Dia todo",xp:25},
+    {t:"Entre em cômodos com presença",d:"Toda vez que entrar em um lugar novo: pare 1 segundo na porta, faça contato visual com o ambiente, depois entre com passo firme e lento.",w:"Thomas Shelby nunca corre. Nunca se apequena ao entrar num ambiente. Ele ASSUME o espaço. Presença é controlada — nunca acidental.",s:"Conduta Shelby — Presença",dur:"Dia todo",xp:30},
+    {t:"Fale 20% mais devagar",d:"Reduza a velocidade da fala. Faça pausas entre frases. Deixe o silêncio trabalhar. Não preencha espaços com 'é...', 'tipo...'",w:"Lei 4 do Poder: 'Diga sempre menos do que o necessário.' Quem fala devagar controla o ritmo. Quem preenche silêncio demonstra desconforto.",s:"As 48 Leis do Poder — Robert Greene",dur:"Dia todo",xp:30},
+    {t:"Ocupe o espaço quando sentar",d:"Braços apoiados, pernas confortavelmente abertas (sem exagero). Ocupe TODO o espaço que é seu.",w:"Estudos mostram que 'posturas de poder' expansivas elevam testosterona em 20% e reduzem cortisol em 25% em apenas 2 minutos de prática.",s:"Postura Corporal — Carney et al., 2010",dur:"Dia todo",xp:20},
+    {t:"Cumprimente com firmeza",d:"Todo aperto de mão hoje: firme (não esmagar), olho no olho, sorriso leve, 2 bombas. Nome da pessoa se souber.",w:"O primeiro contato físico programa a percepção do outro sobre você. Mão mole = fraqueza. Mão firme + nome = respeito e atenção.",s:"Encantador de Pessoas",dur:"Dia todo",xp:20},
+    {t:"Espelhamento sutil — 1 conversa",d:"Em 1 conversa hoje, espelhe sutilmente a postura, gestos e tom de voz da outra pessoa. Sem copiar — adapte.",w:"Persuasão Secreta: O espelhamento ativa neurônios-espelho e cria rapport inconsciente. A pessoa sente que você é 'parecido' com ela sem saber por quê.",s:"Kevin Hogan — Persuasão Secreta",dur:"15 min",xp:30},
+    {t:"Silêncio estratégico — 3 momentos",d:"Em 3 momentos hoje, quando for questionado, espere 3 segundos antes de responder. Deixe o silêncio criar peso.",w:"Lei 9: 'Vença pelas ações, nunca pelo argumento.' O silêncio antes da resposta comunica controle, reflexão e que suas palavras têm peso.",s:"As 48 Leis do Poder — Robert Greene",dur:"Dia todo",xp:35},
+  ],
+  power:[
+    {t:"Pratique a Lei 1 — Nunca ofusque o mestre",d:"Em 1 interação com alguém hierarquicamente acima, faça-o sentir-se superior. Elogie sem bajular. Deixe brilhar.",w:"Lei 1: 'Faça sempre com que os que estão acima se sintam confortavelmente superiores.' A insegurança do superior é sua maior vulnerabilidade — e seu maior aliado.",s:"As 48 Leis do Poder — Robert Greene",dur:"Dia todo",xp:35},
+    {t:"Diga NÃO para algo que te drena",d:"Recuse 1 pedido, favor ou compromisso que consome sua energia sem retorno. Sem culpa. Sem explicação excessiva.",w:"'O cafetão aprende cedo: disponibilidade total é fraqueza. O recurso mais escasso é o mais valorizado. Seu tempo e energia são esse recurso.'",s:"Sedução e Confiança + Mate o Homem Bonzinho",dur:"1 min",xp:30},
+    {t:"Observe sem reagir — 1 conflito",d:"Em 1 situação de conflito ou provocação hoje, NÃO reaja emocionalmente. Observe. Respire. Responda com calma ou não responda.",w:"Conduta Shelby: 'Quem perde a calma, perde o jogo.' Thomas nunca demonstra emoção sob pressão. A frieza é calculada — não é indiferença, é domínio.",s:"Conduta Shelby — Autocontrole",dur:"Variável",xp:40},
+    {t:"Estude 1 pessoa poderosa por 15 min",d:"Pesquise a vida de um homem de poder: César, Napoleão, Musashi, Tesla, Mandela. O que fez dele poderoso?",w:"O Código dos Homens usa exemplos de Marco Aurélio e Musashi porque estudar grandes homens é modelar a excelência. 'Observe o mestre antes de se tornar um.'",s:"O Código dos Homens — Castro & Magalhães",dur:"15 min",xp:25},
+    {t:"Influencie sem pedir — 1 conversa",d:"Em 1 conversa, faça a outra pessoa chegar à SUA conclusão sem que você diga diretamente. Pergunte, guie, sugira.",w:"'100 Estratégias de Manipulação': A influência mais poderosa é aquela que a pessoa não percebe. Perguntas dirigidas são mais persuasivas que ordens.",s:"Tabuleiro das Sombras — Estratégia 7",dur:"15 min",xp:40},
+    {t:"Crie mistério — revele menos hoje",d:"Em conversas, fale menos sobre você. Responda com perguntas. Deixe lacunas. Não explique tudo.",w:"Lei 6: 'Chame atenção a qualquer preço.' E Lei 16: 'Use a ausência para aumentar respeito e honra.' O mistério é magnético — o óbvio é esquecível.",s:"As 48 Leis do Poder — Greene",dur:"Dia todo",xp:30},
+    {t:"Posicione-se como recurso escasso",d:"Hoje, não esteja disponível imediatamente pra todo mundo. Responda mensagens com delay estratégico (1-2h). Não no primeiro segundo.",w:"'Mate o Homem Bonzinho': Estar sempre disponível comunica que seu tempo não vale. Quem responde na hora demonstra ausência de prioridades maiores.",s:"Mate o Homem Bonzinho",dur:"Dia todo",xp:30},
+  ],
+  discipline:[
+    {t:"Acorde na hora que definiu — sem soneca",d:"O alarme toca, você levanta. Sem 'mais 5 minutos'. Pés no chão em 5 segundos. COMECE o dia vencendo.",w:"'A primeira batalha do dia é contra o travesseiro. Se você perde essa, perde o tom.' O Estoicismo ensina que disciplina começa no primeiro ato do dia.",s:"Sendo Um Homem — 5 Bússolas, Loiola",dur:"1 min",xp:30},
+    {t:"Banho frio matinal — 2 min",d:"Primeiro ato após acordar: banho gelado por 2 minutos. Sem aquecer antes. Direto no frio.",w:"O desconforto voluntário é o treinamento do guerreiro. Musashi tomava banhos gelados e dormia no chão. 'O corpo mole produz mente mole.'",s:"O Código dos Homens — Musashi",dur:"2 min",xp:35},
+    {t:"Jejum de prazer — 4 horas",d:"Sem dopamina artificial por 4h: sem redes sociais, sem jogos, sem pornografia, sem doces, sem música. Apenas tarefas e silêncio.",w:"A Cabala ensina que o prazer sem propósito é 'Klipot' — casca vazia. O prazer disciplinado gera luz. O prazer compulsivo gera escuridão.",s:"Livro da Sabedoria Vol.2 — Cabala",dur:"4h",xp:45},
+    {t:"Exercício físico intenso — 30 min",d:"Treino pesado. Compostos. Agachamento, supino, levantamento terra. Ou HIIT. Sua de verdade.",w:"O corpo é o primeiro templo. Danilo Augusto em 'Sexo é Sagrado': 'O corpo não é prisão da alma — é altar. Tratar o altar com desleixo é profanar o divino.'",s:"Sexo é Sagrado — Danilo Augusto",dur:"30 min",xp:40},
+    {t:"Faça a tarefa mais difícil PRIMEIRO",d:"Identifique a tarefa mais desagradável do dia. Faça ela PRIMEIRO, antes de tudo. Sem negociar.",w:"'O leão ataca a presa mais forte primeiro, enquanto tem energia. O covarde ataca a mais fraca e finge que lutou.' Priorize pelo medo, não pelo conforto.",s:"300 Conselhos — Filosofia dos Leões",dur:"Variável",xp:35},
+    {t:"Cumpra 1 promessa feita a si mesmo",d:"Identifique 1 promessa que você fez a si mesmo e não cumpriu. Cumpra HOJE. Nem que seja pequena.",w:"'O homem que não cumpre a palavra consigo mesmo perde o respeito de si. E sem auto-respeito, todo poder externo é fachada.'",s:"Sendo Um Homem — 5 Bússolas, Loiola",dur:"Variável",xp:35},
+    {t:"Postura de guerreiro — 5 min",d:"Em pé, pés na largura dos ombros, mãos nos quadris, peito aberto, queixo paralelo ao chão. 5 minutos imóvel.",w:"A postura não apenas REFLETE o estado interno — ela o CRIA. Lei da causa e efeito: mudar o corpo muda a mente. Estudos confirmam elevação de T e redução de cortisol.",s:"Postura Corporal — Causa e Efeito",dur:"5 min",xp:25},
+  ],
+  energy:[
+    {t:"Sol matinal — 15 min sem óculos",d:"Nos primeiros 60 min do dia, tome sol direto nos olhos (não olhe pro sol) e na pele. Sem óculos escuros.",w:"A luz solar sincroniza o ritmo circadiano, regula cortisol e melatonina, e inicia a produção de vitamina D — precursor hormonal direto.",s:"Cronobiologia + Medicina Solar",dur:"15 min",xp:25},
+    {t:"Grounding — 15 min descalço na terra",d:"Tire os sapatos e fique com os pés descalços na grama, terra ou areia por 15 minutos.",w:"O Taoísmo ensina que o homem moderno perdeu a conexão com a Terra (Yin). Reestabelecer essa conexão equilibra o sistema nervoso e reduz inflamação crônica.",s:"Taoísmo + Journal of Environmental Health",dur:"15 min",xp:25},
+    {t:"Hidrate com 3L de água",d:"Beba pelo menos 3 litros de água ao longo do dia. Comece com 500ml ao acordar.",w:"'Sexo é Sagrado' ensina que a energia Kundalini precisa de um corpo limpo e hidratado pra fluir. Desidratação é estagnação energética.",s:"Sexo é Sagrado — Danilo Augusto",dur:"Dia todo",xp:20},
+    {t:"Coma comida real — zero processado",d:"Hoje, coma apenas alimentos que existem na natureza: carnes, ovos, vegetais, frutas, castanhas. Zero industrializado.",w:"O corpo é o veículo da energia vital. Alimentá-lo com lixo é como colocar água no tanque de um avião. Qualidade do combustível = qualidade da performance.",s:"Transmutação + Nutrição Ancestral",dur:"Dia todo",xp:35},
+    {t:"Respiração pranayama — 10 min",d:"Nadi Shodhana: tampe a narina direita, inspire pela esquerda (4s). Tampe ambas (4s). Expire pela direita (4s). Inverta. 10 minutos.",w:"O Tantra ensina que a respiração alternada equilibra Ida (feminino/lunar) e Pingala (masculino/solar), criando Sushumna — o canal central de ascensão da Kundalini.",s:"Tradição Tântrica — Nadi Shodhana",dur:"10 min",xp:35},
+    {t:"Sono antes da meia-noite",d:"Durma antes das 23h30. Cada hora de sono antes da meia-noite vale o dobro em termos de recuperação hormonal.",w:"O GH (hormônio do crescimento) tem seu pico entre 22h e 2h da manhã. Dormir tarde sabota a produção hormonal mesmo com 8h de sono.",s:"Cronobiologia + Endocrinologia",dur:"Noite",xp:30},
+  ],
+  shadow:[
+    {t:"Identifique sua maior fraqueza",d:"Escreva: 'Minha maior fraqueza como homem é ___'. Seja brutalmente honesto. Sem auto-piedade.",w:"Jung: 'Até tornares consciente o inconsciente, ele dirigirá tua vida e tu lhe chamarás destino.' A sombra não confrontada controla silenciosamente.",s:"Carl Jung + Livro da Sabedoria",dur:"10 min",xp:35},
+    {t:"Perdoe 1 pessoa hoje",d:"Identifique alguém que te magoou e que você carrega ressentimento. Não precisa falar com ela — perdoe internamente. Solte o peso.",w:"A Cabala ensina que o perdão não é fraqueza — é liberação energética. Ressentimento é um veneno que você toma esperando que o outro morra.",s:"Livro da Sabedoria Vol.2 — Cabala",dur:"10 min",xp:40},
+    {t:"Reconheça 1 mentira que conta a si mesmo",d:"Todo homem tem uma narrativa falsa que repete. 'Não tenho tempo', 'Não sou bom o suficiente', 'Amanhã eu começo'. Identifique 1 e confronte.",w:"'O homem bonzinho se esconde atrás de autocompaixão e racionalização. Matar o homem bonzinho é matar a mentira confortável.'",s:"Mate o Homem Bonzinho",dur:"10 min",xp:35},
+    {t:"Diálogo com a sombra — 15 min",d:"Escreva uma conversa entre você e sua versão mais fraca. Pergunte: 'Por que você faz isso?' Deixe a resposta vir sem censura.",w:"'Sexo é Sagrado': 'A energia sexual reprimida não desaparece — ela se transforma em sombra: vícios, compulsões, autossabotagem.' Integrar é iluminar.",s:"Danilo Augusto + Jung",dur:"15 min",xp:40},
+    {t:"Confesse 1 coisa a alguém de confiança",d:"Fale para 1 pessoa de confiança algo que você esconde ou tem vergonha. Vulnerabilidade com discernimento é força.",w:"O Gnosticismo ensina que a confissão (Exomologese) não é fraqueza — é alquimia. Expor a ferida à luz é o primeiro passo da cura.",s:"Tradição Gnóstica",dur:"Variável",xp:45},
+    {t:"Aceite um elogio sem diminuir",d:"Quando receber um elogio hoje, NÃO diminua ('ah, não é nada'). Diga 'obrigado' e receba. Ponto.",w:"Rejeitar elogios é sinal de baixa autoestima inconsciente. O homem que não recebe reconhecimento externo também sabota o interno.",s:"Sendo Um Homem — Autoestima",dur:"Dia todo",xp:25},
+    {t:"Medite sobre a morte — 10 min",d:"Sente, feche os olhos. Imagine que hoje é seu último dia. O que faria? O que diria? Para quem? Sinta a urgência.",w:"Marco Aurélio praticava 'Memento Mori' diariamente. O Estoicismo usa a meditação sobre a morte não como morbidez — mas como clareza absoluta sobre o que importa.",s:"Marco Aurélio — Meditações",dur:"10 min",xp:40},
+  ]
+};
+
+const LEVELS=[
+  {name:'Adormecido',icon:'🌑',min:0},
+  {name:'Desperto',icon:'🌒',min:200},
+  {name:'Buscador',icon:'🌓',min:500},
+  {name:'Iniciado',icon:'🌔',min:1000},
+  {name:'Transmutador',icon:'🔥',min:1800},
+  {name:'Mestre',icon:'🗿',min:3000},
+  {name:'Soberano',icon:'👑',min:5000}
+];
+
+const ORACLES=[
+  {t:"A energia sexual é a matéria-prima. O que você faz com ela define quem você é.",a:"Napoleon Hill"},
+  {t:"Diga sempre menos do que o necessário. Quanto mais você diz, mais comum parece.",a:"Robert Greene — Lei 4"},
+  {t:"O corpo é o templo. O desejo é o fogo sagrado. A transmutação é a oferenda.",a:"Danilo Augusto"},
+  {t:"Não busque o poder — busque o autodomínio. O poder será consequência.",a:"Marco Aurélio"},
+  {t:"O homem que não questiona o senso comum é ovelha entre leões.",a:"300 Conselhos"},
+  {t:"A primeira impressão leva 3 segundos. Sua postura fala antes da sua boca.",a:"Encantador de Pessoas"},
+  {t:"Mate o homem bonzinho dentro de você. Ele é o carcereiro da sua grandeza.",a:"Mate o Homem Bonzinho"},
+  {t:"No vazio está a virtude, e nenhum mal. Na sabedoria existe razão.",a:"Miyamoto Musashi"},
+  {t:"Seu maior inimigo é o homem que você era ontem. Vença-o hoje.",a:"O Código dos Homens"},
+  {t:"Quem controla a energia sexual controla a energia da criação. Essa é a chave que abriu todos os impérios.",a:"Markko Ferrera"},
+  {t:"A serpente Kundalini dorme na base. Despertá-la é despertar o Deus que habita em você.",a:"Tradição Tântrica"},
+  {t:"O perdão não é fraqueza. É liberação. Ressentimento é corrente — o perdão é a chave.",a:"Cabala — Livro da Sabedoria"},
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("em_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("em_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('streak')||0,xp:LS.get('xp')||0,completedToday:LS.get('ct')||{},lastDay:LS.get('ld')||'',totalCompleted:LS.get('tc')||0,daysActive:LS.get('da')||0,domFilter:'all',openBook:null,openLesson:null};
+
+const BOOKS=[
+{icon:'📕',bg:'linear-gradient(135deg,#1a0a10,#0c0a16)',cat:'TRANSMUTAÇÃO',color:'#f97316',title:'A Energia Sexual como Força Criadora',desc:'Napoleon Hill, Mantak Chia, Markko Ferrera e a ciência por trás da transmutação.',tags:['Hill','Tantra','Taoísmo'],sources:'Napoleon Hill, Mantak Chia, Markko Ferrera, Danilo Augusto',unlockDay:0,
+intro:'Napoleon Hill entrevistou mais de 500 milionários ao longo de 20 anos. No capítulo 11 de "Quem Pensa Enriquece", ele revelou o segredo mais controverso: as pessoas mais bem-sucedidas da história dominavam a transmutação da energia sexual — a transformação consciente do desejo em poder criativo, foco e magnetismo pessoal.',
+lessons:[
+  {title:'O que é Transmutação Sexual',type:'FUNDAMENTO',content:'Transmutação sexual é o redirecionamento consciente da energia sexual (libido) para fins criativos, intelectuais e espirituais. Napoleon Hill documenta que Edison, Lincoln, Shakespeare e Napoleão Bonaparte dominavam essa prática.<br><br>A energia sexual é a mais poderosa emoção humana — quando canalizada, ela amplifica qualquer outro desejo ou objetivo. Hill observou que homens raramente alcançam grande sucesso antes dos 40 porque levam décadas para aprender a transmutar essa energia.',practice:'Identifique um momento hoje onde sentiu impulso sexual. Em vez de agir, feche os olhos, respire fundo 10x e redirecione mentalmente essa energia para seu projeto mais importante. Visualize a energia subindo do abdômen para a cabeça como luz dourada.',quote:'A transmutação da energia sexual exige mais força de vontade do que a maioria das pessoas está disposta a exercer, mas a recompensa vale o esforço.',quoteAuthor:'Napoleon Hill — Think and Grow Rich, Cap. 11'},
+  {title:'Os 3 Canais Energéticos',type:'TAOÍSMO + TANTRA',content:'O Tantra e o Taoísmo mapeiam 3 canais energéticos no corpo:<br><br><b>Ida (Lunar/Yin)</b> — Canal esquerdo. Feminino, receptivo, frio. Narina esquerda.<br><b>Pingala (Solar/Yang)</b> — Canal direito. Masculino, ativo, quente. Narina direita.<br><b>Sushumna (Central)</b> — Canal da ascensão. Quando Ida e Pingala se equilibram, a energia Kundalini sobe por Sushumna.<br><br>A transmutação acontece quando a energia sexual (que naturalmente desce) é revertida e sobe pelo Sushumna até os centros superiores de consciência.',practice:'Pratique Nadi Shodhana (respiração alternada): tampe a narina direita, inspire pela esquerda (4s). Segure (4s). Tampe a esquerda, expire pela direita (4s). Inverta. 10 minutos. Isso equilibra Ida e Pingala.',quote:'Quando os dois canais se equilibram, o fogo da Kundalini desperta e sobe como uma serpente pela coluna, iluminando cada centro de poder.',quoteAuthor:'Tradição Tântrica — Hatha Yoga Pradipika'},
+  {title:'A Órbita Microcósmica',type:'PRÁTICA TAOÍSTA',content:'A Órbita Microcósmica é a prática central do Taoísmo sexual, ensinada por Mestre Mantak Chia. Consiste em circular a energia vital (Chi/Qi) por dois meridianos principais:<br><br><b>Du Mai</b> (Vaso Governador) — sobe pela coluna vertebral<br><b>Ren Mai</b> (Vaso Concepção) — desce pela frente do corpo<br><br>A prática transforma energia sexual bruta (Jing) em energia vital refinada (Chi) e depois em energia espiritual (Shen). Esta é a base da alquimia interna taoísta.',practice:'Sente ereto, olhos fechados. Ao inspirar, visualize energia subindo da base da coluna até o topo da cabeça. Ao expirar, visualize descendo pela frente: testa → garganta → peito → abdômen → períneo. Circule continuamente por 10-15 minutos.',quote:'O sábio conserva seu Jing, cultiva seu Chi e nutre seu Shen. Esta é a base da imortalidade.',quoteAuthor:'Mantak Chia — O Homem Multi-Orgásmico'},
+  {title:'Mula Bandha — O Selo Raiz',type:'PRÁTICA TÂNTRICA',content:'Mula Bandha (selo raiz) é uma contração sutil dos músculos do períneo que "sela" a energia na base e impede que ela escape. É como fechar a válvula de um reservatório.<br><br>Os textos tântricos dizem que sem Mula Bandha, a energia vital vaza continuamente — como um vaso com furo. Com o selo ativo, a pressão interna sobe e a energia ascende.',practice:'Contraia os músculos do períneo (como se fosse segurar a urina) por 3 segundos. Solte por 3 segundos. Faça 50 repetições sentado com coluna ereta. Nos últimos 10, segure por 10 segundos cada. Pratique diariamente.',quote:'Contraindo o períneo, o yogi direciona Apana Vayu para cima. Os sábios chamam isso de Mula Bandha.',quoteAuthor:'Hatha Yoga Pradipika — Capítulo 3'},
+  {title:'Canalização Criativa na Prática',type:'APLICAÇÃO',content:'Transmutação não é apenas "segurar" — é REDIRECIONAR. A energia sexual retida sem direcionamento cria frustração, agressividade e ansiedade. O segredo é ter um ALVO para onde canalizar:<br><br>• Trabalho criativo (escrita, arte, música, código)<br>• Negócios e projetos (decisões, planejamento, execução)<br>• Exercício físico intenso (treino pesado, artes marciais)<br>• Estudo profundo (leitura concentrada, memorização)<br>• Meditação e práticas espirituais<br><br>O homem que retém sem canalizar é um vulcão tampado. O homem que retém E canaliza é uma usina nuclear.',practice:'Hoje, identifique seu projeto mais importante. Quando sentir tensão sexual ou impulso, imediatamente sente e trabalhe 30 minutos com foco total nesse projeto. Use a tensão como combustível — não como inimigo.',quote:'O desejo sexual é meramente uma forma de energia. Como toda energia, pode ser desperdiçada ou pode ser canalizada para usos mais elevados.',quoteAuthor:'Napoleon Hill — Think and Grow Rich'}
+]},
+{icon:'📗',bg:'linear-gradient(135deg,#0a1a10,#0c0a16)',cat:'ESTOICISMO',color:'#22c55e',title:'Marco Aurélio e a Arte do Autodomínio',desc:'Meditações, memento mori e o controle das emoções como caminho de poder.',tags:['Aurélio','Musashi','Estoicismo'],sources:'Marco Aurélio, Musashi, Sêneca',unlockDay:0,
+intro:'Marco Aurélio governou o Império Romano por 19 anos — o maior império do mundo — enquanto escrevia "Meditações", um diário pessoal que nunca foi feito para ser publicado. Nele, o imperador mais poderoso do planeta lutava contra as mesmas fraquezas que você luta: preguiça, medo, raiva e desejo. A diferença? Ele tinha um sistema.',
+lessons:[
+  {title:'O Dicotomia do Controle',type:'PRINCÍPIO CENTRAL',content:'O fundamento do Estoicismo é brutalmente simples: existem coisas que você controla e coisas que não controla. <b>Sua reação</b> está sob seu controle. <b>Os eventos</b> não estão.<br><br>Sofrimento = Evento × Reação. Se você zera a reação, zera o sofrimento. Isso não é apatia — é poder. O Estoico sente tudo, mas não é controlado pelo que sente.',practice:'Hoje, quando algo te irritar, pare e pergunte: "Isso está sob meu controle?" Se sim, aja. Se não, solte. Faça isso com cada irritação do dia. Ao final, escreva quantas vezes conseguiu soltar.',quote:'Você tem poder sobre sua mente — não sobre eventos externos. Perceba isso, e encontrará força.',quoteAuthor:'Marco Aurélio — Meditações, Livro 6'},
+  {title:'Memento Mori — Lembre-se da Morte',type:'PRÁTICA DIÁRIA',content:'Os Estoicos meditavam sobre a morte diariamente — não por morbidez, mas por clareza. Quando você aceita que vai morrer, 90% do que te estressa se torna irrelevante.<br><br>Memento Mori elimina a procrastinação. Elimina o medo de julgamento. Elimina a preocupação com trivialidades. O que sobra é o que realmente importa.',practice:'Feche os olhos por 5 minutos. Imagine que hoje é seu último dia. O que você faria? O que diria? Para quem ligaria? O que deixaria de fazer? Depois, abra os olhos e VIVA como se fosse verdade — porque um dia será.',quote:'Pense em você como morto. Você já viveu sua vida. Agora, tome o que resta e viva propriamente.',quoteAuthor:'Marco Aurélio — Meditações, Livro 7'},
+  {title:'O Caminho de Musashi',type:'DISCIPLINA MARCIAL',content:'Miyamoto Musashi, o maior espadachim do Japão, venceu mais de 60 duelos à morte. Em "O Livro dos Cinco Anéis" ele revela que a maestria da espada é idêntica à maestria da vida:<br><br>• Não siga um único caminho — domine todos<br>• Não busque prazer — busque utilidade<br>• Não dependa de nada além de si mesmo<br>• Considere-se leve — considere o mundo profundamente<br><br>Musashi dormia no chão, tomava banhos gelados e nunca perdeu uma luta. Não por talento — por preparação obsessiva.',practice:'Escolha 1 princípio de Musashi e pratique o dia inteiro. Sugestão: "Não busque prazer — busque utilidade." Em cada decisão hoje, pergunte: "Isso é prazeroso ou útil?" Escolha o útil.',quote:'No vazio está a virtude, e nenhum mal. Na sabedoria existe razão. Na razão existe princípio. No vazio, nada.',quoteAuthor:'Miyamoto Musashi — O Livro dos Cinco Anéis'},
+  {title:'Amor Fati — Ame seu Destino',type:'FILOSOFIA AVANÇADA',content:'Amor Fati vai além de aceitar o que acontece — é AMAR o que acontece. Cada obstáculo, cada dor, cada fracasso é combustível. Os Estoicos viam adversidade não como punição, mas como treinamento.<br><br>O homem que pratica Amor Fati não pode ser destruído — porque tudo que tentarem usar contra ele, ele transforma em força.',practice:'Identifique a maior dificuldade que está enfrentando agora. Escreva: "Eu amo que isso está acontecendo porque ___." Force-se a encontrar o presente escondido no problema.',quote:'O impedimento à ação avança a ação. O que está no caminho se torna o caminho.',quoteAuthor:'Marco Aurélio — Meditações, Livro 5'}
+]},
+{icon:'📘',bg:'linear-gradient(135deg,#0a1020,#0c0a16)',cat:'PODER',color:'#3b82f6',title:'As 48 Leis: Influência e Estratégia',desc:'Robert Greene e a anatomia do poder através da história.',tags:['Greene','Poder','Estratégia'],sources:'Robert Greene, Maquiavel, Sun Tzu',unlockDay:0,
+intro:'Robert Greene estudou 3.000 anos de história do poder — de César a Kissinger, de Luís XIV a Jay-Z — e destilou 48 leis universais. Estas leis não são morais — são mecânicas. Como a gravidade, funcionam quer você acredite nelas ou não. Ignorá-las não te protege — te torna presa.',
+lessons:[
+  {title:'Lei 1 — Nunca Ofusque o Mestre',type:'LEI DO PODER',content:'Faça sempre com que os que estão acima se sintam confortavelmente superiores. Ao tentar impressioná-los mostrando seus talentos, você pode conseguir o oposto — inspirar medo e insegurança neles.<br><br>O erro fatal: superar publicamente quem tem poder sobre você. O resultado é sempre vingança disfarçada de "feedback" ou "reorganização".',practice:'Em 1 interação com alguém hierarquicamente acima (chefe, mentor, pai), faça-o sentir-se brilhante. Elogie sutilmente uma decisão dele. Peça conselho em algo que ele domina. Observe a mudança de atitude.',quote:'Faça seus mestres parecerem mais brilhantes do que são e você alcançará o auge do poder.',quoteAuthor:'Robert Greene — As 48 Leis do Poder'},
+  {title:'Lei 4 — Diga Sempre Menos que o Necessário',type:'LEI DO PODER',content:'Quanto mais você diz, mais comum parece e menos controle tem. Pessoas poderosas impressionam e intimidam dizendo menos. Cada palavra a mais é uma oportunidade para o erro.<br><br>O silêncio é ambíguo — e a ambiguidade é poder. Quando você fala pouco, os outros preenchem com suas próprias projeções, geralmente te atribuindo mais profundidade do que você talvez mereça.',practice:'Em 3 conversas hoje, pratique responder com 50% menos palavras do que normalmente usaria. Quando alguém perguntar algo, espere 3 segundos antes de responder. Observe como o silêncio muda a dinâmica.',quote:'Quanto mais você diz, mais provável é dizer algo tolo.',quoteAuthor:'Robert Greene — Lei 4'},
+  {title:'Lei 6 — Chame Atenção a Qualquer Preço',type:'LEI DO PODER',content:'Tudo é julgado pela aparência. O que não é visto não é valorizado. Aprenda a se destacar da massa — seja pela ousadia, pelo mistério ou pela controvérsia controlada.<br><br>Mas atenção: atenção de má qualidade ainda é atenção. O segredo é controlar O QUE as pessoas veem e como interpretam.',practice:'Hoje, faça 1 coisa que normalmente não faria por medo de julgamento: vista algo diferente, fale primeiro numa reunião, faça uma pergunta ousada. Quebre 1 padrão de invisibilidade.',quote:'A pior coisa no mundo do poder é ser ignorado. A atenção — de qualquer tipo — é um vento que alimenta a chama.',quoteAuthor:'Robert Greene — Lei 6'},
+  {title:'Lei 16 — Use a Ausência para Aumentar Respeito',type:'LEI DO PODER',content:'Quanto mais presente você é, mais comum se torna. Crie valor pela escassez. Se já se estabeleceu num grupo, uma ausência temporária te torna mais falado, mais desejado e mais respeitado.<br><br>Isso vale para relacionamentos, trabalho e redes sociais. A onipresença mata o mistério. O mistério alimenta o poder.',practice:'Hoje, não responda mensagens imediatamente. Espere 1-2 horas. Se costuma postar todo dia nas redes, não poste. Se está sempre disponível pra alguém, não esteja. Observe a reação.',quote:'Quanto mais você é visto e ouvido, mais comum parece. Faça-se escasso e será valorizado.',quoteAuthor:'Robert Greene — Lei 16'}
+]},
+{icon:'📙',bg:'linear-gradient(135deg,#1a1508,#0c0a16)',cat:'PRESENÇA',color:'#d4a017',title:'Comunicação Não-Verbal e Primeira Impressão',desc:'93% é linguagem corporal. Como dominar os 3 primeiros segundos.',tags:['Corpo','Postura','Impacto'],sources:'Encantador de Pessoas, Conduta Shelby, Pesquisas de Postura',unlockDay:0,
+intro:'A primeira impressão é formada em 3 segundos. Nesse tempo, o cérebro do outro já decidiu se você é confiável, competente e atraente — tudo baseado em linguagem corporal, postura e expressão facial. Mais de 93% da comunicação humana é não-verbal. Suas palavras são quase irrelevantes comparadas ao que seu corpo diz.',
+lessons:[
+  {title:'Os 3 Segundos que Definem Tudo',type:'FUNDAMENTO',content:'Quando você entra num ambiente, as pessoas fazem 3 avaliações inconscientes em menos de 3 segundos:<br><br><b>1. Ameaça ou segurança?</b> (postura, tensão muscular, ritmo)<br><b>2. Competência ou incompetência?</b> (contato visual, simetria, cuidado)<br><b>3. Atraente ou ignorável?</b> (congruência, presença, energia)<br><br>Essas 3 decisões são feitas ANTES de você abrir a boca. E são extremamente difíceis de reverter depois.',practice:'Na próxima vez que entrar num lugar (café, loja, reunião): pare 1 segundo na porta. Faça contato visual com o ambiente. Ombros abertos. Depois entre com passo firme e velocidade controlada. Conte internamente "1... 2... 3" antes de se mover.',quote:'Você nunca tem uma segunda chance de causar uma primeira impressão.',quoteAuthor:'Encantador de Pessoas — Cap. 1'},
+  {title:'A Postura de Comando',type:'PRÁTICA CORPORAL',content:'Thomas Shelby nunca se apequena. Nunca cruza os braços defensivamente. Nunca desvia o olhar primeiro. Sua postura comunica 1 mensagem: "Eu pertenço aqui. Eu comando este espaço."<br><br><b>Os 5 marcadores de postura dominante:</b><br>• Ombros abertos, puxados levemente pra trás<br>• Peito projetado naturalmente (não estufado)<br>• Queixo paralelo ao chão (não erguido nem abaixado)<br>• Mãos visíveis (nunca nos bolsos quando em pé)<br>• Pés afastados na largura dos ombros',practice:'Fique em pé na frente do espelho. Ajuste cada um dos 5 marcadores. Fique assim por 2 minutos — sinta como muda seu estado interno. A postura não apenas REFLETE confiança — ela a GERA. Lei da causa e efeito.',quote:'Quem controla o corpo, controla a mente. Quem controla a mente, controla o destino.',quoteAuthor:'Conduta Shelby — Linguagem Corporal'},
+  {title:'O Poder do Contato Visual',type:'TÉCNICA AVANÇADA',content:'O contato visual é o canal mais poderoso de comunicação não-verbal. Ele comunica simultaneamente: confiança, interesse, dominância e conexão.<br><br><b>Regras do contato visual masculino:</b><br>• 3-5 segundos de contato direto antes de desviar = confiança<br>• Menos de 2 segundos = insegurança<br>• Mais de 7 segundos sem quebrar = intimidação ou atração<br>• Desvie pra BAIXO quando quebrar (não pro lado — lateral = medo)<br>• Triângulo do olhar: alterne entre olho esquerdo → olho direito → boca',practice:'Em toda conversa hoje, mantenha contato visual por 3 segundos antes de desviar. Quando desviar, desvie pra baixo. Depois volte ao olhar. Observe como as pessoas respondem diferente quando você sustenta o olhar.',quote:'Os olhos são as janelas da alma — mas também são as armas do guerreiro. Quem desvia primeiro, se submete.',quoteAuthor:'Postura Corporal + Comunicação Não-Verbal'}
+]},
+{icon:'📓',bg:'linear-gradient(135deg,#1a0820,#0c0a16)',cat:'MASCULINIDADE',color:'#8b5cf6',title:'O Código dos Homens e as 5 Bússolas',desc:'25 verdades e 5 direções para o homem contemporâneo.',tags:['Loiola','Castro','Magalhães'],sources:'Alessandro Loiola, Fabrício Castro, Alan Magalhães',unlockDay:3,
+intro:'O homem moderno vive uma crise de identidade sem precedentes. Sem rituais de passagem, sem mentores, sem código de conduta, ele flutua entre a passividade e a agressividade, sem encontrar o centro. O Código dos Homens e as 5 Bússolas oferecem um mapa para essa travessia.',
+lessons:[
+  {title:'As 5 Bússolas da Masculinidade',type:'MAPA CENTRAL',content:'Alessandro Loiola define 5 direções que todo homem precisa calibrar:<br><br><b>1. CORPO</b> — O templo. Força física, saúde, vitalidade. Sem corpo forte, tudo desmorona.<br><b>2. MENTE</b> — A fortaleza. Controle emocional, foco, capacidade de decisão sob pressão.<br><b>3. PROPÓSITO</b> — A missão. Sem razão de existir, o homem se perde em distrações.<br><b>4. RELACIONAMENTOS</b> — A tribo. Conexões reais, vulnerabilidade com discernimento, liderança.<br><b>5. LEGADO</b> — A marca. O que você deixa quando parte. O que constrói que sobrevive a você.',practice:'Avalie-se de 1 a 10 em cada bússola. Identifique a mais fraca. Essa é sua prioridade pelos próximos 30 dias. Não tente equilibrar tudo — ataque o ponto mais fraco primeiro.',quote:'O homem que não se conhece é escravo de quem o conhece melhor que ele mesmo.',quoteAuthor:'Sendo Um Homem — Alessandro Loiola'},
+  {title:'A Filosofia dos Leões',type:'MENTALIDADE',content:'O Código dos Homens apresenta a filosofia dos leões: questione TUDO que o senso comum aceita como verdade. A massa segue — o leão investiga.<br><br>Se todo mundo faz, pergunte por quê. Se ninguém faz, pergunte por que não. O pensamento independente é a marca do homem que se recusa a ser rebanho.',practice:'Identifique 1 crença que você segue "porque todo mundo segue." Pode ser sobre dinheiro, relacionamento, carreira ou saúde. Questione: "Isso é verdade ou é consenso?" Se for só consenso — investigue a alternativa.',quote:'O leão não pergunta às ovelhas como caçar. Questione o senso comum ou seja esmagado por ele.',quoteAuthor:'300 Conselhos — Filosofia dos Leões'}
+]},
+{icon:'📕',bg:'linear-gradient(135deg,#200808,#0c0a16)',cat:'POLARIDADE',color:'#f87171',title:'Polaridade Sexual e Frame',desc:'A morte do homem bonzinho e a arte da atração genuína.',tags:['Atração','Frame','Polaridade'],sources:'Mate o Homem Bonzinho, Sedução e Confiança',unlockDay:5,
+intro:'O "homem bonzinho" não é bondoso — é covarde. Ele finge concordar pra evitar conflito. Finge não ter desejo pra não ser rejeitado. Finge não ter opinião pra ser aceito. O resultado? Ele é ignorado, usado e descartado. A atração genuína nasce da polaridade — da coragem de ser autêntico, incômodo e real.',
+lessons:[
+  {title:'Por Que o Bonzinho Repele',type:'DIAGNÓSTICO',content:'O homem bonzinho comete 4 erros fatais:<br><br><b>1. Disponibilidade total</b> — Está sempre lá, sempre responde, sempre aceita. Resultado: seu tempo parece sem valor.<br><b>2. Ausência de opinião</b> — Concorda com tudo, nunca confronta. Resultado: é percebido como fraco ou falso.<br><b>3. Expectativa encoberta</b> — Faz favores esperando reciprocidade sem declarar. Resultado: frustração e ressentimento.<br><b>4. Medo da rejeição</b> — Nunca demonstra intenção real. Resultado: fica preso na amizade, nunca na atração.',practice:'Identifique qual dos 4 erros você comete mais. Hoje, faça o OPOSTO uma vez: se é disponibilidade total, não responda 1 mensagem por 2h. Se é ausência de opinião, discorde de algo educadamente. Observe a reação.',quote:'O homem que tenta agradar a todos acaba não agradando a ninguém — principalmente a si mesmo.',quoteAuthor:'Mate o Homem Bonzinho'},
+  {title:'Frame: Quem Controla a Realidade',type:'CONCEITO AVANÇADO',content:'Frame é o enquadramento da realidade numa interação. Quem tem o frame mais forte define as regras. Exemplos:<br><br>• "Estou aqui pra te impressionar" = Frame fraco (você dá poder ao outro)<br>• "Estou aqui e é sua sorte que estou" = Frame forte (você mantém o poder)<br><br>Frame não é arrogância — é certeza interna. O homem com frame inabalável não precisa provar nada. Ele simplesmente É. Os outros se ajustam a ele, não o contrário.',practice:'Em toda interação hoje, antes de falar, pergunte internamente: "Quem tem o frame aqui?" Se não for você, ajuste: fale mais devagar, mantenha contato visual, não se justifique. Não lute pelo frame — simplesmente mantenha o seu.',quote:'Nunca entre no frame do outro. Mantenha o seu com calma inabalável e observe como a realidade se dobra.',quoteAuthor:'Sedução e Confiança — Teoria do Frame'}
+]},
+{icon:'📗',bg:'linear-gradient(135deg,#081a18,#0c0a16)',cat:'PERSUASÃO',color:'#06b6d4',title:'Persuasão Secreta e Tabuleiro das Sombras',desc:'Kevin Hogan e as táticas psicológicas de influência.',tags:['Hogan','Influência','Rapport'],sources:'Kevin Hogan, Tabuleiro das Sombras',unlockDay:7,
+intro:'Kevin Hogan dedicou décadas ao estudo da persuasão inconsciente. O Tabuleiro das Sombras mapeou 100 estratégias de influência usadas por políticos, negociadores e líderes. A persuasão não é manipulação — é compreensão profunda de como a mente humana realmente decide.',
+lessons:[
+  {title:'Rapport: A Porta Invisível',type:'TÉCNICA FUNDAMENTAL',content:'Rapport é a sensação de "estamos na mesma sintonia." Sem rapport, nenhuma persuasão funciona. Com rapport, quase tudo é possível.<br><br><b>3 técnicas de rapport instantâneo:</b><br>• <b>Espelhamento:</b> Sutilmente copie postura, gestos e ritmo de fala do outro<br>• <b>Backtracking:</b> Repita as últimas 3-4 palavras que a pessoa disse<br>• <b>Validação:</b> "Faz total sentido o que você tá dizendo" (antes de qualquer contra-argumento)',practice:'Em 1 conversa hoje, pratique espelhamento sutil. Se a pessoa cruzar os braços, cruze os seus após 10 segundos. Se ela inclinar pra frente, incline. Se falar baixo, fale baixo. Observe como a conexão muda.',quote:'As pessoas não são persuadidas por argumentos — são persuadidas por quem se parece com elas.',quoteAuthor:'Kevin Hogan — Persuasão Secreta'},
+  {title:'A Estratégia da Escassez',type:'TÁTICA DE INFLUÊNCIA',content:'O que é escasso é valioso. O que é abundante é desprezado. Isso vale para produtos, oportunidades e PESSOAS.<br><br>Quando você está sempre disponível, sempre dizendo sim, sempre presente — você comunica abundância do seu tempo. Abundância = baixo valor percebido.<br><br>Quando você é seletivo, quando seu sim é raro, quando sua presença é ocasional — você comunica escassez. Escassez = alto valor percebido.',practice:'Hoje, diga NÃO para 1 pedido que normalmente aceitaria automaticamente. Não explique demais. "Não vou poder, mas obrigado pelo convite." Observe como a dinâmica muda quando você se torna recurso escasso.',quote:'O recurso mais escasso não é dinheiro — é atenção de alguém que sabe dizer não.',quoteAuthor:'Tabuleiro das Sombras — Estratégia 12'}
+]},
+{icon:'📘',bg:'linear-gradient(135deg,#10081a,#0c0a16)',cat:'ESPIRITUALIDADE',color:'#a855f7',title:'Kundalini, Cabala e o Sexo Sagrado',desc:'A energia sexual como portal espiritual.',tags:['Kundalini','Cabala','Gnose'],sources:'Danilo Augusto, Livro da Sabedoria, Tradição Gnóstica',unlockDay:10,
+intro:'Danilo Augusto propõe uma reconciliação radical: o sexo não é pecado nem apenas prazer — é um portal para o divino. A energia sexual (Kundalini) é a força criadora mais poderosa do universo. Ela cria vida literalmente. Quando domada e direcionada, ela cria também saúde, riqueza, criatividade e iluminação.',
+lessons:[
+  {title:'Kundalini — A Serpente Adormecida',type:'FUNDAMENTO ESOTÉRICO',content:'Kundalini é a energia primordial que dorme enrolada na base da coluna, simbolizada por uma serpente. Os textos tântricos descrevem 7 centros de energia (chakras) ao longo da coluna:<br><br>1. <b>Muladhara</b> (Raiz) — Sobrevivência, segurança<br>2. <b>Svadhisthana</b> (Sacral) — Sexualidade, prazer, criação<br>3. <b>Manipura</b> (Plexo Solar) — Poder, vontade, identidade<br>4. <b>Anahata</b> (Coração) — Amor, compaixão, conexão<br>5. <b>Vishuddha</b> (Garganta) — Expressão, verdade, comunicação<br>6. <b>Ajna</b> (Terceiro Olho) — Intuição, visão, clareza<br>7. <b>Sahasrara</b> (Coroa) — Consciência cósmica, iluminação<br><br>A maioria dos homens vive preso no 2º chakra — gastando toda energia em busca de prazer sexual. A transmutação eleva essa energia para os centros superiores.',practice:'Deite com a coluna reta. Feche os olhos. Visualize uma bola de luz vermelha na base da coluna. A cada inspiração, veja-a subindo um nível: vermelha → laranja → amarela → verde → azul → índigo → violeta no topo da cabeça. 7 respirações = 7 centros.',quote:'A serpente dorme enrolada três vezes e meia na base. Quando desperta, sobe como fogo sagrado pela coluna, iluminando cada centro até a coroa onde se encontra com o Divino.',quoteAuthor:'Tradição Tântrica — Sat-Cakra-Nirupana'},
+  {title:'A Árvore da Vida Cabalística',type:'CABALA',content:'A Cabala apresenta a Árvore da Vida: 10 esferas (Sefirot) que representam a manifestação da consciência divina no mundo físico. A energia sexual corresponde a Yesod (Fundação) — o 9º Sefirot, que conecta o mundo material ao espiritual.<br><br>Yesod é literalmente a "fundação" de tudo. Sem domínio sobre essa energia, nenhum outro Sefirot pode ser acessado plenamente. O homem que desperdiça Yesod constrói sobre areia.',practice:'Reflita: onde sua energia sexual está sendo gasta? Liste os 3 maiores "vazamentos" (pornografia, fantasias, ejaculação frequente, relacionamentos sem propósito). Escolha 1 para selar esta semana. A Cabala ensina que cada vazamento selado libera energia para construir.',quote:'Yesod é a fundação. Sem ela, toda a Árvore desmorona. Quem domina a fundação, domina a criação.',quoteAuthor:'Livro da Sabedoria Vol.2 — Cabala'}
+]}
+];
+function save(){LS.set('streak',S.streak);LS.set('xp',S.xp);LS.set('ct',S.completedToday);LS.set('ld',S.lastDay);LS.set('tc',S.totalCompleted);LS.set('da',S.daysActive)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.lastDay!==t){if(S.lastDay){const y=new Date();y.setDate(y.getDate()-1);if(S.lastDay===y.toISOString().slice(0,10))S.streak++;else S.streak=1}else S.streak=1;S.completedToday={};S.lastDay=t;S.daysActive++;save()}}
+
+function getDM(){const d=doy(),m=[],ks=Object.keys(MISSIONS);for(let i=0;i<7;i++){const cI=(d+i)%ks.length,cat=ks[cI],pool=MISSIONS[cat],mI=(d*7+i*17+d%7)%pool.length;m.push({...pool[mI],dom:cat,id:`${d}-${i}`})}return m}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlProg(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function complete(id,xp){if(S.completedToday[id])return;S.completedToday[id]=true;S.xp+=xp;S.totalCompleted++;save();render()}
+function todayProg(){const m=getDM();return Math.round(m.filter(x=>S.completedToday[x.id]).length/m.length*100)}
+function getDomInfo(id){return DOMAINS.find(d=>d.id===id)}
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,library:renderLibrary,progress:renderProgress,settings:renderSettings};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'🔥',label:'Hoje'},{id:'library',icon:'📜',label:'Sabedoria'},{id:'progress',icon:'📊',label:'Evolução'},{id:'settings',icon:'⚙️',label:'Config'}];
+  const navH=`<div class="nav">${nav.map(n=>`<div class="nav-item" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--violet)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div>`+navH;
+}
+
+function renderHdr(){
+  const l=getLevel();
+  return`<div class="hdr z1"><div class="hdr-brand"><div class="hdr-logo">🔥</div><div><div class="hdr-title">ENERGIA MASCULINA</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.daysActive||1}</div></div></div><div class="hdr-energy"><div class="hdr-energy-val">🔥 ${S.streak}</div><div class="hdr-energy-label">STREAK</div></div></div>`;
+}
+
+function renderHome(){
+  const ms=getDM(),prog=todayProg(),orc=ORACLES[doy()%ORACLES.length];
+  const filtered=S.domFilter==='all'?ms:ms.filter(m=>m.dom===S.domFilter);
+  const done=ms.filter(m=>S.completedToday[m.id]).length;
+  let h='';
+
+  // Orb
+  const r=62,c=2*Math.PI*r,o=c-c*prog/100;
+  const col=prog<30?'var(--indigo)':prog<70?'var(--violet)':'var(--gold)';
+  h+=`<div class="orb-card"><div class="orb-wrap"><svg class="orb-svg" viewBox="0 0 150 150"><defs><linearGradient id="orbGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--indigo)"/><stop offset="50%" stop-color="var(--violet)"/><stop offset="100%" stop-color="var(--gold)"/></linearGradient></defs><circle class="orb-track" cx="75" cy="75" r="${r}"/><circle class="orb-fill" cx="75" cy="75" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${o}"/></svg><div class="orb-center"><div class="orb-val">${prog}%</div><div class="orb-label">ENERGIA</div></div></div><div class="orb-status" style="color:${col}">${done}/${ms.length} MISSÕES · ${prog>=100?'TRANSMUTAÇÃO COMPLETA ✓':'EM ASCENSÃO'}</div></div>`;
+
+  // Level
+  const lv=getLevel(),nx=getNext(),lp=getLvlProg();
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lv.icon} ${lv.name}</div><div class="level-next">${nx?nx.icon+' '+nx.name+' →':''} ${S.xp} XP</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Oracle
+  h+=`<div class="oracle"><div class="oracle-label">🔱 ORÁCULO DO DIA</div><div class="oracle-text">"${orc.t}"</div><div class="oracle-author">— ${orc.a}</div></div>`;
+
+  // Domain filter
+  h+=`<div class="dom-scroll"><div class="dom-pill ${S.domFilter==='all'?'active':''}" onclick="S.domFilter='all';render()">TODOS</div>`;
+  DOMAINS.forEach(d=>{h+=`<div class="dom-pill ${S.domFilter===d.id?'active':''}" onclick="S.domFilter='${d.id}';render()" style="${S.domFilter===d.id?'border-color:'+d.color+';color:'+d.color:''}">${d.icon} ${d.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const d=getDomInfo(m.dom),dn=S.completedToday[m.id];
+    h+=`<div class="mission ${dn?'done':''}"><div class="mission-dur">${m.dur}</div><div class="mission-top"><div class="mission-orb ${dn?'checked':''}" onclick="complete('${m.id}',${m.xp})">${dn?'✓':''}</div><div class="mission-body"><div class="mission-domain" style="color:${d.color}">${d.icon} ${d.name}</div><div class="mission-title" style="${dn?'text-decoration:line-through':''}">${m.t}</div><div class="mission-desc">${m.d}</div><div class="mission-wisdom">📜 <b>Sabedoria:</b> ${m.w}</div><div class="mission-source">— ${m.s}</div><div class="mission-xp">⚡ +${m.xp} XP</div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderLibrary(){
+  if(S.openBook!==undefined&&S.openBook!==null) return renderBookDetail(S.openBook);
+  const books=BOOKS;
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px">📜</div><div style="font-size:18px;font-weight:900;color:var(--violet);font-family:Georgia,serif">BIBLIOTECA DA SABEDORIA</div><div style="font-size:10px;color:var(--dim);margin-top:4px">Toque para abrir cada módulo</div></div>`;
+  books.forEach((b,i)=>{
+    const unlocked=S.daysActive>=b.unlockDay;
+    h+=`<div class="lib-card" onclick="${unlocked?'S.openBook='+i+';render()':''}" style="${!unlocked?'opacity:.45;pointer-events:none':''}"><div class="lib-banner" style="background:${b.bg}"><span style="font-size:36px">${b.icon}</span>${!unlocked?'<span style="position:absolute;right:12px;top:12px;font-size:10px;background:#0008;padding:3px 8px;border-radius:4px;color:var(--dim)">🔒 DIA '+b.unlockDay+'</span>':''}</div><div class="lib-body"><div class="lib-cat" style="color:${b.color}">${b.cat}</div><div class="lib-title">${b.title}</div><div class="lib-desc">${b.desc}</div><div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between"><div>${b.tags.map(t=>`<span class="lib-tag" style="background:${b.color}15;color:${b.color}">${t}</span>`).join('')}</div><span style="font-size:10px;color:${b.color}">→ ${b.lessons.length} lições</span></div></div></div>`;
+  });
+  return h;
+}
+function renderBookDetail(idx){
+  const b=BOOKS[idx];
+  let h=`<div style="padding:6px 0"><button onclick="S.openBook=null;render()" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px">← VOLTAR</button></div>`;
+  h+=`<div style="text-align:center;padding:16px 0 20px"><div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 16px ${b.color}40)">${b.icon}</div><div style="font-size:8px;color:${b.color};letter-spacing:3px;font-weight:700;margin-bottom:6px">${b.cat}</div><div style="font-size:20px;font-weight:900;color:var(--cream);font-family:Georgia,serif;line-height:1.3">${b.title}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">${b.lessons.length} lições · ${b.sources}</div></div>`;
+  // Intro
+  h+=`<div class="oracle" style="border-color:${b.color}15"><div class="oracle-label" style="color:${b.color}">📖 INTRODUÇÃO</div><div class="oracle-text" style="font-size:13px">${b.intro}</div></div>`;
+  // Lessons
+  b.lessons.forEach((l,i)=>{
+    const isOpen=S.openLesson===i;
+    h+=`<div class="card" style="cursor:pointer;border-color:${isOpen?b.color+'30':'var(--border)'};margin-bottom:8px" onclick="S.openLesson=${isOpen?'null':i};render()">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;border-radius:8px;background:${b.color}12;border:1px solid ${b.color}20;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:${b.color};flex-shrink:0">${i+1}</div>
+          <div><div style="font-size:13px;font-weight:700;color:${isOpen?'var(--cream)':'var(--bone)'}">${l.title}</div><div style="font-size:9px;color:var(--dim);margin-top:1px">${l.type}</div></div>
+        </div>
+        <span style="font-size:14px;color:var(--dim);transition:transform .3s;transform:rotate(${isOpen?'90':'0'}deg)">›</span>
+      </div>
+      ${isOpen?`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">${l.content}</div>
+        ${l.practice?`<div style="margin-top:12px;background:${b.color}06;border:1px solid ${b.color}12;border-radius:10px;padding:14px"><div style="font-size:8px;color:${b.color};letter-spacing:2px;font-weight:700;margin-bottom:6px">⚡ EXERCÍCIO PRÁTICO</div><div style="font-size:11px;color:var(--bone);line-height:1.8">${l.practice}</div></div>`:''}
+        ${l.quote?`<div style="margin-top:12px;padding:12px;border-left:2px solid ${b.color}40;font-style:italic;font-family:Georgia,serif;font-size:12px;color:var(--muted);line-height:1.7">"${l.quote}"<div style="font-size:9px;color:var(--dim);margin-top:4px;font-style:normal">— ${l.quoteAuthor}</div></div>`:''}
+      </div>`:''}
+    </div>`;
+  });
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlProg();
+  let h='';
+  h+=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(109,40,217,.4))">${lv.icon}</div><div style="font-size:20px;font-weight:900;color:var(--violet);font-family:Georgia,serif">${lv.name}</div><div style="font-size:12px;color:var(--dim);margin-top:4px">${S.xp} XP ACUMULADOS</div></div>`;
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lv.icon} ${lv.name}</div><div class="level-next">${nx?'→ '+nx.icon+' '+nx.name+' ('+nx.min+' XP)':'NÍVEL SUPREMO'}</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="prog-grid"><div class="prog-card"><div class="prog-icon">🔥</div><div class="prog-val">${S.streak}</div><div class="prog-label">STREAK</div></div><div class="prog-card"><div class="prog-icon">📅</div><div class="prog-val">${S.daysActive||1}</div><div class="prog-label">DIAS</div></div><div class="prog-card"><div class="prog-icon">✅</div><div class="prog-val">${S.totalCompleted}</div><div class="prog-label">MISSÕES</div></div></div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--violet);letter-spacing:1px;margin-bottom:12px">🌙 FASES DA ASCENSÃO</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><div class="rank-ico">${l.icon}</div><div style="flex:1"><div class="rank-name" style="color:${u?'var(--cream)':'var(--dim)'}">${l.name}</div><div class="rank-req">${l.min} XP</div></div>${u?'<span style="color:var(--green)">✓</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--violet);letter-spacing:1px;margin-bottom:12px">🔱 DOMÍNIOS</div>`;
+  DOMAINS.forEach(d=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:18px">${d.icon}</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${d.color}">${d.name}</div><div style="font-size:10px;color:var(--dim)">${d.desc}</div></div></div>`});
+  h+=`</div>`;
+  return h;
+}
+
+function renderSettings(){
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:32px;margin-bottom:6px">⚙️</div><div style="font-size:18px;font-weight:900;color:var(--violet)">CONFIGURAÇÕES</div></div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--violet);letter-spacing:1px;margin-bottom:12px">📊 DADOS</div><div style="font-size:12px;color:var(--muted);line-height:2.2">Dias ativos: <b style="color:var(--cream)">${S.daysActive||1}</b><br>Missões: <b style="color:var(--cream)">${S.totalCompleted}</b><br>XP: <b style="color:var(--cream)">${S.xp}</b><br>Nível: <b style="color:var(--violet)">${getLevel().name}</b><br>Streak: <b style="color:var(--cream)">${S.streak}</b></div></div>`;
+  h+=`<div class="card" style="text-align:center"><button onclick="if(confirm('Resetar toda evolução?')){S.streak=0;S.xp=0;S.completedToday={};S.lastDay='';S.totalCompleted=0;S.daysActive=0;save();render()}" style="background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+checkDay();render();
+</script>
+</body>
+</html>

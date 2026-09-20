@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0C0C0C">
+<title>💢 Sangue Frio</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --stone:#1C1C1E;--stone2:#2C2C2E;--stone3:#3A3A3C;
+  --ice:#E8EDF2;--ice2:#B0BEC5;--ice3:#78909C;
+  --steel:#546E7A;--steel2:#37474F;--steel2:#263238;
+  --blood:#C62828;--blood2:#E53935;--blood3:#FF5252;
+  --gold:#B8860B;--gold2:#DAA520;--gold3:#FFD700;
+  --smoke:#9E9E9E;--smoke2:#757575;--smoke3:#616161;
+  --bg:#0C0C0C;--bg2:#111111;--bg3:#161616;
+  --border:#2A2A2A;--border2:#333;
+  --txt:#E8EDF2;--muted:#78909C;--muted2:#546E7A;
+}
+body{background:var(--bg);color:var(--txt);font-family:'Georgia',serif;max-width:480px;margin:0 auto;min-height:100vh;overflow-x:hidden;padding-bottom:80px}
+
+/* ── TYPOGRAPHY ── */
+.font-mono{font-family:'Courier New',Courier,monospace}
+.font-sans{font-family:system-ui,-apple-system,sans-serif}
+
+/* ── ANIMATIONS ── */
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.breathe{animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.04);opacity:1}}
+.flicker{animation:flicker 3s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:1}45%{opacity:.95}50%{opacity:.6}55%{opacity:.95}}
+.slide-in{animation:slideIn .5s cubic-bezier(.25,.46,.45,.94)}
+@keyframes slideIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+.pulse-blood{animation:pulseBlood 2s ease-in-out infinite}
+@keyframes pulseBlood{0%,100%{box-shadow:0 0 0 0 rgba(198,40,40,.4)}70%{box-shadow:0 0 0 12px rgba(198,40,40,0)}}
+
+/* ── ONBOARD ── */
+#onboard{position:fixed;inset:0;z-index:500;background:var(--bg);overflow-y:auto;display:flex;align-items:flex-start;justify-content:center}
+.ob-wrap{width:100%;max-width:440px;padding:40px 24px 60px;text-align:center}
+
+/* ── STOIC BUTTONS ── */
+.btn-stoic{
+  border:1px solid var(--border2);
+  border-radius:2px;
+  padding:14px 24px;
+  font-weight:700;font-size:14px;
+  cursor:pointer;width:100%;
+  letter-spacing:2px;text-transform:uppercase;
+  transition:all .2s;font-family:'Courier New',monospace;
+  background:transparent;color:var(--ice);
+  position:relative;overflow:hidden;
+}
+.btn-stoic::before{content:'';position:absolute;inset:0;background:var(--ice);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;z-index:0}
+.btn-stoic:active::before{transform:scaleX(1)}
+.btn-stoic:active{color:var(--bg)}
+.btn-stoic span{position:relative;z-index:1}
+.btn-blood{border-color:var(--blood2);color:var(--blood3)}
+.btn-blood::before{background:var(--blood2)}
+.btn-blood:active{color:#fff}
+.btn-gold{border-color:var(--gold2);color:var(--gold3)}
+.btn-gold::before{background:var(--gold2)}
+.btn-gold:active{color:var(--bg)}
+.btn-sm-stoic{padding:10px 18px;font-size:12px}
+.btn-pill{border-radius:999px;letter-spacing:1px}
+
+/* ── STOIC CARDS ── */
+/* Framed card — like an ancient manuscript */
+.card-frame{
+  border:1px solid var(--border2);
+  position:relative;padding:20px;margin-bottom:14px;
+  background:var(--bg2);
+}
+.card-frame::before,.card-frame::after{
+  content:'';position:absolute;
+  width:8px;height:8px;
+  border-color:var(--ice3);border-style:solid;
+}
+.card-frame::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.card-frame::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+/* Dark iron card */
+.card-iron{background:linear-gradient(135deg,var(--stone),var(--bg2));border:1px solid var(--border);border-radius:0;padding:18px;margin-bottom:12px}
+/* Ember card */
+.card-ember{background:linear-gradient(135deg,rgba(198,40,40,.06),var(--bg2));border:1px solid rgba(198,40,40,.25);border-left:3px solid var(--blood2);padding:18px;margin-bottom:12px}
+/* Roman column layout */
+.col-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* ── STAT BLOCKS (Roman style) ── */
+.stat-roman{
+  border:1px solid var(--border2);padding:14px 10px;
+  text-align:center;background:var(--bg2);
+  position:relative;
+}
+.stat-roman::before{
+  content:'';position:absolute;top:3px;left:3px;right:3px;bottom:3px;
+  border:1px solid rgba(255,255,255,.04);pointer-events:none;
+}
+.stat-num{font-family:'Courier New',monospace;font-size:28px;font-weight:700;line-height:1}
+.stat-lbl{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:5px;font-family:system-ui,sans-serif}
+
+/* ── PROGRESS ── */
+.prog-track{background:var(--stone2);height:2px;width:100%;position:relative}
+.prog-fill{height:100%;background:var(--ice3);transition:width .8s ease;position:relative}
+.prog-fill::after{content:'';position:absolute;right:0;top:-3px;width:8px;height:8px;background:var(--ice);border-radius:50%}
+.prog-segmented{display:flex;gap:3px}
+.prog-seg{flex:1;height:4px;background:var(--stone2);border-radius:1px;transition:background .4s}
+.prog-seg.done{background:var(--ice3)}
+.prog-seg.current{background:var(--blood2)}
+
+/* ── NAV — stoic bar ── */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg2);border-top:1px solid var(--border2);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0 8px;cursor:pointer;transition:all .2s;border-right:1px solid var(--border)}
+.nav-item:last-child{border-right:none}
+.nav-icon{font-size:18px;line-height:1}
+.nav-label{font-size:8px;font-weight:700;margin-top:2px;letter-spacing:2px;font-family:'Courier New',monospace;text-transform:uppercase}
+
+/* ── OVERLAY / MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;overflow-y:auto}
+.modal-stoic{background:var(--bg2);border:1px solid var(--border2);max-width:380px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;position:relative}
+.modal-stoic::before,.modal-stoic::after{content:'';position:absolute;width:12px;height:12px;border-color:var(--ice3);border-style:solid}
+.modal-stoic::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.modal-stoic::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+
+/* ── MISSION ROW (different from magnetismo) ── */
+.mission-row{
+  display:flex;align-items:stretch;gap:0;
+  margin-bottom:8px;cursor:pointer;
+  border:1px solid var(--border);
+  transition:border-color .2s;
+}
+.mission-row:active{opacity:.8}
+.mission-row.done{border-color:rgba(232,237,242,.15)}
+.mission-row.done .mission-main{opacity:.55}
+.mission-num{
+  width:44px;flex-shrink:0;
+  background:var(--stone2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Courier New',monospace;font-size:13px;
+  color:var(--muted);font-weight:700;
+  border-right:1px solid var(--border);
+}
+.mission-num.done-num{background:var(--stone3);color:var(--ice3)}
+.mission-main{flex:1;padding:14px 14px 14px 16px;background:var(--bg2)}
+.mission-check-stoic{
+  width:44px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;border-left:1px solid var(--border);
+  background:var(--bg2);
+}
+
+/* ── QUOTE DISPLAY ── */
+.quote-stoic{
+  border-left:2px solid var(--ice3);
+  padding:14px 18px;
+  margin:16px 0;
+  background:rgba(255,255,255,.02);
+}
+.quote-text-s{font-family:'Georgia',serif;font-size:15px;font-style:italic;color:var(--ice2);line-height:1.7;margin-bottom:8px}
+.quote-attr{font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;color:var(--muted)}
+
+/* ── LESSON (Scroll / Papyrus feel) ── */
+.scroll-card{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  margin-bottom:10px;
+  cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.scroll-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ice3);opacity:.5}
+.scroll-card:active{opacity:.8}
+.scroll-inner{padding:16px 18px 16px 22px;display:flex;align-items:center;gap:14px}
+
+/* ── VIRTUES GRID ── */
+.virtue-card{
+  border:1px solid var(--border);
+  padding:16px 12px;text-align:center;
+  background:var(--bg2);cursor:pointer;transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.virtue-card.active{border-color:var(--ice3);background:rgba(232,237,242,.04)}
+.virtue-card::after{content:'';position:absolute;inset:0;background:var(--ice);opacity:0;transition:opacity .2s}
+.virtue-card:active::after{opacity:.04}
+.virtue-icon{font-size:28px;display:block;margin-bottom:8px}
+.virtue-name{font-family:'Courier New',monospace;font-size:11px;letter-spacing:2px;color:var(--ice2);font-weight:700}
+.virtue-desc{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;font-family:system-ui,sans-serif}
+
+/* ── BREATHING CIRCLE ── */
+.breath-circle{
+  width:150px;height:150px;border-radius:50%;
+  border:1px solid var(--ice3);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;margin:0 auto;
+  position:relative;cursor:pointer;
+  transition:all .3s;
+}
+.breath-circle::before{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid rgba(232,237,242,.12);
+}
+.breath-circle::after{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(232,237,242,.06);
+}
+.breath-num{font-family:'Courier New',monospace;font-size:36px;font-weight:700;color:var(--ice);line-height:1}
+.breath-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:system-ui,sans-serif}
+
+/* ── ACHIEVEMENT (Roman medal) ── */
+.medal-card{
+  border:1px solid var(--border);padding:14px;
+  text-align:center;background:var(--bg2);
+  position:relative;
+}
+.medal-card.won{border-color:rgba(184,134,11,.4);background:rgba(184,134,11,.04)}
+.medal-icon{font-size:30px;margin-bottom:4px;display:block}
+.medal-name{font-size:11px;font-weight:700;font-family:'Courier New',monospace;letter-spacing:1px;color:var(--ice2)}
+.medal-desc{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+/* ── DAILY REFLECTION ── */
+.reflect-area{
+  background:var(--bg2);border:1px solid var(--border2);
+  width:100%;min-height:100px;padding:14px;
+  color:var(--ice2);font-size:14px;font-family:'Georgia',serif;
+  resize:none;outline:none;line-height:1.7;
+}
+.reflect-area::placeholder{color:var(--muted2);font-style:italic}
+.reflect-area:focus{border-color:var(--ice3)}
+
+/* ── AVATAR STOIC ── */
+.av-stoic{
+  width:70px;height:70px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;font-size:36px;
+  position:relative;background:var(--bg2);
+}
+.av-stoic.sel{border-color:var(--ice3);background:rgba(232,237,242,.06)}
+.av-stoic.sel::before{content:'';position:absolute;inset:3px;border:1px solid rgba(232,237,242,.15)}
+.av-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+
+/* ── TICKER / DIVIDER ── */
+.divider-rune{display:flex;align-items:center;gap:12px;margin:16px 0}
+.divider-line{flex:1;height:1px;background:var(--border2)}
+.divider-sym{font-family:'Courier New',monospace;font-size:11px;color:var(--muted);letter-spacing:2px}
+
+/* ── TAG ── */
+.tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 10px;border:1px solid;font-family:'Courier New',monospace}
+.tag-ice{border-color:rgba(232,237,242,.3);color:var(--ice2)}
+.tag-blood{border-color:rgba(198,40,40,.4);color:var(--blood3)}
+.tag-gold{border-color:rgba(218,165,32,.4);color:var(--gold3)}
+.tag-smoke{border-color:var(--border2);color:var(--smoke)}
+
+/* ── EMPEROR RANK ── */
+.emperor-bar{
+  display:flex;align-items:center;gap:10px;
+  border-left:2px solid var(--gold2);
+  padding:8px 12px;background:rgba(184,134,11,.04);
+  margin-bottom:14px;
+}
+</style>
+</head>
+<body>
+
+<!-- ONBOARD -->
+<div id="onboard"><div class="ob-wrap" id="ob-cont"></div></div>
+<div id="app" style="display:none"></div>
+
+<script>
+// ══════════ STORAGE ══════════
+const LS={
+  g(k){try{return JSON.parse(localStorage.getItem('sf_'+k))}catch{return null}},
+  s(k,v){try{localStorage.setItem('sf_'+k,JSON.stringify(v))}catch{}}
+};
+
+// ══════════ AVATARS ══════════
+const AVS=['🗿','⚔️','🏛️','🦅','🪨','🌊','🌑','🐺'];
+
+// ══════════ STOIC QUOTES ══════════
+const QUOTES=[
+  {t:"Dois homens olham por grades da prisão. Um vê a lama, o outro as estrelas.",a:"EPICTETO"},
+  {t:"Não desperdice o que te resta de vida contemplando outras pessoas.",a:"MARCO AURÉLIO — MEDITAÇÕES"},
+  {t:"A primeira regra é: mantenha o espírito sereno. A segunda: não ceda ao problema.",a:"SÊNECA"},
+  {t:"Você tem poder sobre sua mente, não sobre os eventos externos. Perceba isso e encontrará força.",a:"MARCO AURÉLIO"},
+  {t:"Não oremos por uma vida mais leve, mas por ombros mais fortes.",a:"PHILIPS BROOKS"},
+  {t:"O obstáculo é o caminho.",a:"RYAN HOLIDAY — O OBSTÁCULO É O CAMINHO"},
+  {t:"Teme o futuro menos do que te atrapalha o presente.",a:"SÊNECA — CARTAS A LUCÍLIO"},
+  {t:"Faz de sua ira uma coisa presente. Não guarda nada para amanhã.",a:"MARCO AURÉLIO"},
+  {t:"Não é o que acontece com você, mas como você reage que importa.",a:"EPICTETO"},
+  {t:"O homem que não sabe o que faz quando a maré sobe também não sabe quando ela desce.",a:"NASSIM NICHOLAS TALEB"},
+  {t:"Perde sua calma raramente. Quando perde, recupera com mais velocidade a cada vez.",a:"DAVID GOGGINS"},
+  {t:"Sangue frio não é ausência de emoção. É domínio da ação apesar dela.",a:"PROTOCOLO SANGUE FRIO"},
+  {t:"A resposta correta ao caos é a ordem interna. Comece por você.",a:"JORDAN PETERSON"},
+  {t:"Só há uma maneira de ser feliz: parar de se preocupar com coisas fora do seu controle.",a:"EPICTETO — ENCHEIRÍDION"},
+  {t:"A diferença entre resposta e reação é uma pausa.",a:"VIKTOR FRANKL"},
+];
+
+// ══════════ DAYS DATA ══════════
+const DAYS=[
+// SEMANA 1 — PERCEPÇÃO
+[{id:'d1a',virtue:'Temperança',t:'O Inventário da Raiva',d:'Escreva 3 situações recentes em que perdeu a calma. Para cada uma: o que você controlava? O que estava fora do seu controle?',icon:'📋',xp:25,min:'15 min'},{id:'d1b',virtue:'Prudência',t:'Pausa de 5 Segundos',d:'Hoje, antes de qualquer resposta impulsiva (texto, fala, decisão), conte até 5 mentalmente. Observe a diferença na qualidade da resposta.',icon:'⏱️',xp:20,min:'Dia todo'},{id:'d1c',virtue:'Coragem',t:'Dicotomia do Controle',d:'Liste 5 preocupações atuais. Separe em duas colunas: "Controlo" e "Não controlo". Abandone mentalmente a segunda coluna.',icon:'⚖️',xp:20,min:'10 min'}],
+[{id:'d2a',virtue:'Temperança',t:'Diário da Irritação',d:'Registre cada momento de irritação de hoje. Hora, gatilho, intensidade (1-10), o que fez. Sem julgamento — só observação.',icon:'📓',xp:25,min:'Dia todo'},{id:'d2b',virtue:'Justiça',t:'Perspectiva do Oponente',d:'Pense em alguém que te irritou recentemente. Escreva a versão DELE da história com o máximo de empatia e honestidade possível.',icon:'🔄',xp:30,min:'10 min'},{id:'d2c',virtue:'Prudência',t:'Meditação Matinal',d:'5 min antes de sair da cama: respire fundo 4x. Repita: "Hoje encontrarei dificuldades. Estou preparado para respondê-las com calma."',icon:'🌅',xp:15,min:'5 min'}],
+[{id:'d3a',virtue:'Coragem',t:'O Exercício do Pior Caso',d:'Identifique sua maior preocupação atual. Escreva o cenário mais provável, o pior cenário possível, e seu plano de ação para cada um.',icon:'🗡️',xp:30,min:'15 min'},{id:'d3b',virtue:'Temperança',t:'Silêncio Stoico',d:'Fique 1 hora sem usar o celular durante o período em que normalmente mais o usa. Observe sua compulsão e resista sem culpa.',icon:'📵',xp:25,min:'1 hora'},{id:'d3c',virtue:'Prudência',t:'Memento Mori',d:'Escreva: "Eu morrerei." Contempla por 3 minutos o quanto problemas atuais se tornam insignificantes nessa perspectiva. O que realmente importa?',icon:'💀',xp:20,min:'5 min'}],
+[{id:'d4a',virtue:'Justiça',t:'Espelho Sem Filtro',d:'Identifique algo que você faz que irrita os outros — mas que você justifica facilmente. Escreva sem se defender. Só reconheça.',icon:'🪞',xp:30,min:'10 min'},{id:'d4b',virtue:'Coragem',t:'A Conversa Evitada',d:'Há uma conversa difícil que você tem postergado? Hoje você prepara o que dirá. Não precisa fazer hoje — mas escreva a abordagem.',icon:'💬',xp:25,min:'15 min'},{id:'d4c',virtue:'Temperança',t:'Dieta de Notícias',d:'Zero notícias negativas hoje. Observe como sua mente se sente com menos input alarmista. Notícias não são urgência. Sua paz é.',icon:'🚫',xp:15,min:'Dia todo'}],
+[{id:'d5a',virtue:'Prudência',t:'Cartas a Lucílio — Versão Sua',d:'Escreva uma carta a uma versão mais jovem de você sobre controle emocional. O que você sabe agora que teria poupado dor?',icon:'✉️',xp:35,min:'20 min'},{id:'d5b',virtue:'Temperança',t:'A Regra do Pensamento Duplo',d:'Cada pensamento negativo que surgir hoje: pergunte imediatamente "Isso é fato ou interpretação?" A resposta muda a reação.',icon:'🔍',xp:25,min:'Dia todo'},{id:'d5c',virtue:'Coragem',t:'Exercício Físico como Disciplina',d:'Faça um exercício físico desconfortável hoje (corrida, agachamento, prancha) e em vez de parar quando quiser, continue por mais 30 segundos. O corpo treina a mente.',icon:'💪',xp:20,min:'20 min'}],
+[{id:'d6a',virtue:'Justiça',t:'O Que Você Deve a Outros',d:'Liste 3 pessoas a quem deve uma melhora de comportamento. Não desculpa — melhora de comportamento. Ação concreta, não palavras.',icon:'⚖️',xp:25,min:'10 min'},{id:'d6b',virtue:'Prudência',t:'Premeditação de Adversidades',d:'Visualize seu dia de amanhã. Identifique 3 momentos onde pode perder o controle. Para cada um: qual é sua resposta ideal?',icon:'🧭',xp:30,min:'10 min'},{id:'d6c',virtue:'Temperança',t:'Jejum de Reclamação',d:'Zero reclamações em voz alta hoje. Qualquer impulso de reclamar: transforme em uma ação ou abandone. Reclamar é gasto sem retorno.',icon:'🤐',xp:25,min:'Dia todo'}],
+[{id:'d7a',virtue:'Coragem',t:'Semana 1 — Revisão Stoica',d:'Reveja as 6 missões anteriores. Qual revelou mais sobre você? Escreva o padrão que você identificou em sua reatividade.',icon:'📊',xp:20,min:'15 min'},{id:'d7b',virtue:'Justiça',t:'Ato de Justiça Silenciosa',d:'Faça algo genuinamente bom por alguém sem que ninguém saiba. Sem publicar, sem contar. O ato existe só entre você e sua consciência.',icon:'🕯️',xp:30,min:'Dia todo'},{id:'d7c',virtue:'Prudência',t:'Decreto Pessoal',d:'Escreva 3 leis pessoais que você se compromete a seguir daqui em diante em relação ao controle emocional. Assine e date.',icon:'📜',xp:25,min:'15 min'}],
+// SEMANA 2 — APLICAÇÃO
+[{id:'d8a',virtue:'Temperança',t:'A Pausa Tática',d:'Quando sentir raiva hoje, antes de qualquer ação: saia fisicamente do ambiente por 2 minutos. Retorne apenas quando souber o que vai dizer.',icon:'🚪',xp:25,min:'Dia todo'},{id:'d8b',virtue:'Prudência',t:'O Que Marco Aurélio Faria',d:'Em 3 situações difíceis de hoje, pergunte: "Como o homem mais virtuoso que conheço responderia a isso?" Age conforme essa resposta.',icon:'🏛️',xp:30,min:'Dia todo'},{id:'d8c',virtue:'Coragem',t:'Exposição ao Desconforto',d:'Faça algo pequeno mas desconfortável que normalmente evitaria: banho frio, acordar mais cedo, pedir algo que teme ser recusado.',icon:'❄️',xp:25,min:'5 min'}],
+[{id:'d9a',virtue:'Justiça',t:'Feedback de Sangue Frio',d:'Peça a alguém de confiança: "Em quais situações você me vê perder o controle com mais frequência?" Ouça sem se defender.',icon:'👁️',xp:35,min:'Dia todo'},{id:'d9b',virtue:'Temperança',t:'Desintoxicação Digital 2h',d:'2 horas sem tela após o trabalho. Sem exceção. Escreva o que sentiu: ansiedade, liberdade, presença? O que você normalmente foge enfrentando?',icon:'📵',xp:30,min:'2 horas'},{id:'d9c',virtue:'Prudência',t:'A Morte Diária de Sêneca',d:'Ao final do dia, escreva: "Vivi hoje como se fosse o último? O que faria diferente?" Não é morbidez — é urgência de presença.',icon:'🕐',xp:20,min:'10 min'}],
+[{id:'d10a',virtue:'Coragem',t:'A Missão Impossível Pequena',d:'Identifique algo que você disse "não consigo" recentemente. Execute a primeira etapa hoje. Não o objetivo completo — apenas o primeiro passo.',icon:'🗡️',xp:35,min:'Variável'},{id:'d10b',virtue:'Temperança',t:'Alimentação como Disciplina',d:'Hoje, pare de comer antes de estar completamente cheio. Prática de temperança: o corpo como treino da vontade, não fonte de prazer imediato.',icon:'🍽️',xp:20,min:'Refeição'},{id:'d10c',virtue:'Justiça',t:'A Verdade Inconveniente',d:'Há uma verdade sobre você mesmo que você evita? Escreva-a hoje. Sem editoração. A primeira versão honesta que vier. Não precisa ser lida por ninguém.',icon:'⚖️',xp:30,min:'10 min'}],
+[{id:'d11a',virtue:'Prudência',t:'Planejamento Estoico',d:'Plan for tomorrow assuming something will go wrong. Quais 3 coisas podem dar errado amanhã? Qual é seu plano B para cada uma?',icon:'🧭',xp:25,min:'10 min'},{id:'d11b',virtue:'Temperança',t:'Sem Álcool, Sem Excesso',d:'Um dia de abstinência total de qualquer substância que você usa para aliviar stress. Enfrente o que você normalmente entorpece.',icon:'🌊',xp:30,min:'Dia todo'},{id:'d11c',virtue:'Coragem',t:'A Discordância Necessária',d:'Discorde de alguém importante para você sobre algo real, de forma respeitosa e firme. A concordância automática é covardia disfarçada.',icon:'💬',xp:25,min:'Dia todo'}],
+[{id:'d12a',virtue:'Justiça',t:'O Que Você Prometeu',d:'Liste 3 promessas que não cumpriu (a si mesmo ou outros). Para cada uma: cumpra, renegocie honestamente, ou reconheça o custo do não cumprimento.',icon:'📋',xp:30,min:'30 min'},{id:'d12b',virtue:'Prudência',t:'Meditação do Observador',d:'10 min: observe seus pensamentos como nuvens passando. Não se identifique com eles. Você é o céu, não as nuvens. Marco Aurélio praticava isso diariamente.',icon:'☁️',xp:25,min:'10 min'},{id:'d12c',virtue:'Temperança',t:'Economia de Palavras',d:'Hoje, fale 50% menos do que habitualmente. Só fale quando adicionar valor real. Observe o peso e qualidade do que diz quando palavras são escassas.',icon:'🤐',xp:20,min:'Dia todo'}],
+[{id:'d13a',virtue:'Coragem',t:'O Confronto Interno',d:'O que você mais teme que os outros descobrissem sobre você? Escreva. A coragem começa pelo reconhecimento — não pela perfeição.',icon:'🔦',xp:35,min:'15 min'},{id:'d13b',virtue:'Temperança',t:'Gratidão Stoica',d:'3 coisas que você normalmente toma como garantidas mas que poderiam ser tiradas. Contemple 2 min cada uma. A gratidão sem contemplação é superficial.',icon:'🕯️',xp:20,min:'10 min'},{id:'d13c',virtue:'Justiça',t:'Reparação Silenciosa',d:'Há alguém que você prejudicou que nunca pediu desculpa? Faça algo concreto para compensar — não palavras, mas ação. Sem expectativa de reconhecimento.',icon:'⚖️',xp:30,min:'Variável'}],
+[{id:'d14a',virtue:'Prudência',t:'Semana 2 — Balanço',d:'Você é mais calmo do que era há 14 dias? Em quais situações o controle falhou? O que o padrão revela sobre seus gatilhos mais profundos?',icon:'📊',xp:20,min:'15 min'},{id:'d14b',virtue:'Coragem',t:'Desafio de Imersão',d:'Passe 30 min em silêncio absoluto sem nenhuma distração. Sem música, podcast, tela. Só você e seus pensamentos. O que aparece quando o ruído para?',icon:'🌑',xp:40,min:'30 min'},{id:'d14c',virtue:'Temperança',t:'O Atleta do Caráter',d:'Marcus Aurelius acordava dizendo "Hoje voltarei a ser perturbado." Você não é a exceção. Prepare-se para os desafios de amanhã como atleta prepara para competição.',icon:'🏋️',xp:25,min:'10 min'}],
+// SEMANA 3 — INTEGRAÇÃO
+[{id:'d15a',virtue:'Prudência',t:'Sistema de Alerta Pessoal',d:'Identifique os sinais físicos que precedem sua perda de controle (mandíbula, ritmo de fala, respiração). Quando sentir um deles: protocolo de pausa imediata.',icon:'🚨',xp:30,min:'Dia todo'},{id:'d15b',virtue:'Coragem',t:'Banho de Sangue Frio',d:'3 minutos de água fria no chuveiro. Literalmente. Enquanto o corpo protesta, observe como a mente pode comandar o que o instinto recusa.',icon:'❄️',xp:35,min:'3 min'},{id:'d15c',virtue:'Justiça',t:'Liderança Pelo Exemplo',d:'Em um momento de tensão grupal hoje, seja o primeiro a desacelerar, abaixar a voz e buscar solução. Não anuncie — demonstre.',icon:'🏛️',xp:25,min:'Dia todo'}],
+[{id:'d16a',virtue:'Temperança',t:'A Dieta da Queixa',d:'Terceiro dia de zero reclamações. Desta vez: observe quando a reclamação emerge internamente e converta em pergunta: "O que está sob meu controle aqui?"',icon:'🔄',xp:25,min:'Dia todo'},{id:'d16b',virtue:'Prudência',t:'O Testamento Estoico',d:'Escreva o que você quer que as pessoas digam de você quando morrer. Não o que você quer ter, mas quem quer ter sido. Viva hoje conforme esse testamento.',icon:'📜',xp:35,min:'15 min'},{id:'d16c',virtue:'Coragem',t:'A Rejeição Buscada',d:'Peça algo hoje onde a probabilidade de recusado é alta. O objetivo não é conseguir — é dessensibilizar seu ego ao "não". Rejeição treina resiliência.',icon:'🎯',xp:30,min:'Variável'}],
+[{id:'d17a',virtue:'Justiça',t:'O Mentor Imaginário',d:'Pense em alguém (vivo ou histórico) que exibe o autocontrole que você quer ter. Em 3 situações hoje, pause e pergunte: como essa pessoa responderia?',icon:'👤',xp:25,min:'Dia todo'},{id:'d17b',virtue:'Temperança',t:'Domínio do Apetite',d:'Identifique seu vício de conforto mais frequente (celular, comida, entretenimento). Reduz pela metade hoje. Não elimina — domina.',icon:'⚔️',xp:30,min:'Dia todo'},{id:'d17c',virtue:'Prudência',t:'A Carta Não Enviada',d:'Escreva uma carta honesta para alguém com quem tem raiva ou mágoa acumulada. Escreva tudo que quer dizer. Não envie. O exercício é a descarga, não o envio.',icon:'✉️',xp:25,min:'20 min'}],
+[{id:'d18a',virtue:'Coragem',t:'72 Horas de Prova',d:'Você sobreviveu 18 dias. Identifique a situação mais difícil que enfrentou e como teria reagido no Dia 1 vs. como reagiu. Escreva a diferença.',icon:'📊',xp:30,min:'10 min'},{id:'d18b',virtue:'Temperança',t:'A Última Refeição de Sêneca',d:'Sêneca voluntariamente vivia como se tivesse pouco para treinar gratidão. Hoje: simplifique uma refeição ao mínimo necessário. Observe sua reação ao básico.',icon:'🍞',xp:20,min:'Refeição'},{id:'d18c',virtue:'Justiça',t:'Reconhecimento Público',d:'Reconheça publicamente a contribuição de alguém que normalmente não recebe crédito. Não post nas redes — diretamente para a pessoa, em palavras.',icon:'🏅',xp:25,min:'Dia todo'}],
+[{id:'d19a',virtue:'Prudência',t:'O Legado de Marco Aurélio',d:'Marco Aurélio escreveu "Meditações" nunca esperando que fosse publicado. Era para ele mesmo. Escreva 1 página de suas meditações pessoais — sem audiência.',icon:'✍️',xp:35,min:'20 min'},{id:'d19b',virtue:'Coragem',t:'A Última Fronteira',d:'Qual é o maior gatilho emocional ainda não trabalhado nestes 19 dias? Escreva sobre ele com a frieza de um cirurgião — não como vítima, mas como observador.',icon:'🔬',xp:40,min:'20 min'},{id:'d19c',virtue:'Temperança',t:'O Ano de 365 Dias',d:'Sêneca perguntava: "Se tivesse um ano, o que faria de diferente?" Você tem o mesmo dia de amanhã. O que fará diferente com o que aprendeu aqui?',icon:'📅',xp:25,min:'10 min'}],
+[{id:'d20a',virtue:'Justiça',t:'O Círculo de Influência',d:'Quem em sua vida se beneficiou do seu maior autocontrole nestes 20 dias? Quem sofreu menos com sua reatividade? Escreva e reconheça o impacto.',icon:'⭕',xp:30,min:'15 min'},{id:'d20b',virtue:'Prudência',t:'Plano de Manutenção',d:'O desafio termina amanhã. Escreva o seu protocolo permanente: quais práticas destes 21 dias você vai manter? Com que frequência? Em quais situações?',icon:'📋',xp:25,min:'15 min'},{id:'d20c',virtue:'Temperança',t:'Banho de Gelo Final',d:'3 minutos de água fria novamente. Desta vez: observe que você já fez isso antes. Você sabe que pode. É mais fácil. Isso é o que o treino faz.',icon:'❄️',xp:30,min:'3 min'}],
+[{id:'d21a',virtue:'Coragem',t:'DIA XXI — O Decreto Final',d:'Reescreva as 3 leis pessoais do Dia 7. Elas evoluíram? Você as cumpriu? Reescreva com o que aprendeu. Assine. Esta versão é mais verdadeira.',icon:'📜',xp:40,min:'20 min'},{id:'d21b',virtue:'Prudência',t:'A Meditação do Imperador',d:'30 minutos em silêncio completo. Não escreva. Não pense em tarefas. Apenas sente com o que você construiu em 21 dias. Deixe a quietude falar.',icon:'🌑',xp:40,min:'30 min'},{id:'d21c',virtue:'Justiça',t:'O Presente ao Futuro',d:'Escreva uma carta para você daqui 6 meses. "Em 21 de [data], decidi que seria um homem diferente. O que eu construí foi..."',icon:'✉️',xp:50,min:'20 min'}],
+];
+
+const LESSONS=[
+  {id:1,roman:'I',virtue:'Temperança',t:'A Arte do Sangue Frio — O Que os Estoicos Sabiam',dur:'9 min',icon:'🏛️',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"Dois homens olham por grades da prisão. Um vê a lama, o outro as estrelas."</div><div class="quote-attr">— EPICTETO</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Sangue frio não é indiferença. Não é repressão. Não é a máscara de quem engole raiva e explode depois. É a capacidade rara e treinável de criar um espaço entre o estímulo e a resposta — e escolher, nesse espaço, quem você quer ser.</p>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Viktor Frankl, sobrevivente do Holocausto e fundador da Logoterapia, descreveu isso como a última liberdade humana: a liberdade de escolher sua atitude perante qualquer circunstância. Os guardas podiam tirar tudo — menos o espaço entre o que acontecia e como ele respondia.</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 NEUROCIÊNCIA</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">Daniel Kahneman (Nobel de Economia, <strong style="color:#E8EDF2">Pensando, Devagar e Depressa</strong>) documentou os dois sistemas de pensamento: Sistema 1 (rápido, emocional, impulsivo) e Sistema 2 (lento, racional, deliberado). Reatividade é o Sistema 1 no comando. <strong style="color:#E8EDF2">Sangue frio é ativar o Sistema 2 antes de agir.</strong></p></div>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85">Marco Aurélio governou o maior império do mundo enquanto perdia filhos, enfrentava guerras e lidava com traidores. Suas <em>Meditações</em> — escritas para ninguém além dele mesmo — revelam não um homem sem emoções, mas um homem que trabalhou diariamente para não ser governado por elas.</p>`},
+  {id:2,roman:'II',virtue:'Dicotomia do Controle',t:'O Que Está no Seu Poder — Epicteto',dur:'7 min',icon:'⚖️',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"De todas as coisas existentes, algumas estão em nosso poder e outras não."</div><div class="quote-attr">— EPICTETO — ENCHEIRÍDION, I</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Epicteto nasceu escravo. Seu senhor uma vez quebrou sua perna como demonstração de poder. Enquanto a torcia, Epicteto disse calmamente: "Você vai quebrá-la." Quando quebrou, disse: "Eu disse que quebraria." Sua calma não era fraqueza — era a compreensão de que a dor era exterior, mas sua resposta era inteiramente sua.</p>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">A dicotomia do controle é simples e devastadora: <strong style="color:#E8EDF2">você controla seus julgamentos, impulsos, desejos e repulsas.</strong> Você não controla seu corpo na totalidade, reputação, cargos, propriedades, e os atos de outros. Sofremos quase exclusivamente com a segunda categoria.</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 PSICOLOGIA MODERNA</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">Julian Rotter (1966) desenvolveu o conceito de <strong style="color:#E8EDF2">Locus de Controle</strong>: pessoas com locus interno (acreditam que controlam seus resultados) apresentam menor ansiedade, maior resiliência e melhor desempenho sob pressão. O treinamento estoico é literalmente o desenvolvimento do locus de controle interno.</p></div>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85">Ryan Holiday, em <em>O Obstáculo É o Caminho</em>, modernizou esse princípio: o que bloqueia a ação se torna a ação. O impedimento avança. O problema não é o obstáculo — é sua relação com ele.</p>`},
+  {id:3,roman:'III',virtue:'Coragem',t:'O Medo como Informação, não Comando',dur:'8 min',icon:'🗡️',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"Coragem não é a ausência do medo. É agir apesar dele."</div><div class="quote-attr">— MARK TWAIN</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">David Goggins — ex-Navy SEAL, detentor de recordes de pull-ups, ultramaratonista — descreve o que chama de <em>The Cookie Jar</em>: um depósito mental de todas as vezes em que você superou o que achava impossível. Quando o medo surge, você vai ao pote de biscoitos e se lembra: "Já fiz coisas mais difíceis que isso."</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 NEUROCIÊNCIA DO MEDO</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">A amígdala detecta ameaças e dispara a resposta de luta-ou-fuga em <strong style="color:#E8EDF2">milissegundos</strong>, antes que o córtex pré-frontal possa avaliar racionalmente. Exposição repetida ao desconforto — como nos exercícios deste protocolo — literalmente recalibra a sensibilidade da amígdala. O medo não some. O limiar sobe.</p></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Os estoicos distinguiam entre medo e precaução. Medo é emocional e paralisante. Precaução é racional e preparatória. A <em>premeditatio malorum</em> — premeditação dos males — era o exercício de visualizar o pior cenário não para desesperar, mas para se preparar. Quando o pior acontece, o estoico já esteve lá mentalmente.</p>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85">O banho de água fria deste protocolo não é punição. É laboratório: um ambiente controlado onde você pratica agir contra o impulso do corpo. O que você treina no banho, você usa na vida.</p>`},
+  {id:4,roman:'IV',virtue:'Prudência',t:'As 4 Virtudes Estoicas',dur:'6 min',icon:'🏅',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"A virtude é suficiente para a felicidade."</div><div class="quote-attr">— ZENÃO DE CÍTIO, FUNDADOR DO ESTOICISMO</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">O estoicismo não é sobre sentir menos — é sobre sentir melhor. As quatro virtudes cardeais estoicas são o mapa:</p>
+<div style="border-left:2px solid #546E7A;padding:12px 16px;margin:12px 0;background:rgba(232,237,242,.02)"><p style="font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:4px">PRUDÊNCIA (Phronesis)</p><p style="font-size:13px;color:#B0BEC5;line-height:1.6">A capacidade de distinguir o que é bom, mau e neutro. Saber o que vale seu tempo e energia. A base de todas as outras virtudes.</p></div>
+<div style="border-left:2px solid #546E7A;padding:12px 16px;margin:12px 0;background:rgba(232,237,242,.02)"><p style="font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:4px">CORAGEM (Andreia)</p><p style="font-size:13px;color:#B0BEC5;line-height:1.6">Não apenas física — moral. A capacidade de fazer o certo mesmo quando é difícil, impopular, ou assustador.</p></div>
+<div style="border-left:2px solid #546E7A;padding:12px 16px;margin:12px 0;background:rgba(232,237,242,.02)"><p style="font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:4px">TEMPERANÇA (Sophrosyne)</p><p style="font-size:13px;color:#B0BEC5;line-height:1.6">Moderação e autocontrole. Não abdicação do prazer, mas domínio sobre ele. Você escolhe, não seu impulso.</p></div>
+<div style="border-left:2px solid #546E7A;padding:12px 16px;margin:12px 0;background:rgba(232,237,242,.02)"><p style="font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:4px">JUSTIÇA (Dikaiosyne)</p><p style="font-size:13px;color:#B0BEC5;line-height:1.6">O tratamento justo de todos. A consciência de que somos parte de uma comunidade maior — e nossas ações têm peso moral.</p></div>`},
+  {id:5,roman:'V',virtue:'Temperança',t:'A Neurociência da Raiva — e Como Domá-la',dur:'8 min',icon:'🧠',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"Segure-a por um momento. Há mais dano na raiva do que em qualquer coisa que a provocou."</div><div class="quote-attr">— SÊNECA — SOBRE A IRA</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Sêneca escreveu o tratado mais completo sobre raiva da antiguidade. <em>De Ira</em> (Sobre a Ira) começa com uma pergunta devastadora: existe um tipo de raiva que não prejudica mais quem a sente do que quem a recebe?</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 NEUROCIÊNCIA DA IRA</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">Pesquisas de <strong style="color:#E8EDF2">Lisa Feldman Barrett</strong> (How Emotions Are Made) mostram que emoções não são fixas — são construídas pelo cérebro com base em experiências passadas e contexto presente. <strong style="color:#E8EDF2">Você pode treinar seu cérebro a construir respostas emocionais diferentes</strong> ao mesmo gatilho.</p></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">O cortisol (hormônio do estresse) durante um episódio de raiva leva de 20 a 60 minutos para retornar ao nível basal. Qualquer decisão tomada nesse período está comprometida. O estoico sabe disso. A pausa não é fraqueza — é estratégia.</p>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85"><strong style="color:#E8EDF2">O protocolo neurocientífico da pausa:</strong> Quando sentir raiva surgir — (1) Nomeie a emoção em voz alta ou mentalmente. Apenas nomear ativa o córtex pré-frontal e reduz a atividade da amígdala. (2) 4 respirações lentas. (3) Saia fisicamente do ambiente por 2 minutos. (4) Retorne apenas quando souber o que quer dizer.</p>`},
+  {id:6,roman:'VI',virtue:'Prudência',t:'Memento Mori — A Morte como Professora',dur:'7 min',icon:'💀',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"Trate cada momento como se fosse o último. Comporte-se conforme."</div><div class="quote-attr">— MARCO AURÉLIO — MEDITAÇÕES</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85"><em>Memento Mori</em> — "lembre-se de que você morrerá" — não é pessimismo. É clareza. Os estoicos usavam a contemplação da morte não para mergulhar em desespero, mas para filtrar o ruído: o que realmente importa quando colocamos tudo sob a perspectiva da finitude?</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 PSICOLOGIA</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">A Terror Management Theory (Greenberg, Pyszczynski, Solomon) demonstrou que a consciência da morte, quando processada de forma adaptativa, <strong style="color:#E8EDF2">aumenta significativamente o engajamento com valores pessoais e relações significativas</strong> — e reduz comportamentos impulsivos e fúteis.</p></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Steve Jobs disse em seu famoso discurso de Stanford: "A morte é provavelmente a melhor invenção da vida. É o agente de mudança da vida." Não romantizava — usava como ferramenta de prioridade.</p>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85">Quando você perde a calma por algo trivial — o trânsito, uma crítica, uma fila — a pergunta estoica é: isso importará em 10 anos? Em 10 meses? Em 10 dias? A morte como perspectiva não é sobre morrer. É sobre <em>finalmente viver</em>.</p>`},
+  {id:7,roman:'VII',virtue:'Justiça',t:'O Legado do Homem de Sangue Frio',dur:'9 min',icon:'👑',
+   txt:`<div class="quote-stoic"><div class="quote-text-s">"O bem que você faz hoje será esquecido amanhã. Faça de qualquer jeito."</div><div class="quote-attr">— ATRIBUÍDO A MADRE TERESA</div></div>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">Marco Aurélio morreu sem saber que suas Meditações seriam lidas 2000 anos depois. Epicteto morreu sem saber que suas lições — transmitidas por Arriano — influenciariam desde imperadores romanos até prisioneiros de guerra americanos no Vietnã.</p>
+<p style="margin-bottom:14px;font-size:14px;color:#B0BEC5;line-height:1.85">O Vice-Almirante James Stockdale passou 7 anos como prisioneiro de guerra no Vietnã — com torturas físicas e isolamento. O que o manteve são foi Epicteto. Ele mesmo disse: "Nunca perdi de vista quem eu era ou o que acreditava."</p>
+<div style="border:1px solid rgba(232,237,242,.15);padding:14px;margin:14px 0;background:rgba(232,237,242,.02)"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#78909C;margin-bottom:8px;font-family:Courier New,monospace">🔬 RESILIÊNCIA — PESQUISA</div><p style="font-size:13px;color:#B0BEC5;line-height:1.72">Martin Seligman (Psicologia Positiva) identificou que os maiores preditores de resiliência em situações extremas são: (1) senso de controle pessoal, (2) senso de propósito, (3) capacidade de contextualizar o sofrimento. <strong style="color:#E8EDF2">Os três são pilares centrais do treinamento estoico.</strong></p></div>
+<p style="margin-bottom:0;font-size:14px;color:#B0BEC5;line-height:1.85">O homem de sangue frio não é aquele que nunca sangra. É aquele que sangra e continua. Que perde e não colapsa. Que é perturbado e restaura a ordem interna mais rápido a cada vez. Você não construiu perfeição em 21 dias. Construiu uma direção.</p>`},
+];
+
+const MEDALS=[
+  {id:'m1',i:'⚔️',n:'Primeiro Corte',d:'Complete sua primeira missão',ok:s=>s.td>=1},
+  {id:'m2',i:'🌊',n:'Três Dias de Pedra',d:'3 dias de streak',ok:s=>s.st>=3},
+  {id:'m3',i:'🏛️',n:'A Semana do Filósofo',d:'7 dias de streak',ok:s=>s.st>=7},
+  {id:'m4',i:'❄️',n:'Primeiro Banho de Gelo',d:'Complete o desafio do banho frio',ok:s=>s.bf>=1},
+  {id:'m5',i:'📜',n:'Escriba',d:'Leia 3 lições',ok:s=>s.lr>=3},
+  {id:'m6',i:'🗿',n:'Impassível',d:'14 dias de streak',ok:s=>s.st>=14},
+  {id:'m7',i:'📖',n:'Filósofo Completo',d:'Leia todas as 7 lições',ok:s=>s.lr>=7},
+  {id:'m8',i:'👑',n:'IMPERADOR',d:'Complete os 21 dias',ok:s=>s.st>=21},
+  {id:'m9',i:'💀',n:'Memento Mori',d:'500 XP acumulados',ok:s=>s.xp>=500},
+  {id:'m10',i:'🦅',n:'Sangue Frio — Mestre',d:'1000 XP acumulados',ok:s=>s.xp>=1000},
+];
+
+// STATE
+let S={on:false,nm:'',av:0,sc:'home',day:1,done:{},lr:{},xp:0,st:0,ld:'',td:0,bf:0,modal:null,reflect:{}};
+function load(){const d=LS.g('st');if(d)S=Object.assign(S,d)}
+function save(){LS.s('st',{on:S.on,nm:S.nm,av:S.av,sc:S.sc,day:S.day,done:S.done,lr:S.lr,xp:S.xp,st:S.st,ld:S.ld,td:S.td,bf:S.bf,reflect:S.reflect})}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function today(){return new Date().toISOString().split('T')[0]}
+function dk(d){return 'd'+d}
+function mDone(d){return Object.keys(S.done[dk(d)]||{}).length}
+function allDone(d){const m=DAYS[d-1]||[];return m.length>0&&mDone(d)>=m.length}
+function getRank(){
+  const x=S.xp;
+  if(x<100)return{n:'Servo',i:'⛓️',c:'#546E7A'};
+  if(x<300)return{n:'Cidadão',i:'🏛️',c:'#78909C'};
+  if(x<600)return{n:'Legionário',i:'⚔️',c:'#B0BEC5'};
+  if(x<1000)return{n:'Centurião',i:'🦅',c:'#DAA520'};
+  if(x<1500)return{n:'General',i:'🗡️',c:'#E8EDF2'};
+  return{n:'Imperador',i:'👑',c:'#FFD700'};
+}
+function updStreak(){
+  const t=today();if(S.ld===t)return;
+  const y=new Date();y.setDate(y.getDate()-1);const ys=y.toISOString().split('T')[0];
+  S.st=S.ld===ys?S.st+1:1;S.ld=t;save();
+}
+function chkMedals(){
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td,bf:S.bf};
+  MEDALS.forEach(m=>{if(!LS.g('md_'+m.id)&&m.ok(stats)){LS.s('md_'+m.id,true);S.modal={type:'medal',m};render();}});
+}
+function doMission(day,mid){
+  if(!S.done[dk(day)])S.done[dk(day)]={};
+  if(S.done[dk(day)][mid])return;
+  S.done[dk(day)][mid]=true;
+  const m=(DAYS[day-1]||[]).find(x=>x.id===mid);
+  if(m){S.xp+=m.xp;S.td++;if(mid.includes('15b')||mid.includes('8c')||mid.includes('20c'))S.bf++;}
+  updStreak();save();chkMedals();render();
+}
+function advDay(){if(S.day<21)S.day++;save();render();}
+
+function getQuote(){return QUOTES[Math.floor(S.day*13+S.st*7)%QUOTES.length]}
+
+function resetAll(){
+  ['st',...MEDALS.map(m=>'md_'+m.id)].forEach(k=>localStorage.removeItem('sf_'+k));
+  S={on:false,nm:'',av:0,sc:'home',day:1,done:{},lr:{},xp:0,st:0,ld:'',td:0,bf:0,modal:null,reflect:{}};
+  obS=0;obAv=0;obNm='';
+  document.getElementById('onboard').style.display='flex';
+  document.getElementById('app').style.display='none';
+  renderOb();
+}
+
+// ONBOARD
+let obS=0,obAv=0,obNm='';
+function renderOb(){
+  const el=document.getElementById('ob-cont');if(!el)return;
+  el.innerHTML=[ob0,ob1,ob2][obS]();
+}
+function ob0(){return`
+<div>
+  <div style="font-size:80px;margin-bottom:20px;line-height:1" class="flicker">💢</div>
+  <div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:4px;color:#546E7A;margin-bottom:10px">SHAPE DE GRINGO — ARSENAL EXTRA</div>
+  <div style="font-family:Georgia,serif;font-size:36px;font-weight:700;color:#E8EDF2;line-height:1.1;margin-bottom:6px">SANGUE<br>FRIO</div>
+  <div style="font-family:Courier New,monospace;font-size:11px;letter-spacing:3px;color:#546E7A;margin-bottom:28px">PROTOCOLO ESTOICO DE 21 DIAS</div>
+  <div class="divider-rune"><div class="divider-line"></div><div class="divider-sym">• MMXXV •</div><div class="divider-line"></div></div>
+  <div style="font-size:13px;color:#78909C;font-family:Georgia,serif;font-style:italic;line-height:1.75;margin:20px 0 28px">"Você tem poder sobre sua mente, não sobre os eventos externos. Perceba isso e encontrará força."<br><span style="font-size:11px;font-family:Courier New,monospace;letter-spacing:2px;font-style:normal">— MARCO AURÉLIO</span></div>
+  <div class="col-2" style="margin-bottom:28px">
+    ${[['⚔️','63 Missões','Stoicas'],['📖','7 Lições','Filosóficas'],['❄️','Banhos','de Gelo'],['🏅','Medalhas','Romanas']].map(([i,t,s])=>`<div class="card-iron" style="margin-bottom:0;text-align:center;padding:16px 10px"><div style="font-size:26px;margin-bottom:6px">${i}</div><div style="font-family:Courier New,monospace;font-size:11px;letter-spacing:1px;color:#E8EDF2;font-weight:700">${t}</div><div style="font-size:10px;color:#546E7A;margin-top:2px">${s}</div></div>`).join('')}
+  </div>
+  <button class="btn-stoic" onclick="obS=1;renderOb()"><span>INICIAR O PROTOCOLO →</span></button>
+</div>`}
+function ob1(){return`
+<div>
+  <div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:3px;color:#546E7A;margin-bottom:12px">I — IDENTIFICAÇÃO</div>
+  <div style="font-family:Georgia,serif;font-size:24px;color:#E8EDF2;margin-bottom:6px">Quem se apresenta<br>ao protocolo?</div>
+  <div style="font-size:13px;color:#546E7A;font-family:Georgia,serif;margin-bottom:22px">O nome que você carrega em batalha.</div>
+  <input style="background:transparent;border:none;border-bottom:1px solid #2A2A2A;padding:12px 0;color:#E8EDF2;font-size:18px;font-family:Georgia,serif;width:100%;outline:none;text-align:center;margin-bottom:28px;letter-spacing:1px" id="ob-nm" type="text" placeholder="Seu nome..." value="${esc(obNm)}" oninput="obNm=this.value" maxlength="20"/>
+  <div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:2px;color:#546E7A;margin-bottom:14px">ESCOLHA SEU SÍMBOLO</div>
+  <div class="av-grid">${AVS.map((a,i)=>`<div class="av-stoic${obAv===i?' sel':''}" onclick="obAv=${i};renderOb()" style="font-size:34px">${a}</div>`).join('')}</div>
+  <div class="divider-rune"><div class="divider-line"></div><div class="divider-sym">—</div><div class="divider-line"></div></div>
+  <button class="btn-stoic" style="margin-top:16px" onclick="if(!obNm.trim()){alert('Seu nome é necessário.');return}obS=2;renderOb()"><span>PROSSEGUIR →</span></button>
+  <button class="btn-stoic" style="margin-top:8px;color:#546E7A;border-color:#2A2A2A" onclick="obS=0;renderOb()"><span>← VOLTAR</span></button>
+</div>`}
+function ob2(){return`
+<div>
+  <div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:3px;color:#546E7A;margin-bottom:16px">II — COMPROMISSO</div>
+  <div style="width:90px;height:90px;border:1px solid #2A2A2A;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative">
+    ${AVS[obAv]}
+    <div style="position:absolute;inset:4px;border:1px solid rgba(232,237,242,.08)"></div>
+  </div>
+  <div style="font-family:Georgia,serif;font-size:22px;color:#E8EDF2;margin-bottom:6px">${esc(obNm)}</div>
+  <div class="divider-rune"><div class="divider-line"></div><div class="divider-sym">PROTOCOLO</div><div class="divider-line"></div></div>
+  <div class="quote-stoic" style="margin:20px 0">
+    <div class="quote-text-s">Este não é um desafio de motivação. É um contrato com você mesmo. Os próximos 21 dias testarão sua capacidade de agir com calma onde antes você reagia com impulsividade.</div>
+    <div class="quote-attr">— PROTOCOLO SANGUE FRIO</div>
+  </div>
+  <div class="card-iron" style="text-align:left;margin-bottom:22px">
+    <div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:2px;color:#546E7A;margin-bottom:10px">TERMOS DO PROTOCOLO</div>
+    <div style="font-size:13px;color:#B0BEC5;line-height:1.8;font-family:Georgia,serif">⚔️ Complete as missões diárias<br>📖 Estude as lições filosóficas<br>❄️ Execute os desafios físicos<br>📋 Reflita honestamente cada dia</div>
+  </div>
+  <button class="btn-stoic btn-gold" onclick="finOb()"><span>ACEITO O PROTOCOLO ⚔️</span></button>
+</div>`}
+function finOb(){
+  S.on=true;S.nm=obNm.trim();S.av=obAv;updStreak();save();
+  document.getElementById('onboard').style.display='none';
+  document.getElementById('app').style.display='block';render();
+}
+
+// RENDER
+function render(){
+  const app=document.getElementById('app');if(!app)return;
+  let modal='';
+  if(S.modal){
+    if(S.modal.type==='medal'){const m=S.modal.m;modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal-stoic" onclick="event.stopPropagation()" style="text-align:center"><div style="font-family:Courier New,monospace;font-size:10px;letter-spacing:3px;color:#B8860B;margin-bottom:12px">MEDALHA ROMANA DESBLOQUEADA</div><div style="font-size:72px;margin-bottom:12px">${m.i}</div><div style="font-family:Georgia,serif;font-size:22px;color:#E8EDF2;margin-bottom:6px">${m.n}</div><div style="font-size:13px;color:#78909C;margin-bottom:24px;font-family:Georgia,serif;font-style:italic">${m.d}</div><button class="btn-stoic btn-gold" onclick="S.modal=null;render()"><span>HONRA RECEBIDA</span></button></div></div>`;}
+    if(S.modal.type==='lesson'){const l=S.modal.l;modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal-stoic" onclick="event.stopPropagation()" style="text-align:left;max-width:420px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="font-size:28px">${l.icon}</div><div><div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:2px;color:#546E7A;margin-bottom:2px">LIÇÃO ${l.roman} — ${l.virtue.toUpperCase()}</div><div style="font-family:Georgia,serif;font-size:16px;color:#E8EDF2;font-weight:700;line-height:1.2">${l.t}</div></div></div><div style="font-size:14px;line-height:1.85;max-height:58vh;overflow-y:auto;padding-right:4px">${l.txt}</div><button class="btn-stoic" style="margin-top:18px" onclick="S.modal=null;render()"><span>LIÇÃO CONCLUÍDA ✓</span></button></div></div>`;}
+    if(S.modal.type==='reset'){modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal-stoic" onclick="event.stopPropagation()" style="text-align:center"><div style="font-size:48px;margin-bottom:12px">⚠️</div><div style="font-family:Georgia,serif;font-size:20px;color:#E8EDF2;margin-bottom:8px">Apagar o protocolo?</div><div style="font-size:13px;color:#78909C;margin-bottom:24px;font-family:Georgia,serif;font-style:italic">Todo progresso será perdido. Não pode ser desfeito.</div><button class="btn-stoic btn-blood" style="margin-bottom:10px" onclick="resetAll()"><span>SIM, RESETAR</span></button><button class="btn-stoic" style="color:#546E7A;border-color:#2A2A2A" onclick="S.modal=null;render()"><span>CANCELAR</span></button></div></div>`;}
+  }
+  const rk=getRank();
+  const navC={home:'#E8EDF2',missions:'#B0BEC5',lessons:'#DAA520',medals:'#78909C',profile:'#546E7A'};
+  const navItems=[{id:'home',i:'🏛️',l:'FORUM'},{id:'missions',i:'⚔️',l:'MISSIO'},{id:'lessons',i:'📜',l:'LOGOS'},{id:'medals',i:'🏅',l:'GLORIA'},{id:'profile',i:'🗿',l:'ANIMA'}];
+  const nav=`<div class="nav">${navItems.map(n=>`<div class="nav-item" style="color:${S.sc===n.id?navC[n.id]:'#37474F'}" onclick="S.sc='${n.id}';render()"><div class="nav-icon">${n.i}</div><div class="nav-label">${n.l}</div></div>`).join('')}</div>`;
+  const screens={home:renderHome,missions:renderMissions,lessons:renderLessons,medals:renderMedals,profile:renderProfile};
+  app.innerHTML=modal+`<div class="fade-in">${(screens[S.sc]||renderHome)()}</div>`+nav;
+}
+
+function renderHome(){
+  const rk=getRank();const ms=DAYS[S.day-1]||[];const dc=mDone(S.day);
+  const pct=ms.length>0?Math.round(dc/ms.length*100):0;
+  const q=getQuote();
+  const xpMap=[100,300,600,1000,1500,9999];const xpPrev=[0,100,300,600,1000,1500];
+  const ri=Math.min(xpMap.findIndex(v=>v>S.xp),5);
+  const xpPct=Math.round((S.xp-xpPrev[ri])/(xpMap[ri]-xpPrev[ri])*100);
+  return`<div style="min-height:100vh;padding:0 16px 20px;background:linear-gradient(180deg,#0C0C0C 0%,#111111 100%)">
+  <!-- HEADER -->
+  <div style="padding:20px 0 16px;display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#37474F;margin-bottom:4px">⚡ SHAPE DE GRINGO</div>
+      <div style="font-family:Georgia,serif;font-size:22px;color:#E8EDF2;font-weight:700">${esc(S.nm)}</div>
+      <div class="emperor-bar" style="margin-top:8px;padding:5px 10px"><span style="font-size:14px">${rk.i}</span><span style="font-family:Courier New,monospace;font-size:10px;letter-spacing:2px;color:${rk.c}">${rk.n}</span><span style="font-family:Courier New,monospace;font-size:9px;color:#37474F;margin-left:6px">• ${S.xp} XP</span></div>
+    </div>
+    <div style="width:54px;height:54px;border:1px solid #2A2A2A;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative">
+      ${AVS[S.av||0]}
+      <div style="position:absolute;inset:3px;border:1px solid rgba(232,237,242,.06)"></div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="col-3" style="margin-bottom:14px">
+    <div class="stat-roman"><div class="stat-num" style="color:#E8EDF2">${S.st}</div><div class="stat-lbl">STREAK</div></div>
+    <div class="stat-roman"><div class="stat-num" style="color:#B0BEC5">DIA ${S.day}</div><div class="stat-lbl">/ 21</div></div>
+    <div class="stat-roman"><div class="stat-num" style="color:#DAA520">${pct}%</div><div class="stat-lbl">HOJE</div></div>
+  </div>
+
+  <!-- XP TRACK -->
+  <div style="margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="font-family:Courier New,monospace;font-size:10px;letter-spacing:1px;color:${rk.c}">${rk.i} ${rk.n}</span>
+      <span style="font-family:Courier New,monospace;font-size:10px;color:#37474F">${S.xp} XP</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" style="width:${Math.min(xpPct,100)}%"></div></div>
+  </div>
+
+  <!-- DAILY PROGRESS -->
+  <div class="card-frame" style="margin-bottom:14px">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:10px">MISSÕES — DIA ${S.day}</div>
+    <div class="prog-segmented" style="margin-bottom:12px">
+      ${ms.map((m,i)=>{const dn=!!(S.done[dk(S.day)]||{})[m.id];return`<div class="prog-seg${dn?' done':i===mDone(S.day)?' current':''}"></div>`;}).join('')}
+    </div>
+    <div style="font-family:Georgia,serif;font-size:18px;color:#E8EDF2;margin-bottom:8px">${allDone(S.day)?'Dia concluído. Avance.':dc+' de '+ms.length+' missões realizadas'}</div>
+    ${allDone(S.day)&&S.day<21?`<button class="btn-stoic" onclick="advDay()"><span>AVANÇAR — DIA ${S.day+1} →</span></button>`:`<button class="btn-stoic" style="color:#546E7A" onclick="S.sc='missions';render()"><span>VER MISSÕES DO DIA →</span></button>`}
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-stoic">
+    <div class="quote-text-s">${q.t}</div>
+    <div class="quote-attr">— ${q.a}</div>
+  </div>
+
+  <!-- 21 DAY MAP -->
+  <div style="margin-bottom:14px">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:10px">CRONOLOGIA — XXI DIAS</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+      ${Array.from({length:21},(_,i)=>{const d=i+1;const dn=allDone(d);const cur=d===S.day;
+      return`<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:Courier New,monospace;font-weight:700;cursor:pointer;border:1px solid;
+        border-color:${dn?'#546E7A':cur?'#E8EDF2':'#1A1A1A'};
+        background:${dn?'rgba(84,110,122,.15)':cur?'rgba(232,237,242,.06)':'transparent'};
+        color:${dn?'#78909C':cur?'#E8EDF2':'#2A2A2A'}"
+        onclick="S.day=${d};S.sc='missions';render()">${dn?'✓':d}</div>`;}).join('')}
+    </div>
+  </div>
+
+  <!-- LESSON HIGHLIGHT -->
+  <div class="card-ember" style="margin-bottom:0">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:10px">LIÇÃO EM DESTAQUE</div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font-size:28px">${LESSONS[0].icon}</div>
+      <div style="flex:1"><div style="font-family:Georgia,serif;font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:2px">${LESSONS[0].t}</div><div style="font-family:Courier New,monospace;font-size:10px;color:#546E7A">⏱ ${LESSONS[0].dur} • LIÇÃO ${LESSONS[0].roman}</div></div>
+    </div>
+    <button class="btn-stoic" style="margin-top:12px" onclick="openLesson(1)"><span>LER AGORA →</span></button>
+  </div>
+</div>`}
+
+function renderMissions(){
+  const ms=DAYS[S.day-1]||[];const dc=mDone(S.day);
+  const virtueColors={Temperança:'#78909C',Prudência:'#B0BEC5',Coragem:'#E53935',Justiça:'#DAA520'};
+  return`<div style="min-height:100vh;padding:0 16px 20px;background:linear-gradient(180deg,#0C0C0C 0%,#111111 100%)">
+  <div style="padding:20px 0 14px">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:4px">MISSIO — PROTOCOLO DIÁRIO</div>
+    <div style="font-family:Georgia,serif;font-size:24px;color:#E8EDF2;margin-bottom:2px">DIA ${S.day} — ${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'][S.day-1]}</div>
+    <div style="font-family:Courier New,monospace;font-size:11px;color:#546E7A">${dc}/${ms.length} concluídas · ${ms.reduce((a,m)=>a+m.xp,0)} XP em jogo</div>
+  </div>
+  <!-- Day scroll -->
+  <div style="display:flex;gap:4px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;-webkit-overflow-scrolling:touch">
+    ${DAYS.map((_,i)=>{const d=i+1;const dn=allDone(d);const cur=d===S.day;
+    return`<div style="min-width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:Courier New,monospace;font-weight:700;cursor:pointer;flex-shrink:0;border:1px solid;border-color:${dn?'#546E7A':cur?'#E8EDF2':'#1A1A1A'};color:${dn?'#78909C':cur?'#E8EDF2':'#2A2A2A'};background:${dn?'rgba(84,110,122,.1)':cur?'rgba(232,237,242,.05)':'transparent'}" onclick="S.day=${d};render()">${d}</div>`;}).join('')}
+  </div>
+  ${ms.map((m,idx)=>{const dn=!!(S.done[dk(S.day)]||{})[m.id];const vc=virtueColors[m.virtue]||'#78909C';
+  return`<div class="mission-row${dn?' done':''}" onclick="doMission(${S.day},'${m.id}')">
+    <div class="mission-num${dn?' done-num':''}">${['I','II','III'][idx]}</div>
+    <div class="mission-main">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:16px">${m.icon}</span>
+        <div style="font-family:Georgia,serif;font-size:14px;color:#E8EDF2;font-weight:700;flex:1">${m.t}</div>
+      </div>
+      <div style="font-size:12px;color:#546E7A;line-height:1.55;margin-bottom:8px;font-family:Georgia,serif;font-style:italic">${m.d}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="tag tag-ice">+${m.xp} XP</span>
+        <span class="tag" style="border-color:${vc}44;color:${vc}">${m.virtue.toUpperCase()}</span>
+        <span style="font-family:Courier New,monospace;font-size:10px;color:#37474F">⏱ ${m.min}</span>
+      </div>
+    </div>
+    <div class="mission-check-stoic" style="color:${dn?'#78909C':'#2A2A2A'}">${dn?'✓':'○'}</div>
+  </div>`;}).join('')}
+  ${dc===ms.length&&ms.length>0?`<div class="card-frame" style="text-align:center;margin-top:8px">
+    <div style="font-size:32px;margin-bottom:10px">⚔️</div>
+    <div style="font-family:Georgia,serif;font-size:18px;color:#E8EDF2;margin-bottom:4px">Dia ${S.day} concluído.</div>
+    <div style="font-size:13px;color:#546E7A;font-family:Georgia,serif;font-style:italic;margin-bottom:14px">O estoico avança. Sem comemoração excessiva.</div>
+    ${S.day<21?`<button class="btn-stoic btn-gold" onclick="advDay()"><span>AVANÇAR — DIA ${S.day+1} →</span></button>`:`<button class="btn-stoic btn-gold"><span>👑 XXI DIAS — IMPERADOR</span></button>`}
+  </div>`:''}
+</div>`}
+
+function renderLessons(){
+  const lr=Object.keys(S.lr).length;
+  return`<div style="min-height:100vh;padding:0 16px 20px;background:linear-gradient(180deg,#0C0C0C 0%,#0F0F0F 100%)">
+  <div style="padding:20px 0 14px">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:4px">LOGOS — FILOSOFIA APLICADA</div>
+    <div style="font-family:Georgia,serif;font-size:24px;color:#E8EDF2">VII Lições Estoicas</div>
+    <div style="font-family:Courier New,monospace;font-size:11px;color:#546E7A;margin-top:4px">${lr}/7 lições estudadas</div>
+  </div>
+  <div class="prog-segmented" style="margin-bottom:20px">
+    ${Array.from({length:7},(_,i)=>`<div class="prog-seg${i<lr?' done':''}" style="height:3px"></div>`).join('')}
+  </div>
+  ${LESSONS.map(l=>{const rd=!!S.lr[l.id];return`<div class="scroll-card" onclick="openLesson(${l.id})">
+    <div class="scroll-inner">
+      <div style="font-size:26px;flex-shrink:0">${l.icon}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="tag tag-smoke">LIÇÃO ${l.roman}</span>
+          <span class="tag" style="border-color:rgba(232,237,242,.15);color:#78909C">${l.virtue.toUpperCase()}</span>
+          ${rd?`<span class="tag tag-gold">✓ LIDO</span>`:''}
+        </div>
+        <div style="font-family:Georgia,serif;font-size:14px;color:#E8EDF2;font-weight:700;margin-bottom:2px">${l.t}</div>
+        <div style="font-family:Courier New,monospace;font-size:10px;color:#37474F">⏱ ${l.dur}</div>
+      </div>
+      <div style="color:#2A2A2A;font-size:18px;flex-shrink:0">›</div>
+    </div>
+  </div>`;}).join('')}
+</div>`}
+
+function openLesson(id){
+  const l=LESSONS.find(x=>x.id===id);if(!l)return;
+  S.lr[l.id]=true;save();chkMedals();S.modal={type:'lesson',l};render();
+}
+
+function renderMedals(){
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td,bf:S.bf};
+  const ul=MEDALS.filter(m=>m.ok(stats)).length;
+  return`<div style="min-height:100vh;padding:0 16px 20px;background:linear-gradient(180deg,#0C0C0C 0%,#111111 100%)">
+  <div style="padding:20px 0 14px">
+    <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:3px;color:#546E7A;margin-bottom:4px">GLORIA — MEDALHAS ROMANAS</div>
+    <div style="font-family:Georgia,serif;font-size:24px;color:#E8EDF2">Suas Conquistas</div>
+    <div style="font-family:Courier New,monospace;font-size:11px;color:#546E7A;margin-top:4px">${ul}/${MEDALS.length} medalhas conquistadas</div>
+  </div>
+  <div class="prog-track" style="margin-bottom:20px"><div class="prog-fill" style="width:${Math.round(ul/MEDALS.length*100)}%"></div></div>
+  <div class="col-2">${MEDALS.map(m=>{const ok=m.ok(stats);return`<div class="medal-card${ok?' won':''}"><span class="medal-icon" style="${ok?'':'filter:grayscale(1);opacity:.25'}">${m.i}</span><div class="medal-name" style="${ok?'':'color:#2A2A2A'}">${m.n}</div><div class="medal-desc">${m.d}</div>${ok?`<div style="margin-top:8px"><span class="tag tag-gold">✓ OBTIDA</span></div>`:''}</div>`;}).join('')}</div>
+</div>`}
+
+function renderProfile(){
+  const rk=getRank();
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td,bf:S.bf};
+  const ul=MEDALS.filter(m=>m.ok(stats)).length;
+  return`<div style="min-height:100vh;padding:0 16px 20px;background:linear-gradient(180deg,#0C0C0C 0%,#111111 100%)">
+  <div style="padding:20px 0 0;text-align:center">
+    <div style="width:90px;height:90px;border:1px solid #2A2A2A;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative">
+      ${AVS[S.av||0]}
+      <div style="position:absolute;inset:5px;border:1px solid rgba(232,237,242,.07)"></div>
+    </div>
+    <div style="font-family:Georgia,serif;font-size:24px;color:#E8EDF2;font-weight:700;margin-bottom:4px">${esc(S.nm)}</div>
+    <div style="display:inline-flex;align-items:center;gap:8px;border:1px solid ${rk.c}44;padding:5px 14px;margin-bottom:22px">
+      <span style="font-size:14px">${rk.i}</span>
+      <span style="font-family:Courier New,monospace;font-size:11px;letter-spacing:2px;color:${rk.c}">${rk.n}</span>
+    </div>
+  </div>
+  <div class="col-2" style="margin-bottom:16px">
+    ${[['⚡',S.xp,'XP TOTAL','#E8EDF2'],['🔥',S.st,'STREAK','#B0BEC5'],['✓',S.td,'MISSÕES','#78909C'],['🏅',ul,'MEDALHAS','#DAA520']].map(([i,v,l,c])=>`<div class="stat-roman" style="margin-bottom:0"><div class="stat-num" style="color:${c}">${v}</div><div class="stat-lbl">${l}</div></div>`).join('')}
+  </div>
+  <div class="quote-stoic" style="margin-bottom:16px">
+    <div class="quote-text-s">"Perde sua calma raramente. Quando perde, recupera com mais velocidade a cada vez."</div>
+    <div class="quote-attr">— DAVID GOGGINS</div>
+  </div>
+  <div class="divider-rune"><div class="divider-line"></div><div class="divider-sym">⚡ SHAPE DE GRINGO</div><div class="divider-line"></div></div>
+  <div style="font-family:Courier New,monospace;font-size:9px;letter-spacing:2px;color:#2A2A2A;text-align:center;margin:8px 0 16px">SANGUE FRIO — PROTOCOLO ESTOICO v1.0</div>
+  <button class="btn-stoic" style="color:#C62828;border-color:#2A1010" onclick="S.modal={type:'reset'};render()"><span>🔄 RESETAR PROTOCOLO</span></button>
+</div>`}
+
+load();
+if(S.on){
+  document.getElementById('onboard').style.display='none';
+  document.getElementById('app').style.display='block';
+  updStreak();render();
+}else{renderOb();}
+</script>
+</body>
+</html>

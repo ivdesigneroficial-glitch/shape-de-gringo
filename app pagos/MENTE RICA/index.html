@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#040a06">
+<title>💰 Mente Rica</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#040a06;color:#c8d8cc;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px;overflow-x:hidden}
+:root{--bg:#040a06;--card:#081208;--border:#122218;--money:#16a34a;--money2:#15803d;--gold:#d4a017;--gold2:#b8941a;--lime:#84cc16;--cream:#f0eade;--bone:#d0dcd4;--muted:#6a8a72;--dim:#3a5a42;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--purple:#a855f7;--emerald:#10b981}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(22,163,74,.03),transparent 50%),radial-gradient(ellipse at 70% 100%,rgba(212,160,23,.02),transparent 50%);pointer-events:none;z-index:0}
+.z1{position:relative;z-index:1}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid var(--border)}
+
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#061008e0;backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer}
+
+.hdr{padding:16px 16px 6px;display:flex;justify-content:space-between;align-items:center}
+.hdr-brand{display:flex;align-items:center;gap:8px}
+.hdr-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--money),var(--gold));display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 14px rgba(22,163,74,.25)}
+.hdr-title{font-size:14px;font-weight:800;color:var(--money);letter-spacing:2px}
+.hdr-sub{font-size:8px;color:var(--dim);letter-spacing:1px;margin-top:1px}
+.hdr-right{display:flex;gap:8px}
+.hdr-stat{background:var(--money)10;border:1px solid var(--money)20;border-radius:8px;padding:5px 10px;text-align:center}
+.hdr-stat-val{font-size:12px;font-weight:900;color:var(--money)}
+.hdr-stat-label{font-size:7px;color:var(--dim);letter-spacing:1px}
+.content{padding:0 14px}
+
+/* WEALTH METER */
+.wealth-card{text-align:center;background:linear-gradient(135deg,#081a0e,#0a1008,#10180a);border:1px solid var(--money)10;border-radius:18px;padding:24px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+.wealth-card::before{content:'';position:absolute;top:-40%;right:-20%;width:200px;height:200px;background:radial-gradient(circle,rgba(212,160,23,.04),transparent 70%);pointer-events:none}
+.w-ring{position:relative;width:150px;height:150px;margin:0 auto}
+.w-svg{width:150px;height:150px;transform:rotate(-90deg)}
+.w-track{fill:none;stroke:var(--border);stroke-width:8}
+.w-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.w-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.w-val{font-size:34px;font-weight:900;color:#fff}
+.w-label{font-size:8px;color:var(--dim);letter-spacing:2px;font-weight:700;margin-top:2px}
+.w-status{margin-top:12px;font-size:11px;font-weight:700;letter-spacing:1px}
+
+/* ORACLE */
+.oracle{background:linear-gradient(135deg,#0c1a0e,var(--card),#101808);border:1px solid var(--gold)10;border-radius:14px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.oracle::before{content:'';position:absolute;top:-10px;right:-10px;width:60px;height:60px;background:radial-gradient(circle,rgba(212,160,23,.05),transparent 70%);pointer-events:none}
+.oracle-label{font-size:8px;color:var(--gold);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.oracle-text{font-size:14px;color:var(--cream);line-height:1.8;font-family:Georgia,serif;font-style:italic}
+.oracle-author{font-size:10px;color:var(--dim);margin-top:8px;font-style:normal}
+
+/* LEVEL */
+.lvl-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.lvl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lvl-name{font-size:12px;font-weight:800;color:var(--money)}
+.lvl-info{font-size:9px;color:var(--dim)}
+.lvl-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.lvl-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--money2),var(--money),var(--gold));transition:width 1s ease}
+
+/* DOMAIN PILLS */
+.dom-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.dom-pill{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;white-space:nowrap}
+.dom-pill.active{border-color:var(--money);color:var(--money);background:var(--money)08}
+
+/* MISSION */
+.mission{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:all .3s;position:relative}
+.mission.done{opacity:.4}
+.mission-top{display:flex;align-items:flex-start;gap:12px}
+.m-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;font-size:11px;color:transparent}
+.m-check.checked{border-color:var(--money);background:var(--money);color:#fff}
+.m-body{flex:1}
+.m-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.m-title{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.m-desc{font-size:11px;color:var(--muted);line-height:1.7}
+.m-wisdom{font-size:10px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6;font-style:italic}
+.m-wisdom b{color:var(--gold);font-style:normal}
+.m-source{font-size:8px;color:var(--dim);margin-top:3px}
+.m-dur{position:absolute;top:16px;right:16px;font-size:8px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.m-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--amber);margin-top:6px;letter-spacing:1px}
+
+/* PROGRESS */
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.prog-icon{font-size:22px;margin-bottom:4px}
+.prog-val{font-size:18px;font-weight:900;color:var(--cream)}
+.prog-label{font-size:7px;color:var(--dim);letter-spacing:1px;font-weight:700}
+
+/* LIBRARY */
+.lib-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:10px;cursor:pointer;transition:border-color .3s}
+.lib-card:hover{border-color:var(--money)25}
+.lib-banner{height:60px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.lib-body{padding:14px 16px}
+.lib-tag{display:inline-block;font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:1px;margin-right:4px}
+
+/* RANK */
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const DOMAINS=[
+  {id:'mindset',name:'MENTALIDADE',icon:'🧠',color:'#a855f7',desc:'Reprograme crenças sobre dinheiro'},
+  {id:'vibration',name:'VIBRAÇÃO',icon:'✨',color:'#f59e0b',desc:'Frequência energética da abundância'},
+  {id:'action',name:'AÇÃO',icon:'⚡',color:'#ef4444',desc:'Atitudes práticas de riqueza'},
+  {id:'money',name:'DINHEIRO',icon:'💰',color:'#16a34a',desc:'Relação consciente com dinheiro'},
+  {id:'habits',name:'HÁBITOS',icon:'🔄',color:'#3b82f6',desc:'Rotinas de quem enriquece'},
+  {id:'identity',name:'IDENTIDADE',icon:'👑',color:'#d4a017',desc:'Torne-se a pessoa rica'},
+  {id:'gratitude',name:'GRATIDÃO',icon:'🙏',color:'#10b981',desc:'Abundância pelo reconhecimento'}
+];
+
+const MISSIONS={
+  mindset:[
+    {t:"Identifique 1 crença limitante sobre dinheiro",d:"Escreva: 'Eu acredito que dinheiro é ___.' Complete sem pensar. Depois pergunte: 'Quem me ensinou isso? É verdade? Me serve?'",w:"Bob Proctor ensina que 96% das pessoas herdam suas crenças sobre dinheiro dos pais — e nunca questionam. 'Você foi programado pra ser pobre. Desprogramar é o primeiro passo.'",s:"Bob Proctor — You Were Born Rich",dur:"10 min",xp:35},
+    {t:"Substitua 'não posso pagar' por 'como posso pagar?'",d:"Toda vez que pensar 'não tenho dinheiro pra isso', substitua por: 'COMO eu poderia pagar isso?' A pergunta muda o cérebro de modo problema pra modo solução.",w:"Robert Kiyosaki em 'Pai Rico, Pai Pobre': 'Meu pai pobre dizia: não posso pagar. Meu pai rico dizia: COMO posso pagar? Uma frase fecha a mente. A outra abre.'",s:"Robert Kiyosaki — Pai Rico, Pai Pobre",dur:"Dia todo",xp:30},
+    {t:"Reescreva sua história financeira",d:"Escreva 1 página: 'Minha história com dinheiro até hoje.' Depois escreva: 'A história que eu ESCOLHO a partir de agora.' Rasgue a primeira.",w:"T. Harv Eker: 'Seu modelo financeiro é como um termostato programado na infância. Se está programado pra R$3.000/mês, sempre voltará pra esse ponto — até reprogramar.'",s:"T. Harv Eker — Os Segredos da Mente Milionária",dur:"20 min",xp:40},
+    {t:"Elimine 1 frase de escassez do vocabulário",d:"Proíba-se de dizer UMA frase: 'tá caro', 'não dá', 'dinheiro não dá em árvore', 'rico é ladrão'. Escolha uma e elimine por 24h.",w:"Bruno Gimenes ensina que as palavras que usamos criam a realidade vibratória. 'Cada vez que você diz \"não tenho\", o Universo confirma: você não tem. Mude a palavra, mude a frequência.'",s:"Bruno Gimenes — Prosperidade sem Mistério",dur:"Dia todo",xp:30},
+    {t:"Leia 15 páginas de um livro sobre riqueza",d:"Escolha: Pai Rico Pai Pobre, Segredos da Mente Milionária, Quem Pensa Enriquece, ou qualquer livro de mentalidade financeira. 15 páginas mínimo.",w:"Charlie Munger (sócio de Warren Buffett): 'Em toda minha vida, não conheci nenhuma pessoa sábia que não lesse o tempo todo. Nenhuma. Zero.' Ler sobre riqueza programa o subconsciente pra riqueza.",s:"Charlie Munger + Napoleon Hill",dur:"30 min",xp:30},
+    {t:"Observe 3 pensamentos de escassez sem reagir",d:"Hoje, quando um pensamento de escassez surgir ('não vai dar', 'tá difícil'), não reaja. Apenas observe e diga: 'Essa é a programação antiga falando. Não sou esse pensamento.'",w:"Eckhart Tolle: 'Você não é seus pensamentos. Você é a consciência que observa os pensamentos.' Bob Proctor complementa: 'O paradigma vive no subconsciente. Observá-lo é o primeiro passo pra substituí-lo.'",s:"Bob Proctor + Eckhart Tolle",dur:"Dia todo",xp:30},
+    {t:"Perdoe alguém que te prejudicou financeiramente",d:"Identifique alguém que te causou dano financeiro (sócio, parente, chefe). Internamente, perdoe. Solte o ressentimento.",w:"Louise Hay: 'Resentimento é um veneno que você toma esperando que o outro morra.' Bruno Gimenes: 'Enquanto houver mágoa sobre dinheiro no seu campo, a prosperidade não flui. Perdão é limpeza energética.'",s:"Bruno Gimenes + Louise Hay",dur:"10 min",xp:35},
+  ],
+  vibration:[
+    {t:"Afirmação matinal: 'Eu sou abundância'",d:"Ao acordar, antes de qualquer coisa, olhe no espelho e diga 3x com convicção: 'Eu sou abundância. O dinheiro flui pra mim com facilidade. Eu mereço riqueza.'",w:"Bob Proctor praticou afirmações diárias por 50 anos. 'A repetição com emoção imprime no subconsciente. Não é o que você diz — é o que você SENTE ao dizer. Se não sentir, repita até sentir.'",s:"Bob Proctor — The Art of Living",dur:"3 min",xp:20},
+    {t:"Visualização de riqueza — 10 min",d:"Feche os olhos. Imagine sua vida financeira ideal em DETALHES: a casa, o carro, a conta bancária, as viagens. SINTA como se já fosse real. Sinta a emoção.",w:"Napoleon Hill: 'Todos os pensamentos que foram emocionalizados e misturados com fé começam imediatamente a se traduzir em seu equivalente físico.' A visualização emotiva programa o subconsciente.",s:"Napoleon Hill — Think and Grow Rich",dur:"10 min",xp:30},
+    {t:"Aja como se já fosse rico — 1 ação",d:"Faça 1 coisa que a versão rica de você faria: arrume a casa como rico, vista-se como rico, cuide do carro como rico, fale como rico.",w:"Neville Goddard: 'Assuma o sentimento do desejo realizado.' Bob Proctor: 'Você não atrai o que quer. Atrai o que É. Torne-se a frequência da riqueza e a riqueza virá.'",s:"Neville Goddard + Bob Proctor",dur:"Variável",xp:30},
+    {t:"Elimine reclamação sobre dinheiro por 24h",d:"Zero reclamação financeira: não reclame de preço, de conta, de salário, de imposto. Substitua cada reclamação por gratidão ou solução.",w:"Bruno Gimenes: 'Reclamar de dinheiro é mandar pro Universo a mensagem: EU NÃO QUERO MAIS DINHEIRO. O Universo obedece. Cada reclamação é uma ordem de escassez.'",s:"Bruno Gimenes — Poder da Ação Quântica",dur:"24h",xp:40},
+    {t:"Meditação da prosperidade — 15 min",d:"Sente em silêncio. Imagine luz dourada entrando pelo topo da cabeça e preenchendo todo corpo. A cada respiração, repita mentalmente: 'Abundância.'",w:"Deepak Chopra: 'A abundância não é algo que adquirimos. É algo que sintonizamos.' A meditação alinha o campo energético com a frequência da prosperidade.",s:"Deepak Chopra — As 7 Leis Espirituais do Sucesso",dur:"15 min",xp:35},
+    {t:"Escriba 55 vezes 1 afirmação de riqueza",d:"Pegue papel e caneta. Escreva 55 vezes: 'Eu sou grato pela riqueza abundante que flui pra minha vida.' Sem parar. A repetição imprime no subconsciente.",w:"A técnica 55x5 é baseada em Neville Goddard e Joseph Murphy. A escrita repetitiva bypassa o filtro consciente e imprime diretamente no subconsciente. Bob Proctor usava técnica similar com cartões de metas.",s:"Neville Goddard + Joseph Murphy",dur:"25 min",xp:35},
+    {t:"Cerque-se de imagens de abundância",d:"Coloque 1 imagem do que deseja financeiramente na tela do celular, no espelho do banheiro ou na carteira. Olhe várias vezes ao dia.",w:"O Vision Board (quadro de visão) ativa o Sistema Ativador Reticular (SAR) do cérebro — o filtro que decide o que você NOTA. Quando programa o SAR com abundância, começa a notar oportunidades invisíveis antes.",s:"Bob Proctor + John Assaraf — The Secret",dur:"5 min",xp:20},
+  ],
+  action:[
+    {t:"Crie ou otimize 1 fonte de renda extra",d:"Dedique 30 min a criar ou melhorar algo que gera dinheiro: produto digital, serviço, freelance, investimento. Ação > afirmação.",w:"Grant Cardone: 'Riqueza não vem de 1 fonte. Vem de MÚLTIPLAS fontes. A pessoa média tem 1 fonte de renda. O milionário médio tem 7.' Comece a segunda hoje.",s:"Grant Cardone — A Regra 10X",dur:"30 min",xp:40},
+    {t:"Invista em você — aprenda 1 habilidade nova",d:"Assista 1 aula, leia 1 artigo ou pratique 1 skill que pode gerar dinheiro: copywriting, vendas, programação, design, marketing.",w:"Warren Buffett: 'O melhor investimento que você pode fazer é em si mesmo.' Buffett lê 500 páginas por dia. A habilidade mais bem paga do mundo é a capacidade de APRENDER.",s:"Warren Buffett",dur:"30 min",xp:35},
+    {t:"Peça um aumento ou renegocie um contrato",d:"Se é empregado: marque conversa sobre aumento. Se é autônomo: renegocie 1 preço pra cima. Se vende: aumente 1 preço. A AÇÃO de pedir é a missão.",w:"Chris Voss (ex-negociador FBI): 'Você não recebe o que merece na vida. Recebe o que NEGOCIA.' A maioria dos homens nunca pede porque tem medo do não. O não já é seu — o sim é possibilidade.",s:"Chris Voss — Never Split the Difference",dur:"15 min",xp:45},
+    {t:"Elimine 1 gasto desnecessário hoje",d:"Revise assinaturas, apps, serviços. Cancele 1 que não usa. Cada real economizado é um real disponível pra investir.",w:"George Clason em 'O Homem Mais Rico da Babilônia': 'Uma parte de tudo que ganhas é tua pra guardar.' A primeira lei da riqueza é gastar menos do que ganha — sem exceção.",s:"George Clason — O Homem Mais Rico da Babilônia",dur:"10 min",xp:25},
+    {t:"Defina sua meta financeira em 1 número exato",d:"Escreva: 'Em [data], terei R$[valor] na conta.' Número exato, data exata. Cole onde verá todo dia.",w:"Napoleon Hill: 'Um desejo vago não é meta — é sonho. Defina o valor EXATO, a data EXATA e o que vai OFERECER em troca. Sem isso, o subconsciente não tem destino.'",s:"Napoleon Hill — Think and Grow Rich",dur:"10 min",xp:30},
+    {t:"Produza antes de consumir",d:"Antes de consumir qualquer conteúdo hoje (redes, vídeos, notícias), PRODUZA algo: escreva, crie, venda, planeje. Produtor > consumidor.",w:"Naval Ravikant: 'Existem 2 tipos de pessoas: as que consomem e as que criam. A riqueza está no lado da criação. Cada hora que você consome, alguém que produziu está ganhando o seu dinheiro.'",s:"Naval Ravikant — The Almanack",dur:"Dia todo",xp:35},
+  ],
+  money:[
+    {t:"Agradeça por cada gasto hoje",d:"Em cada compra que fizer, diga internamente: 'Obrigado por ter dinheiro pra pagar isso. Esse dinheiro volta multiplicado.'",w:"Bruno Gimenes: 'A maioria sente DOR ao gastar. Isso cria vibração de perda. Quando você agradece ao gastar, transforma a transação de PERDA em CIRCULAÇÃO. Dinheiro é energia — precisa circular.'",s:"Bruno Gimenes — Prosperidade sem Mistério",dur:"Dia todo",xp:25},
+    {t:"Organize TODA sua vida financeira",d:"Anote: quanto ganha, quanto gasta, quanto deve, quanto tem investido. Clareza financeira é o primeiro ato de respeito ao dinheiro.",w:"Dave Ramsey: 'Você não pode mudar o que não mede.' T. Harv Eker: 'Ricos controlam cada centavo. Pobres não sabem pra onde vai o dinheiro.' Consciência financeira é o primeiro pilar.",s:"T. Harv Eker + Dave Ramsey",dur:"30 min",xp:40},
+    {t:"Separe 10% de qualquer dinheiro que receber",d:"De TODO dinheiro que entrar hoje — salário, venda, presente — separe 10% ANTES de gastar qualquer coisa. Pague-se primeiro.",w:"George Clason: 'Uma parte de tudo que ganhas é tua pra guardar. Não menos que um décimo.' Bob Proctor: 'Se não pode guardar 10% do que ganha, não merece ganhar mais — porque fará o mesmo com mais dinheiro.'",s:"George Clason + Bob Proctor",dur:"5 min",xp:30},
+    {t:"Doe algo com intenção de abundância",d:"Doe R$1, R$5 ou R$10 pra alguém ou causa. Doe com alegria, não com obrigação. Sinta que está CIRCULANDO abundância.",w:"Deepak Chopra, Lei da Doação: 'O Universo opera pela troca dinâmica. Dar e receber são fluxos da mesma energia. Quando você para de dar, para de receber.' Bruno Gimenes: 'Doar com alegria abre o canal da prosperidade.'",s:"Deepak Chopra + Bruno Gimenes",dur:"5 min",xp:30},
+    {t:"Escreva uma carta de amor pro dinheiro",d:"Pegue papel e escreva: 'Querido dinheiro...' Diga o que sente por ele, peça desculpas por rejeitá-lo e convide-o de volta pra sua vida.",w:"T. Harv Eker: 'A maioria das pessoas tem uma relação TÓXICA com dinheiro: querem mas rejeitam, desejam mas criticam. Isso é como querer um relacionamento com alguém que você insulta todo dia.'",s:"T. Harv Eker — Os Segredos da Mente Milionária",dur:"15 min",xp:35},
+  ],
+  habits:[
+    {t:"Acorde 1h mais cedo e trabalhe no seu futuro",d:"Acorde 1h antes do normal. Use essa hora EXCLUSIVAMENTE pra trabalhar no que vai te enriquecer: negócio, estudo, skill, projeto.",w:"Robin Sharma em 'O Clube das 5 da Manhã': 'A hora dourada entre 5h e 6h é quando os gênios criam, os atletas treinam e os bilionários planejam. Enquanto o mundo dorme, você constrói.'",s:"Robin Sharma — O Clube das 5 da Manhã",dur:"60 min",xp:40},
+    {t:"Registre toda entrada e saída de dinheiro",d:"Anote TUDO que gastou e recebeu hoje. Cada centavo. Num caderno, planilha ou app.",w:"Bob Proctor: 'O que você rastreia, cresce. O que ignora, encolhe. Ricos sabem exatamente pra onde vai cada real. Pobres dizem \"não sei onde foi o dinheiro\".'",s:"Bob Proctor",dur:"5 min",xp:20},
+    {t:"Consuma 30 min de conteúdo sobre riqueza",d:"Podcast, vídeo, livro ou audiobook sobre mentalidade de riqueza, investimentos ou empreendedorismo. 30 min mínimo.",w:"Jim Rohn: 'Você é a média das 5 pessoas com quem mais convive.' Se não pode conviver com ricos, consuma o conteúdo deles. A informação muda a vibração.",s:"Jim Rohn",dur:"30 min",xp:25},
+    {t:"Faça uma coisa que te assusta financeiramente",d:"Invista mesmo com medo. Peça o preço. Cobre mais caro. Lance o produto imperfeito. A coragem financeira é músculo — treina-se.",w:"Grant Cardone: 'Se suas metas não te assustam, não são grandes o suficiente. O medo é o GPS da riqueza — ele aponta na direção do crescimento.'",s:"Grant Cardone — A Regra 10X",dur:"Variável",xp:40},
+    {t:"Planeje amanhã antes de dormir",d:"Antes de deitar, escreva as 3 ações mais importantes de amanhã pra sua vida financeira. Priorize. O dia planejado rende 3x mais.",w:"Brian Tracy: 'Cada minuto gasto planejando economiza 10 minutos de execução.' Zig Ziglar: 'Pessoas não planejam fracassar. Elas fracassam em planejar.'",s:"Brian Tracy + Zig Ziglar",dur:"10 min",xp:20},
+    {t:"Network: mande 1 mensagem pra alguém que admira",d:"Envie uma mensagem genuína pra alguém mais rico, mais bem-sucedido ou mais experiente. Elogie o trabalho. Pergunte algo. Crie conexão.",w:"Keith Ferrazzi: 'Networking não é coletar cartões — é construir relacionamentos genuínos.' Naval Ravikant: 'Seu patrimônio líquido é a média do patrimônio das 5 pessoas mais próximas.'",s:"Keith Ferrazzi + Naval Ravikant",dur:"10 min",xp:30},
+  ],
+  identity:[
+    {t:"Defina: 'Eu sou uma pessoa rica que ___'",d:"Complete 5 frases: 'Eu sou uma pessoa rica que [hábito/valor].' Ex: '...que investe todo mês', '...que gera valor', '...que pensa grande.'",w:"Joe Dispenza: 'O corpo segue a mente. Quando você muda a identidade no nível do pensamento, as ações mudam sozinhas.' Bob Proctor: 'Você não atrai o que quer. Atrai o que É.'",s:"Joe Dispenza + Bob Proctor",dur:"10 min",xp:30},
+    {t:"Vista-se 1 nível acima do seu padrão",d:"Hoje, vista-se um pouco melhor do que normalmente vestiria. Não precisa ser caro — precisa ser intencional. A roupa comunica identidade.",w:"T. Harv Eker: 'Ricos se vestem como ricos ANTES de ficarem ricos. A aparência externa programa o subconsciente e sinaliza ao mundo: eu pertenço ao nível acima.'",s:"T. Harv Eker",dur:"Dia todo",xp:20},
+    {t:"Substitua 'eu gasto' por 'eu invisto'",d:"Toda vez que gastar dinheiro hoje, reframe mentalmente: 'Não estou gastando — estou investindo em saúde/educação/experiência/negócio.'",w:"Robert Kiyosaki: 'Ricos compram ativos. Pobres compram passivos achando que são ativos.' Mudar a linguagem de gasto pra investimento muda a relação com cada transação.",s:"Robert Kiyosaki — Pai Rico, Pai Pobre",dur:"Dia todo",xp:25},
+    {t:"Estude a história de 1 bilionário por 20 min",d:"Pesquise: como começou, o que fez diferente, quais hábitos praticava. Ex: Buffett, Musk, Bezos, Oprah, Silvio Santos, Luiza Trajano.",w:"Tony Robbins: 'O sucesso deixa pistas. Não reinvente a roda — modele quem já chegou lá.' Estudar a trajetória de quem enriqueceu reprograma suas crenças sobre o que é possível.",s:"Tony Robbins — Money: Master the Game",dur:"20 min",xp:25},
+    {t:"Elimine 1 hábito de 'pessoa pobre'",d:"Identifique 1 hábito que mantém sua identidade de escassez: reclamar de preço, pechinchar por centavos, invejar ricos, evitar falar de dinheiro. Elimine por 24h.",w:"T. Harv Eker identifica 17 'arquivos de riqueza' que separam ricos de pobres mentalmente. Cada hábito de pobreza eliminado abre espaço pra um hábito de riqueza entrar.",s:"T. Harv Eker — Os Segredos da Mente Milionária",dur:"24h",xp:35},
+  ],
+  gratitude:[
+    {t:"Liste 10 coisas que dinheiro JÁ te deu",d:"Escreva 10 coisas que você tem GRAÇAS ao dinheiro: teto, comida, celular, roupas, água quente. Reconheça o que já tem.",w:"Rhonda Byrne em 'O Segredo': 'A gratidão é a frequência mais alta. Quando você é grato pelo que tem, atrai mais do que ser grato.' Gratidão financeira desbloqueia mais abundância.",s:"Rhonda Byrne — O Segredo",dur:"10 min",xp:25},
+    {t:"Agradeça ANTES de receber",d:"Feche os olhos e agradeça por algo que ainda não aconteceu financeiramente — como se já tivesse acontecido. Sinta a gratidão no corpo.",w:"Neville Goddard: 'Viva no sentimento do desejo realizado.' Agradecer ANTES é o ato de fé mais poderoso — porque programa o subconsciente pra aceitar a riqueza como fato consumado.",s:"Neville Goddard — Feeling is the Secret",dur:"5 min",xp:25},
+    {t:"Escreva 3 gratidões financeiras",d:"Antes de dormir, escreva 3 coisas financeiras pelas quais é grato hoje: uma venda, um desconto, um teto, uma refeição.",w:"Martin Seligman (fundador da Psicologia Positiva) comprovou que a prática diária de gratidão aumenta bem-estar em 25% em 30 dias. Bruno Gimenes aplica isso especificamente à prosperidade.",s:"Martin Seligman + Bruno Gimenes",dur:"5 min",xp:20},
+    {t:"Envie uma mensagem de gratidão pra quem te ajudou financeiramente",d:"Agradeça alguém que já te ajudou com dinheiro, emprego, oportunidade ou conselho. Mensagem genuína.",w:"A gratidão expressada fortalece laços e abre portas. Dale Carnegie: 'As pessoas fazem negócios com quem gostam. E gostam de quem as reconhece.'",s:"Dale Carnegie + Bruno Gimenes",dur:"5 min",xp:20},
+    {t:"Caminhe por 15 min agradecendo em silêncio",d:"Caminhe ao ar livre. A cada passo, pense em algo pelo qual é grato. Não precisa ser grande — pode ser o ar, o sol, o passo.",w:"Oprah Winfrey pratica caminhada de gratidão diária: 'É impossível sentir medo e gratidão ao mesmo tempo. Escolha gratidão e o medo se dissolve — incluindo o medo de não ter dinheiro.'",s:"Oprah Winfrey",dur:"15 min",xp:25},
+  ]
+};
+
+const LEVELS=[
+  {name:'Escasso',icon:'🪨',min:0},
+  {name:'Desperto',icon:'👁️',min:200},
+  {name:'Consciente',icon:'🌱',min:500},
+  {name:'Abundante',icon:'💎',min:1000},
+  {name:'Próspero',icon:'🔥',min:1800},
+  {name:'Magnata',icon:'🏛️',min:3000},
+  {name:'Midas',icon:'👑',min:5000}
+];
+
+const QUOTES=[
+  {t:"Você foi programado pra ser pobre. Desprogramar é o primeiro passo pra riqueza.",a:"Bob Proctor"},
+  {t:"Ricos pensam grande. Pobres pensam pequeno. O tamanho do seu pensamento determina o tamanho da sua conta.",a:"T. Harv Eker"},
+  {t:"Uma parte de tudo que ganhas é tua pra guardar. Não menos que um décimo.",a:"George Clason"},
+  {t:"Você não atrai o que quer. Você atrai o que É. Torne-se riqueza.",a:"Bob Proctor"},
+  {t:"Meu pai pobre dizia 'não posso'. Meu pai rico perguntava 'como posso?'",a:"Robert Kiyosaki"},
+  {t:"Cada vez que reclama de dinheiro, manda uma ordem de escassez pro Universo.",a:"Bruno Gimenes"},
+  {t:"O melhor investimento que existe é em você mesmo.",a:"Warren Buffett"},
+  {t:"Sucesso não é um evento. É um hábito diário praticado com consistência.",a:"Jim Rohn"},
+  {t:"O desejo de riqueza é realmente o desejo por uma vida mais plena, mais rica e mais abundante.",a:"Wallace Wattles"},
+  {t:"A abundância não é algo que adquirimos. É algo que sintonizamos.",a:"Deepak Chopra"},
+  {t:"A riqueza começa no pensamento. Se a mente é pobre, o bolso sempre será.",a:"Napoleon Hill"},
+  {t:"A gratidão transforma o que temos em suficiente — e mais.",a:"Oprah Winfrey"},
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("mr_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("mr_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('sk')||0,xp:LS.get('xp')||0,ct:LS.get('ct')||{},ld:LS.get('ld')||'',tc:LS.get('tc')||0,da:LS.get('da')||0,domF:'all'};
+function save(){LS.set('sk',S.streak);LS.set('xp',S.xp);LS.set('ct',S.ct);LS.set('ld',S.ld);LS.set('tc',S.tc);LS.set('da',S.da)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.ld!==t){if(S.ld){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.ld===y.toISOString().slice(0,10)?(S.streak+1):1}else S.streak=1;S.ct={};S.ld=t;S.da++;save()}}
+function getDM(){const d=doy(),ms=[],ks=Object.keys(MISSIONS);for(let i=0;i<7;i++){const cI=(d+i)%ks.length,cat=ks[cI],pool=MISSIONS[cat],mI=(d*7+i*11+d%7)%pool.length;ms.push({...pool[mI],dom:cat,id:`${d}-${i}`})}return ms}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlP(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function complete(id,xp){if(S.ct[id])return;S.ct[id]=true;S.xp+=xp;S.tc++;save();render()}
+function todayP(){const m=getDM();return Math.round(m.filter(x=>S.ct[x.id]).length/m.length*100)}
+function getDomInfo(id){return DOMAINS.find(d=>d.id===id)}
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,progress:renderProgress,library:renderLibrary};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'💰',label:'Hoje'},{id:'progress',icon:'📊',label:'Evolução'},{id:'library',icon:'📚',label:'Mestres'}];
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div><div class="nav">${nav.map(n=>`<div class="nav-item" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--money)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+}
+function renderHdr(){const l=getLevel();return`<div class="hdr z1"><div class="hdr-brand"><div class="hdr-icon">💰</div><div><div class="hdr-title">MENTE RICA</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.da||1}</div></div></div><div class="hdr-right"><div class="hdr-stat"><div class="hdr-stat-val">🔥${S.streak}</div><div class="hdr-stat-label">STREAK</div></div><div class="hdr-stat"><div class="hdr-stat-val">${S.xp}</div><div class="hdr-stat-label">XP</div></div></div></div>`}
+
+function renderHome(){
+  const ms=getDM(),prog=todayP(),q=QUOTES[doy()%QUOTES.length];
+  const filtered=S.domF==='all'?ms:ms.filter(m=>m.dom===S.domF);
+  const done=ms.filter(m=>S.ct[m.id]).length;
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  let h='';
+  const r=62,c=2*Math.PI*r,o=c-c*prog/100;
+  const col=prog<30?'var(--money2)':prog<70?'var(--money)':'var(--gold)';
+  h+=`<div class="wealth-card"><div class="w-ring"><svg class="w-svg" viewBox="0 0 150 150"><defs><linearGradient id="wG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--money2)"/><stop offset="50%" stop-color="var(--money)"/><stop offset="100%" stop-color="var(--gold)"/></linearGradient></defs><circle class="w-track" cx="75" cy="75" r="${r}"/><circle class="w-fill" cx="75" cy="75" r="${r}" stroke="url(#wG)" stroke-dasharray="${c}" stroke-dashoffset="${o}"/></svg><div class="w-center"><div class="w-val">${prog}%</div><div class="w-label">ABUNDÂNCIA</div></div></div><div class="w-status" style="color:${col}">${done}/${ms.length} MISSÕES · ${prog>=100?'PLENITUDE ✓':'CONSTRUINDO'}</div></div>`;
+  h+=`<div class="lvl-bar"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?nx.icon+' '+nx.name+' →':''} ${S.xp} XP</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="oracle"><div class="oracle-label">💎 SABEDORIA DO DIA</div><div class="oracle-text">"${q.t}"</div><div class="oracle-author">— ${q.a}</div></div>`;
+  h+=`<div class="dom-scroll"><div class="dom-pill ${S.domF==='all'?'active':''}" onclick="S.domF='all';render()">TODOS</div>`;
+  DOMAINS.forEach(d=>{h+=`<div class="dom-pill ${S.domF===d.id?'active':''}" onclick="S.domF='${d.id}';render()" style="${S.domF===d.id?'border-color:'+d.color+';color:'+d.color:''}">${d.icon} ${d.name}</div>`});
+  h+=`</div>`;
+  filtered.forEach(m=>{const d=getDomInfo(m.dom),dn=S.ct[m.id];h+=`<div class="mission ${dn?'done':''}"><div class="m-dur">${m.dur}</div><div class="mission-top"><div class="m-check ${dn?'checked':''}" onclick="complete('${m.id}',${m.xp})">${dn?'✓':''}</div><div class="m-body"><div class="m-cat" style="color:${d.color}">${d.icon} ${d.name}</div><div class="m-title" style="${dn?'text-decoration:line-through':''}">${m.t}</div><div class="m-desc">${m.d}</div><div class="m-wisdom">📜 <b>Mestre:</b> ${m.w}</div><div class="m-source">— ${m.s}</div><div class="m-xp">💰 +${m.xp} XP</div></div></div></div>`});
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  let h=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;filter:drop-shadow(0 0 20px rgba(22,163,74,.3))">${lv.icon}</div><div style="font-size:20px;font-weight:900;color:var(--money);margin-top:6px;font-family:Georgia,serif">${lv.name}</div><div style="font-size:11px;color:var(--dim);margin-top:4px">${S.xp} XP</div></div>`;
+  h+=`<div class="lvl-bar"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?'→ '+nx.icon+' '+nx.name+' ('+nx.min+')':'MÁXIMO'}</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="prog-grid"><div class="prog-card"><div class="prog-icon">🔥</div><div class="prog-val">${S.streak}</div><div class="prog-label">STREAK</div></div><div class="prog-card"><div class="prog-icon">📅</div><div class="prog-val">${S.da||1}</div><div class="prog-label">DIAS</div></div><div class="prog-card"><div class="prog-icon">✅</div><div class="prog-val">${S.tc}</div><div class="prog-label">MISSÕES</div></div></div>`;
+  h+=`<div class="card"><div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:2px;margin-bottom:10px">👑 JORNADA DA ABUNDÂNCIA</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><span style="font-size:20px">${l.icon}</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${u?'var(--cream)':'var(--dim)'}">${l.name}</div><div style="font-size:9px;color:var(--dim)">${l.min} XP</div></div>${u?'<span style="color:var(--money)">✓</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div class="card"><div style="font-size:10px;font-weight:800;color:var(--money);letter-spacing:2px;margin-bottom:10px">📊 DOMÍNIOS</div>`;
+  DOMAINS.forEach(d=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:16px">${d.icon}</span><div style="flex:1"><div style="font-size:11px;font-weight:700;color:${d.color}">${d.name}</div><div style="font-size:9px;color:var(--dim)">${d.desc}</div></div></div>`});
+  h+=`</div><div class="card" style="text-align:center"><button onclick="if(confirm('Resetar?')){Object.keys(localStorage).filter(k=>k.startsWith('mr_')).forEach(k=>localStorage.removeItem(k));location.reload()}" style="background:var(--money);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:11px;cursor:pointer">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+function renderLibrary(){
+  const masters=[
+    {icon:'🎩',bg:'linear-gradient(135deg,#0a1a10,#081208)',name:'Bob Proctor',role:'Mentor de Mentalidade de Riqueza',color:'var(--gold)',bio:'Passou 60 anos ensinando as leis da mente. Aluno direto de Earl Nightingale. Ensinou que 96% das pessoas são programadas pra escassez na infância.',books:['You Were Born Rich','The Art of Living','The ABCs of Success'],principle:'Você foi programado pra ser pobre. O paradigma (programação subconsciente) controla 96% dos seus resultados. Mude o paradigma = mude os resultados.'},
+    {icon:'📕',bg:'linear-gradient(135deg,#1a0a0a,#081208)',name:'Napoleon Hill',role:'Autor de Think and Grow Rich',color:'#ef4444',bio:'Entrevistou 500+ milionários por 20 anos a pedido de Andrew Carnegie. Escreveu a bíblia da mentalidade de riqueza em 1937 — ainda relevante.',books:['Think and Grow Rich','The Law of Success','Outwitting the Devil'],principle:'O desejo ardente + fé + plano de ação + persistência = riqueza inevitável. A mente subconsciente é o elo entre o homem e a Inteligência Infinita.'},
+    {icon:'💡',bg:'linear-gradient(135deg,#0a1020,#081208)',name:'T. Harv Eker',role:'Autor de Os Segredos da Mente Milionária',color:'var(--blue)',bio:'De falido a milionário em 2.5 anos. Descobriu que o "modelo financeiro" programado na infância determina o termostato financeiro de cada pessoa.',books:['Os Segredos da Mente Milionária','SpeedWealth'],principle:'Seu modelo financeiro é como um termostato. Se está programado pra R$3.000/mês, sempre voltará pra lá — até reprogramar os 17 arquivos de riqueza.'},
+    {icon:'💰',bg:'linear-gradient(135deg,#101a08,#081208)',name:'Robert Kiyosaki',role:'Autor de Pai Rico, Pai Pobre',color:'var(--money)',bio:'Revolucionou a educação financeira diferenciando ativos de passivos. Ensinou que o sistema escolar forma empregados — não ricos.',books:['Pai Rico Pai Pobre','Cashflow Quadrant','Rich Dads Guide to Investing'],principle:'Os ricos compram ativos (o que põe dinheiro no bolso). Os pobres compram passivos achando que são ativos. O quadrante determina a riqueza.'},
+    {icon:'✨',bg:'linear-gradient(135deg,#0a0820,#081208)',name:'Bruno Gimenes',role:'Autor de Prosperidade sem Mistério',color:'var(--purple)',bio:'Brasileiro que integra espiritualidade e finanças. Ensina que prosperidade é estado vibracional — e que crenças limitantes bloqueiam o fluxo da abundância.',books:['Prosperidade sem Mistério','Poder da Ação Quântica','Reprogramação Emocional'],principle:'Cada reclamação sobre dinheiro é uma ordem de escassez pro Universo. Mude as palavras, mude a frequência, mude os resultados. Prosperidade é vibração.'},
+    {icon:'🌟',bg:'linear-gradient(135deg,#1a1808,#081208)',name:'Deepak Chopra',role:'Autor de As 7 Leis Espirituais do Sucesso',color:'var(--amber)',bio:'Médico indiano que uniu ciência ocidental e sabedoria oriental. Ensina que abundância é o estado natural do universo — escassez é ilusão criada pela mente.',books:['As 7 Leis Espirituais do Sucesso','The Soul of Leadership','Abundance'],principle:'A Lei da Doação: o universo opera pela troca dinâmica. Dar e receber são o mesmo fluxo. Quando você para de dar, para de receber.'},
+    {icon:'🏛️',bg:'linear-gradient(135deg,#181008,#081208)',name:'George Clason',role:'Autor de O Homem Mais Rico da Babilônia',color:'#d4a017',bio:'Escreveu parábolas sobre riqueza ambientadas na antiga Babilônia em 1926. Princípios simples e atemporais que funcionam há 4.000 anos.',books:['O Homem Mais Rico da Babilônia'],principle:'7 curas para uma bolsa vazia: 1) Pague-se primeiro (10%). 2) Controle despesas. 3) Faça o ouro trabalhar. 4) Proteja contra perdas. 5) Faça do lar um investimento.'},
+    {icon:'🚀',bg:'linear-gradient(135deg,#1a0808,#081208)',name:'Grant Cardone',role:'Autor de A Regra 10X',color:'#ef4444',bio:'De quebrado e viciado a patrimônio de $300M. Ensina que o problema da maioria não é pensar demais — é pensar de MENOS e agir de MENOS.',books:['A Regra 10X','Sell or Be Sold','Be Obsessed or Be Average'],principle:'Multiplique toda meta por 10 e toda ação por 10. O fracasso acontece porque metas são pequenas e ação é insuficiente. Obsessão não é doença — é pré-requisito.'}
+  ];
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px">📚</div><div style="font-size:18px;font-weight:900;color:var(--gold);font-family:Georgia,serif">MESTRES DA RIQUEZA</div><div style="font-size:10px;color:var(--dim);margin-top:4px">As mentes por trás do protocolo</div></div>`;
+  masters.forEach((m,i)=>{
+    const isOpen=S.openMaster===i;
+    h+=`<div class="lib-card" onclick="S.openMaster=${isOpen?'null':i};render()" style="border-color:${isOpen?m.color+'30':'var(--border)'}"><div class="lib-banner" style="background:${m.bg}"><span style="font-size:36px">${m.icon}</span></div><div class="lib-body"><div style="font-size:16px;font-weight:800;color:var(--cream);margin-bottom:2px">${m.name}</div><div style="font-size:10px;color:${m.color};font-weight:700;letter-spacing:1px;margin-bottom:6px">${m.role}</div>`;
+    if(isOpen){
+      h+=`<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:12px">${m.bio}</div><div style="background:${m.color}08;border:1px solid ${m.color}15;border-radius:8px;padding:12px;margin-bottom:10px"><div style="font-size:8px;color:${m.color};letter-spacing:2px;font-weight:700;margin-bottom:6px">💎 PRINCÍPIO CENTRAL</div><div style="font-size:11px;color:var(--bone);line-height:1.8">${m.principle}</div></div><div style="font-size:9px;color:var(--dim);font-weight:700;letter-spacing:1px;margin-bottom:6px">📚 OBRAS</div><div style="display:flex;gap:4px;flex-wrap:wrap">${m.books.map(b=>`<span style="font-size:8px;background:${m.color}10;color:${m.color};padding:3px 8px;border-radius:3px;font-weight:700">${b}</span>`).join('')}</div></div>`;
+    }else{
+      h+=`<div style="font-size:10px;color:var(--dim);display:flex;align-items:center;justify-content:space-between;margin-top:4px"><span>${m.books.length} obras</span><span style="color:${m.color}">Ver mais →</span></div>`;
+    }
+    h+=`</div></div>`;
+  });
+  return h;
+}
+
+S.openMaster=null;
+checkDay();render();
+</script>
+</body>
+</html>

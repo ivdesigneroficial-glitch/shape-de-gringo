@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060a08">
+<title>🧠 Jejum Mental</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#060a08;color:#c8d4cc;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px;overflow-x:hidden}
+:root{--bg:#060a08;--card:#0a100c;--border:#162018;--emerald:#059669;--emerald2:#047857;--mint:#34d399;--sage:#a7c4b5;--bone:#e8ece8;--muted:#6b8074;--dim:#3d5248;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--teal:#14b8a6}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(5,150,105,.03),transparent 60%);pointer-events:none;z-index:0}
+.z1{position:relative;z-index:1}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid var(--border)}
+
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#080c09e0;backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer}
+
+.hdr{padding:16px 16px 6px;display:flex;justify-content:space-between;align-items:center}
+.hdr-brand{display:flex;align-items:center;gap:8px}
+.hdr-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--emerald),var(--emerald2));display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 12px rgba(5,150,105,.25)}
+.hdr-title{font-size:14px;font-weight:800;color:var(--mint);letter-spacing:2px}
+.hdr-sub{font-size:8px;color:var(--dim);letter-spacing:1px;margin-top:1px}
+.hdr-right{display:flex;gap:8px}
+.hdr-stat{background:var(--emerald)10;border:1px solid var(--emerald)20;border-radius:8px;padding:5px 10px;text-align:center}
+.hdr-stat-val{font-size:12px;font-weight:900;color:var(--mint)}
+.hdr-stat-label{font-size:7px;color:var(--dim);letter-spacing:1px}
+
+.content{padding:0 14px}
+
+/* WILLPOWER METER */
+.wp-card{text-align:center;background:linear-gradient(135deg,#081410,var(--card));border:1px solid var(--emerald)10;border-radius:18px;padding:24px 18px;margin-bottom:14px;position:relative}
+.wp-ring{position:relative;width:150px;height:150px;margin:0 auto}
+.wp-svg{width:150px;height:150px;transform:rotate(-90deg)}
+.wp-track{fill:none;stroke:var(--border);stroke-width:8}
+.wp-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.wp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.wp-val{font-size:34px;font-weight:900;color:#fff}
+.wp-label{font-size:8px;color:var(--dim);letter-spacing:2px;font-weight:700;margin-top:2px}
+.wp-status{margin-top:12px;font-size:11px;font-weight:700;letter-spacing:1px}
+
+/* IMPULSE TRACKER */
+.impulse-card{background:linear-gradient(135deg,#0c0808,var(--card));border:1px solid var(--red)10;border-radius:14px;padding:16px;margin-bottom:12px}
+.impulse-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.impulse-title{font-size:10px;font-weight:800;color:var(--red);letter-spacing:2px;display:flex;align-items:center;gap:6px}
+.impulse-count{font-size:10px;color:var(--dim);font-weight:700}
+.impulse-row{display:flex;gap:8px}
+.impulse-btn{flex:1;padding:12px 8px;border:1px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;text-align:center;transition:all .3s}
+.impulse-btn:active{transform:scale(.95)}
+.impulse-btn-icon{font-size:22px;margin-bottom:4px}
+.impulse-btn-label{font-size:8px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.impulse-btn.resisted{border-color:var(--emerald)40;background:var(--emerald)08}
+.impulse-btn.resisted .impulse-btn-label{color:var(--emerald)}
+.impulse-btn.gave-in{border-color:var(--red)40;background:var(--red)08}
+.impulse-btn.gave-in .impulse-btn-label{color:var(--red)}
+.impulse-log{margin-top:12px;max-height:120px;overflow-y:auto}
+.impulse-log-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)}
+.impulse-log-item:last-child{border-bottom:none}
+
+/* DOMAIN PILLS */
+.dom-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.dom-pill{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;white-space:nowrap}
+.dom-pill.active{border-color:var(--emerald);color:var(--mint);background:var(--emerald)08}
+
+/* MISSION */
+.mission{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:all .3s;position:relative}
+.mission.done{opacity:.4}
+.mission-top{display:flex;align-items:flex-start;gap:12px}
+.mission-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;font-size:11px;color:transparent}
+.mission-check.checked{border-color:var(--emerald);background:var(--emerald);color:#fff}
+.mission-body{flex:1}
+.mission-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.mission-title{font-size:14px;font-weight:700;color:var(--bone);margin-bottom:4px}
+.mission-desc{font-size:11px;color:var(--muted);line-height:1.7}
+.mission-science{font-size:10px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6;font-style:italic}
+.mission-science b{color:var(--teal);font-style:normal}
+.mission-dur{position:absolute;top:16px;right:16px;font-size:8px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.mission-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--amber);margin-top:6px;letter-spacing:1px}
+
+/* INSIGHT */
+.insight{background:linear-gradient(135deg,#0a1210,var(--card));border:1px solid var(--emerald)08;border-radius:14px;padding:18px;margin-bottom:14px}
+.insight-label{font-size:8px;color:var(--emerald);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.insight-text{font-size:14px;color:var(--bone);line-height:1.7;font-family:Georgia,serif;font-style:italic}
+.insight-source{font-size:9px;color:var(--dim);margin-top:8px;font-style:normal}
+
+/* LEVEL */
+.lvl-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.lvl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lvl-name{font-size:12px;font-weight:800;color:var(--mint)}
+.lvl-info{font-size:9px;color:var(--dim)}
+.lvl-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.lvl-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald2),var(--emerald),var(--mint));transition:width 1s ease}
+
+/* PROGRESS */
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.prog-icon{font-size:22px;margin-bottom:4px}
+.prog-val{font-size:18px;font-weight:900;color:var(--bone)}
+.prog-label{font-size:7px;color:var(--dim);letter-spacing:1px;font-weight:700}
+
+/* RANKS */
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+
+/* GUIDE CARD */
+.guide-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .3s}
+.guide-card:hover{border-color:var(--emerald)25}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ============================
+// JEJUM MENTAL — ENGINE
+// ============================
+
+const DOMAINS=[
+  {id:'awareness',name:'CONSCIÊNCIA',icon:'👁️',color:'#8b5cf6',desc:'Identificar fome real vs emocional'},
+  {id:'triggers',name:'GATILHOS',icon:'🎯',color:'#ef4444',desc:'Mapear e neutralizar gatilhos'},
+  {id:'fasting',name:'JEJUM',icon:'⏱️',color:'#f59e0b',desc:'Protocolos de jejum e abstinência'},
+  {id:'nutrition',name:'NUTRIÇÃO',icon:'🥦',color:'#059669',desc:'Comer com propósito'},
+  {id:'mind',name:'MENTE',icon:'🧠',color:'#06b6d4',desc:'Psicologia do autocontrole'},
+  {id:'body',name:'CORPO',icon:'💪',color:'#dc2626',desc:'Sinais corporais e saciedade'},
+  {id:'reset',name:'RESET',icon:'🔄',color:'#64748b',desc:'Limpar vícios alimentares'}
+];
+
+const MISSIONS={
+  awareness:[
+    {t:"Antes de comer, pergunte: 'Estou com fome ou com vontade?'",d:"Em TODA refeição e lanche hoje, pare 10 segundos antes de comer e pergunte: 'Isso é fome física (estômago vazio, fraqueza) ou emocional (tédio, ansiedade, hábito)?'",sci:"Pesquisadores da Cornell University descobriram que 75% das decisões alimentares são inconscientes. A simples pausa de 10 segundos reduz consumo impulsivo em 20%.",s:"Wansink, B. — Mindless Eating, Cornell, 2006",dur:"Dia todo",xp:30},
+    {t:"Diário alimentar — registre TUDO",d:"Anote TUDO que comer hoje com horário + emoção que estava sentindo no momento. Não julgue — apenas registre.",sci:"Estudo do Kaiser Permanente mostrou que pessoas que registram alimentação perdem 2x mais peso. O ato de registrar cria consciência automática.",s:"Kaiser Permanente — Am. Journal of Preventive Medicine, 2008",dur:"Dia todo",xp:35},
+    {t:"Escala de fome 1-10 antes de cada refeição",d:"Antes de comer, dê uma nota de 1 (sem fome) a 10 (faminto). Só coma se estiver acima de 6.",sci:"A escala de fome interoceptiva treina a reconexão com sinais corporais reais. Estudos mostram que pessoas com sobrepeso têm 40% menos consciência interoceptiva.",s:"Herbert, B.M. — Frontiers in Psychology, 2013",dur:"Dia todo",xp:25},
+    {t:"Identifique 3 momentos de fome fantasma",d:"Preste atenção a 3 momentos hoje onde sentiu 'fome' mas não era real: fome de tédio, fome de hábito ou fome social.",sci:"O hipotálamo regula fome real. O sistema límbico (emocional) gera fome fantasma. São circuitos diferentes — confundi-los é a raiz do comer compulsivo.",s:"Lutter, M. — Journal of Clinical Investigation, 2017",dur:"Dia todo",xp:30},
+    {t:"Observe sem reagir — 1 desejo alimentar",d:"Quando sentir vontade de comer algo impulsivo, NÃO coma e NÃO resista ativamente. Apenas observe o desejo. Cronometre: quanto tempo dura até passar?",sci:"O 'urge surfing' (surfar o impulso) de Alan Marlatt mostra que desejos têm duração média de 15-20 minutos. Observar sem reagir reduz intensidade em 40% na próxima ocorrência.",s:"Marlatt, A. — Relapse Prevention, 2005",dur:"Variável",xp:35},
+    {t:"Coma a primeira garfada com 30 mastigações",d:"Na próxima refeição, mastigue a PRIMEIRA garfada exatamente 30 vezes antes de engolir. Sinta textura, sabor e temperatura.",sci:"Mastigar 30x aumenta saciedade em 15% e reduz ingestão calórica em 12%. O hormônio CCK (saciedade) leva 20 min pra atingir o cérebro — mastigar devagar dá tempo.",s:"Li, J. — Am. Journal of Clinical Nutrition, 2011",dur:"5 min",xp:20},
+  ],
+  triggers:[
+    {t:"Mapeie seus 3 maiores gatilhos alimentares",d:"Escreva os 3 momentos/emoções que mais te fazem comer impulsivamente: tédio? estresse? noite? TV? redes sociais?",sci:"O modelo ABC (Antecedente-Comportamento-Consequência) da terapia comportamental mostra que todo impulso tem um gatilho. Identificar o gatilho é 50% da solução.",s:"Beck, J. — Cognitive Behavior Therapy, 2011",dur:"10 min",xp:30},
+    {t:"Substitua 1 gatilho por 1 ação",d:"Quando o gatilho alimentar aparecer (ex: tédio à noite), faça uma ação substitutiva: 20 flexões, 5 min de respiração, caminhe 10 min.",sci:"A substituição de hábitos (habit substitution) é mais eficaz que resistência pura. O cérebro precisa de ALGO no lugar — não de nada.",s:"Duhigg, C. — O Poder do Hábito, 2012",dur:"Dia todo",xp:35},
+    {t:"Distância do gatilho — afaste 1 tentação",d:"Tire 1 alimento ultraprocessado de perto de você: jogue fora, esconda, ou não compre. Aumente a distância física entre você e o impulso.",sci:"Estudo de Brian Wansink: chocolates em gaveta (vs mesa) reduzem consumo em 63%. Distância física é a barreira de autocontrole mais eficiente que existe.",s:"Wansink, B. — Slim by Design, 2014",dur:"5 min",xp:25},
+    {t:"Regra dos 10 minutos",d:"Quando sentir impulso de comer algo fora do plano, espere 10 minutos. Coloque timer. Se depois de 10 min ainda quiser, avalie. Maioria dos impulsos desaparece.",sci:"O córtex pré-frontal (razão) leva 6-10 minutos pra 'alcançar' o sistema límbico (impulso). Esperar 10 min é dar tempo pro cérebro racional assumir o controle.",s:"McClure, S.M. — Science, 2004",dur:"10 min",xp:25},
+    {t:"Identifique 1 comer emocional hoje",d:"Perceba 1 momento onde quis comer por emoção (raiva, tristeza, ansiedade, tédio) e NÃO coma. Escreva: 'Eu quis comer porque senti ___.'",sci:"Estudo publicado no Appetite Journal: 60% do consumo de junk food é gatilhado por estados emocionais, não fome fisiológica. Nomear a emoção reduz o impulso em 30%.",s:"Evers, C. — Appetite, 2010",dur:"Dia todo",xp:30},
+    {t:"Sem comer na frente de tela",d:"Toda refeição hoje: sem celular, sem TV, sem computador. Apenas você e o prato.",sci:"Comer distraído aumenta consumo em 25-50%. O cérebro não registra satisfação quando atenção está dividida — você come mais e sente menos.",s:"Robinson, E. — Am. Journal of Clinical Nutrition, 2013",dur:"Dia todo",xp:30},
+  ],
+  fasting:[
+    {t:"Jejum de 16 horas",d:"Última refeição às 20h, próxima às 12h. 16h sem comer. Água, café preto e chá sem açúcar liberados.",sci:"Jejum intermitente 16:8 melhora sensibilidade à insulina em 20-30% e eleva hormônio do crescimento em até 500%. Também reduz grelina (hormônio da fome) a longo prazo.",s:"Mattson, M.P. — NEJM, 2019",dur:"16h",xp:40},
+    {t:"Jejum de açúcar — 24h",d:"Zero açúcar refinado por 24h: sem refrigerante, doce, biscoito, suco de caixinha, chocolate, sorvete.",sci:"O açúcar ativa as mesmas regiões cerebrais que a cocaína (nucleus accumbens). Abstinência de 24h inicia o processo de 'reset' dos receptores de dopamina.",s:"Avena, N.M. — Neuroscience & Biobehavioral Reviews, 2008",dur:"24h",xp:45},
+    {t:"Jejum de ultraprocessados — dia inteiro",d:"Coma apenas alimentos que existem na natureza: carnes, ovos, vegetais, frutas, arroz, feijão. Zero pacote, zero rótulo com mais de 5 ingredientes.",sci:"Estudo do NIH (Kevin Hall, 2019): pessoas expostas a ultraprocessados comem em média 500 calorias A MAIS por dia vs comida real, mesmo com mesma disponibilidade.",s:"Hall, K.D. — Cell Metabolism, NIH, 2019",dur:"Dia todo",xp:40},
+    {t:"Janela alimentar de 8 horas",d:"Coma TODAS as suas refeições dentro de uma janela de 8 horas. Fora da janela: apenas água.",sci:"Restringir janela alimentar melhora ritmo circadiano, reduz inflamação sistêmica e melhora composição corporal independente do total calórico.",s:"Panda, S. — Cell Metabolism, Salk Institute, 2018",dur:"Dia todo",xp:35},
+    {t:"Café da manhã com gordura + proteína, zero carb",d:"Primeira refeição: ovos + abacate, ou carne + castanhas. Zero pão, zero cereal, zero suco, zero fruta.",sci:"Café da manhã rico em proteína/gordura mantém glicemia estável por 4-6h, reduzindo picos de insulina e crashes que geram fome 2h depois.",s:"Leidy, H.J. — Obesity, 2015",dur:"Manhã",xp:25},
+    {t:"Última refeição 3h antes de dormir",d:"Termine de comer pelo menos 3 horas antes de deitar. Nada sólido depois disso.",sci:"Comer perto de dormir prejudica sono REM, eleva glicemia noturna e suprime secreção de GH que ocorre nas primeiras horas do sono profundo.",s:"Kinsey, A.W. — Nutrients, 2015",dur:"Noite",xp:25},
+  ],
+  nutrition:[
+    {t:"Coma 30g de proteína no café da manhã",d:"Primeira refeição com pelo menos 30g de proteína: 4 ovos (24g) + iogurte (6g), ou 150g de frango.",sci:"Proteína no café da manhã reduz grelina (fome) por até 4 horas e aumenta PYY (saciedade). Estudo de Leidy mostra redução de 400 calorias/dia quando café tem 30g+ de proteína.",s:"Leidy, H.J. — Am. Journal of Clinical Nutrition, 2013",dur:"Manhã",xp:25},
+    {t:"Beba 500ml de água antes de cada refeição",d:"30 minutos antes de almoçar e jantar, beba 500ml de água. Sem pressa.",sci:"Estudo da Virginia Tech: beber 500ml antes das refeições reduz consumo em 13% por refeição. O estômago parcialmente cheio envia sinais de saciedade mais rápido.",s:"Davy, B.M. — Obesity, Virginia Tech, 2010",dur:"Refeições",xp:20},
+    {t:"Coma um prato com 50% de vegetais",d:"Monte seu prato: metade do prato com vegetais/salada. Coma os vegetais PRIMEIRO.",sci:"Comer fibras primeiro retarda absorção de glicose e reduz pico glicêmico em 40%. Além disso, o volume dos vegetais ocupa espaço gástrico, aumentando saciedade.",s:"Shukla, A.P. — Diabetes Care, Weill Cornell, 2015",dur:"Refeições",xp:20},
+    {t:"Mastigue cada garfada 20 vezes",d:"Em TODA refeição hoje, conte até 20 mastigações por garfada. Sem exceção. Devagar.",sci:"Mastigar devagar eleva CCK e GLP-1 (hormônios de saciedade) e reduz ingestão calórica em 12-15% por refeição. 20 mastigações é o mínimo comprovado.",s:"Li, J. — Am. Journal of Clinical Nutrition, 2011",dur:"Refeições",xp:25},
+    {t:"Coma sem molho, sem ketchup, sem maionese",d:"Toda refeição hoje: zero molho industrializado. Sal, azeite e limão liberados. Sinta o sabor real da comida.",sci:"Molhos industrializados adicionam 100-300 calorias vazias por refeição e contêm açúcar oculto + glutamato monossódico (intensificador de palatabilidade que vicia).",s:"Fung, T.T. — Public Health Nutrition, 2016",dur:"Dia todo",xp:20},
+  ],
+  mind:[
+    {t:"Meditação da fome — 10 min",d:"Quando sentir fome, sente, feche os olhos e OBSERVE a fome como sensação física. Onde está no corpo? Qual a intensidade de 1-10? Ela muda? Ela passa?",sci:"Mindfulness-Based Eating Awareness Training (MB-EAT) reduz episódios de binge eating em 73%. Observar a fome sem reagir desativa o modo automático.",s:"Kristeller, J.L. — Eating Disorders, Indiana State University, 2014",dur:"10 min",xp:30},
+    {t:"Visualize o 'eu de amanhã'",d:"Feche os olhos e visualize como vai se sentir AMANHÃ DE MANHÃ se ceder ao impulso hoje vs se resistir. Sinta a diferença no corpo.",sci:"Pesquisadores da NYU demonstraram que conectar-se emocionalmente com o 'eu futuro' aumenta autocontrole em 33%. Decisões ruins acontecem quando tratamos o eu-futuro como estranho.",s:"Hershfield, H.E. — Psychological Science, NYU, 2011",dur:"5 min",xp:25},
+    {t:"Renomeie o desejo",d:"Quando sentir impulso, diga em voz alta: 'Isso é meu sistema límbico tentando me sabotar com dopamina barata. Não sou meu impulso.'",sci:"A técnica de 'defusão cognitiva' da ACT (Acceptance and Commitment Therapy) reduz a força dos impulsos em 30-40% ao separar o EU da sensação.",s:"Hayes, S.C. — ACT, 2012",dur:"1 min",xp:20},
+    {t:"Escova os dentes quando der vontade de comer",d:"Toda vez que sentir impulso alimentar fora de hora, escove os dentes. Pasta de menta.",sci:"A menta altera percepção gustativa e sinaliza 'fim de refeição' pro cérebro. Além disso, ninguém quer comer logo depois de escovar — é barreira de atrito psicológico.",s:"Técnica comportamental — Behavioral Psychology",dur:"3 min",xp:15},
+    {t:"Jogue o jogo do 'E depois?'",d:"Quando quiser comer por impulso: 'Como um chocolate. E depois? Me sinto culpado. E depois? Como mais pra compensar. E depois? Me sinto pior.' Trace a cadeia completa.",sci:"O 'future chaining' (encadeamento futuro) ativa o córtex pré-frontal dorsolateral e simula consequências, reduzindo a impulsividade em decisões de curto prazo.",s:"Benoit, R.G. — Neuron, 2011",dur:"5 min",xp:25},
+    {t:"Substitua scroll por caminhada",d:"Toda vez que pegar o celular por tédio (que geralmente leva a comer), largue e caminhe 5 minutos.",sci:"O tédio-scroll-comer é um loop dopaminérgico documentado: tédio → celular → dopamina baixa → busca de recompensa → comida. Caminhar quebra o loop nos 3 pontos.",s:"Neurociência Comportamental — Dopamine Loop Theory",dur:"Dia todo",xp:30},
+  ],
+  body:[
+    {t:"Só coma quando o estômago roncar",d:"Hoje, espere sinais FÍSICOS reais de fome: estômago roncar, leve fraqueza, salivação. Sem fome física = sem comida.",sci:"Estudos de Brian Wansink mostram que 80% das refeições são iniciadas por gatilhos externos (hora, cheiro, visual, hábito) e apenas 20% por fome real.",s:"Wansink, B. — Mindless Eating, 2006",dur:"Dia todo",xp:35},
+    {t:"Pare de comer quando 80% satisfeito",d:"Em toda refeição, pare ANTES de sentir barriga cheia. O ponto é 80% — satisfeito mas não estufado. Os japoneses chamam de 'Hara Hachi Bu'.",sci:"O povo de Okinawa (mais longevos do mundo) praticam Hara Hachi Bu há séculos. Comer até 80% reduz consumo calórico em 20% e melhora digestão e longevidade.",s:"Willcox, B.J. — The Okinawa Program, 2001",dur:"Refeições",xp:30},
+    {t:"Caminhe 15 min após o almoço",d:"Imediatamente após almoçar, caminhe em ritmo leve por 15 minutos. Não sente.",sci:"Caminhada pós-prandial reduz pico glicêmico em 30-50% e melhora digestão. Previne o crash de energia das 14-15h que leva a buscar doce/café.",s:"Reynolds, A.N. — Diabetologia, 2016",dur:"15 min",xp:20},
+    {t:"Não coma de pé",d:"Toda refeição hoje: sentado, em mesa, com prato. Nada em pé, no balcão, na frente da geladeira.",sci:"Comer de pé aumenta velocidade de ingestão em 35% e reduz saciedade. O ritual de sentar sinaliza ao cérebro: 'esta é uma refeição real — registre.'",s:"Behavioral Psychology — Eating Behavior Studies",dur:"Dia todo",xp:15},
+    {t:"Exercício antes de comer quando ansioso",d:"Se sentir fome ansiosa (stress/nervosismo), faça 20 flexões ou 2 min de respiração profunda ANTES de comer.",sci:"Exercício breve libera endorfinas e reduz cortisol — as duas causas primárias da fome ansiosa. 2 minutos de atividade podem eliminar 80% do impulso.",s:"Blumenthal, J.A. — Psychosomatic Medicine, 2007",dur:"3 min",xp:20},
+  ],
+  reset:[
+    {t:"Dia sem açúcar, sem farinha, sem fritura",d:"Os 3 pilares do vício alimentar eliminados por 24h. Coma: carnes, ovos, arroz, feijão, vegetais, frutas.",sci:"Açúcar, farinha refinada e gordura trans são os 3 componentes que mais ativam o circuito de recompensa do cérebro, criando padrões de consumo similares a drogas.",s:"Gearhardt, A.N. — Yale Food Addiction Scale, 2009",dur:"24h",xp:45},
+    {t:"Reset de paladar — coma insosso",d:"Uma refeição hoje sem tempero forte: sem sal excessivo, sem açúcar, sem glutamato. Sinta o sabor real do alimento.",sci:"Papilas gustativas se recalibram em 2-3 semanas de redução de sal/açúcar. Uma refeição insossa inicia o processo e revela quanto seu paladar está viciado.",s:"Wise, P.M. — Chemical Senses, 2016",dur:"1 refeição",xp:25},
+    {t:"Elimine 1 alimento viciante do armário",d:"Identifique o alimento que você mais come por impulso. Jogue fora ou doe. Não compre mais.",sci:"Disponibilidade é o preditor #1 de consumo. Se está no armário, você VAI comer. Remover elimina a necessidade de autocontrole — que é recurso limitado.",s:"Baumeister, R.F. — Willpower, 2011",dur:"5 min",xp:30},
+    {t:"Cozinhe 1 refeição do zero",d:"Prepare uma refeição completa: corte os vegetais, tempere a carne, cozinhe o arroz. Sem delivery, sem processado.",sci:"Cozinhar aumenta conexão com o alimento e satisfação com porções menores. Estudo de Harvard: pessoas que cozinham em casa consomem 200 calorias/dia a menos.",s:"Wolfson, J.A. — Public Health Nutrition, Johns Hopkins, 2014",dur:"40 min",xp:30},
+    {t:"Leia o rótulo de 3 alimentos da sua cozinha",d:"Pegue 3 produtos industrializados e leia o rótulo completo. Identifique: açúcar oculto, sódio, gordura trans e ingredientes que não reconhece.",sci:"A maioria das pessoas não lê rótulos. Quando leem, reduzem consumo de ultraprocessados em 18%. Conhecimento gera repulsa natural pelo que é artificial.",s:"Campos, S. — Food Quality and Preference, 2011",dur:"10 min",xp:20},
+  ]
+};
+
+const LEVELS=[
+  {name:'Impulsivo',icon:'🍔',min:0},
+  {name:'Desperto',icon:'👁️',min:150},
+  {name:'Consciente',icon:'🌱',min:400},
+  {name:'Controlado',icon:'🧘',min:800},
+  {name:'Disciplinado',icon:'⚔️',min:1400},
+  {name:'Mestre',icon:'🧠',min:2200},
+  {name:'Soberano',icon:'👑',min:3500}
+];
+
+const QUOTES=[
+  {t:"Fome real espera. Impulso não. Essa é a diferença.",a:"Princípio do Jejum Mental"},
+  {t:"Você não está com fome. Está com tédio. E o tédio não se resolve com comida.",a:"Psicologia Comportamental"},
+  {t:"A comida controla quem come por emoção. O homem que domina a fome domina a si mesmo.",a:"Estoicismo Aplicado"},
+  {t:"Cada vez que você resiste ao impulso, seus receptores de dopamina se recalibram. A liberdade é bioquímica.",a:"Neurociência"},
+  {t:"Seu estômago não manda. Quem manda é sua mente — ou sua fraqueza.",a:"Jejum Mental"},
+  {t:"Não é sobre NÃO comer. É sobre comer com PROPÓSITO.",a:"Hara Hachi Bu — Okinawa"},
+  {t:"O açúcar é a droga mais socialmente aceita do mundo. E você está viciado.",a:"Avena, N.M. — Yale"},
+  {t:"A distância entre quem você é e quem quer ser é medida em impulsos resistidos.",a:"Jejum Mental"},
+];
+
+const IMPULSE_TYPES=[
+  {id:'boredom',icon:'😐',label:'TÉDIO'},
+  {id:'stress',icon:'😤',label:'ESTRESSE'},
+  {id:'habit',icon:'🔁',label:'HÁBITO'},
+  {id:'social',icon:'👥',label:'SOCIAL'},
+  {id:'craving',icon:'🍫',label:'DESEJO'},
+  {id:'night',icon:'🌙',label:'NOTURNO'}
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("jm_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("jm_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('sk')||0,xp:LS.get('xp')||0,ct:LS.get('ct')||{},ld:LS.get('ld')||'',tc:LS.get('tc')||0,da:LS.get('da')||0,domF:'all',
+impulseLog:LS.get('il')||[],resistedToday:LS.get('rt')||0,cededToday:LS.get('cdt')||0,openGuide:null,openGLesson:null};
+function save(){LS.set('sk',S.streak);LS.set('xp',S.xp);LS.set('ct',S.ct);LS.set('ld',S.ld);LS.set('tc',S.tc);LS.set('da',S.da);LS.set('il',S.impulseLog);LS.set('rt',S.resistedToday);LS.set('cdt',S.cededToday)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.ld!==t){if(S.ld){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.ld===y.toISOString().slice(0,10)?(S.streak+1):1}else S.streak=1;S.ct={};S.ld=t;S.da++;S.resistedToday=0;S.cededToday=0;save()}}
+
+function getDM(){const d=doy(),ms=[],ks=Object.keys(MISSIONS);for(let i=0;i<7;i++){const cI=(d+i)%ks.length,cat=ks[cI],pool=MISSIONS[cat],mI=(d*7+i*13+d%5)%pool.length;ms.push({...pool[mI],dom:cat,id:`${d}-${i}`})}return ms}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlP(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function complete(id,xp){if(S.ct[id])return;S.ct[id]=true;S.xp+=xp;S.tc++;save();render()}
+function todayP(){const m=getDM();return Math.round(m.filter(x=>S.ct[x.id]).length/m.length*100)}
+function getDomInfo(id){return DOMAINS.find(d=>d.id===id)}
+
+function logImpulse(resisted){
+  if(resisted){S.resistedToday++;S.xp+=15}else{S.cededToday++}
+  const now=new Date();
+  S.impulseLog.unshift({type:resisted?'resisted':'ceded',time:now.getHours()+':'+String(now.getMinutes()).padStart(2,'0'),date:today()});
+  if(S.impulseLog.length>50)S.impulseLog=S.impulseLog.slice(0,50);
+  save();render();
+}
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,progress:renderProgress,guide:renderGuide};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'🧠',label:'Hoje'},{id:'progress',icon:'📊',label:'Progresso'},{id:'guide',icon:'📖',label:'Guia'}];
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div><div class="nav">${nav.map(n=>`<div class="nav-item" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--mint)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+}
+
+function renderHdr(){
+  const l=getLevel();
+  return`<div class="hdr z1"><div class="hdr-brand"><div class="hdr-icon">🧠</div><div><div class="hdr-title">JEJUM MENTAL</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.da||1}</div></div></div><div class="hdr-right"><div class="hdr-stat"><div class="hdr-stat-val">🔥${S.streak}</div><div class="hdr-stat-label">STREAK</div></div><div class="hdr-stat"><div class="hdr-stat-val">💪${S.resistedToday}</div><div class="hdr-stat-label">RESISTIDOS</div></div></div></div>`;
+}
+
+function renderHome(){
+  const ms=getDM(),prog=todayP(),q=QUOTES[doy()%QUOTES.length];
+  const filtered=S.domF==='all'?ms:ms.filter(m=>m.dom===S.domF);
+  const done=ms.filter(m=>S.ct[m.id]).length;
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  let h='';
+
+  // Willpower meter
+  const r=62,c=2*Math.PI*r,o=c-c*prog/100;
+  const col=prog<30?'var(--emerald2)':prog<70?'var(--emerald)':'var(--mint)';
+  h+=`<div class="wp-card"><div class="wp-ring"><svg class="wp-svg" viewBox="0 0 150 150"><defs><linearGradient id="wpG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--emerald2)"/><stop offset="100%" stop-color="var(--mint)"/></linearGradient></defs><circle class="wp-track" cx="75" cy="75" r="${r}"/><circle class="wp-fill" cx="75" cy="75" r="${r}" stroke="url(#wpG)" stroke-dasharray="${c}" stroke-dashoffset="${o}"/></svg><div class="wp-center"><div class="wp-val">${prog}%</div><div class="wp-label">CONTROLE</div></div></div><div class="wp-status" style="color:${col}">${done}/${ms.length} MISSÕES · ${prog>=100?'CONTROLE TOTAL ✓':'EM PROGRESSO'}</div></div>`;
+
+  // Level
+  h+=`<div class="lvl-bar"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?nx.icon+' '+nx.name+' →':''} ${S.xp} XP</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Impulse tracker
+  const todayLogs=S.impulseLog.filter(l=>l.date===today());
+  h+=`<div class="impulse-card"><div class="impulse-header"><div class="impulse-title">⚡ TRACKER DE IMPULSOS</div><div class="impulse-count">Hoje: 💪${S.resistedToday} resistidos · 🍔${S.cededToday} cedidos</div></div><div style="font-size:10px;color:var(--muted);margin-bottom:10px">Sentiu impulso de comer fora de hora? Registre:</div><div class="impulse-row"><div class="impulse-btn resisted" onclick="logImpulse(true)"><div class="impulse-btn-icon">💪</div><div class="impulse-btn-label">RESISTI</div></div><div class="impulse-btn gave-in" onclick="logImpulse(false)"><div class="impulse-btn-icon">🍔</div><div class="impulse-btn-label">CEDI</div></div></div>`;
+  if(todayLogs.length>0){h+=`<div class="impulse-log">`;todayLogs.forEach(l=>{h+=`<div class="impulse-log-item"><span>${l.type==='resisted'?'💪 Resistido':'🍔 Cedido'}</span><span>${l.time}</span></div>`});h+=`</div>`}
+  h+=`</div>`;
+
+  // Quote
+  h+=`<div class="insight"><div class="insight-label">🌿 INSIGHT DO DIA</div><div class="insight-text">"${q.t}"</div><div class="insight-source">— ${q.a}</div></div>`;
+
+  // Domain filter
+  h+=`<div class="dom-scroll"><div class="dom-pill ${S.domF==='all'?'active':''}" onclick="S.domF='all';render()">TODOS</div>`;
+  DOMAINS.forEach(d=>{h+=`<div class="dom-pill ${S.domF===d.id?'active':''}" onclick="S.domF='${d.id}';render()" style="${S.domF===d.id?'border-color:'+d.color+';color:'+d.color:''}">${d.icon} ${d.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const d=getDomInfo(m.dom),dn=S.ct[m.id];
+    h+=`<div class="mission ${dn?'done':''}"><div class="mission-dur">${m.dur}</div><div class="mission-top"><div class="mission-check ${dn?'checked':''}" onclick="complete('${m.id}',${m.xp})">${dn?'✓':''}</div><div class="mission-body"><div class="mission-cat" style="color:${d.color}">${d.icon} ${d.name}</div><div class="mission-title" style="${dn?'text-decoration:line-through':''}">${m.t}</div><div class="mission-desc">${m.d}</div><div class="mission-science">🔬 <b>Ciência:</b> ${m.sci}</div><div style="font-size:8px;color:var(--dim);margin-top:2px">— ${m.s}</div><div class="mission-xp">⚡ +${m.xp} XP</div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlP();
+  const totalResisted=S.impulseLog.filter(l=>l.type==='resisted').length;
+  const totalCeded=S.impulseLog.filter(l=>l.type==='ceded').length;
+  const rate=totalResisted+totalCeded>0?Math.round(totalResisted/(totalResisted+totalCeded)*100):0;
+  let h='';
+  h+=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px">${lv.icon}</div><div style="font-size:20px;font-weight:900;color:var(--mint);margin-top:6px">${lv.name}</div><div style="font-size:11px;color:var(--dim);margin-top:4px">${S.xp} XP</div></div>`;
+  h+=`<div class="lvl-bar"><div class="lvl-top"><div class="lvl-name">${lv.icon} ${lv.name}</div><div class="lvl-info">${nx?'→ '+nx.icon+' '+nx.name:'MÁX'}</div></div><div class="lvl-track"><div class="lvl-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="prog-grid"><div class="prog-card"><div class="prog-icon">🔥</div><div class="prog-val">${S.streak}</div><div class="prog-label">STREAK</div></div><div class="prog-card"><div class="prog-icon">📅</div><div class="prog-val">${S.da||1}</div><div class="prog-label">DIAS</div></div><div class="prog-card"><div class="prog-icon">✅</div><div class="prog-val">${S.tc}</div><div class="prog-label">MISSÕES</div></div><div class="prog-card"><div class="prog-icon">💪</div><div class="prog-val">${totalResisted}</div><div class="prog-label">RESISTIDOS</div></div><div class="prog-card"><div class="prog-icon">🍔</div><div class="prog-val" style="color:var(--red)">${totalCeded}</div><div class="prog-label">CEDIDOS</div></div><div class="prog-card"><div class="prog-icon">📊</div><div class="prog-val" style="color:${rate>=70?'var(--mint)':rate>=40?'var(--amber)':'var(--red)'}">${rate}%</div><div class="prog-label">TAXA</div></div></div>`;
+  // Ranks
+  h+=`<div class="card"><div style="font-size:10px;font-weight:800;color:var(--mint);letter-spacing:2px;margin-bottom:10px">🏆 NÍVEIS DE CONTROLE</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><span style="font-size:20px">${l.icon}</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${u?'var(--bone)':'var(--dim)'}">${l.name}</div><div style="font-size:9px;color:var(--dim)">${l.min} XP</div></div>${u?'<span style="color:var(--green)">✓</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div class="card" style="text-align:center"><button onclick="if(confirm('Resetar progresso?')){Object.keys(localStorage).filter(k=>k.startsWith('jm_')).forEach(k=>localStorage.removeItem(k));location.reload()}" style="background:var(--emerald);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:11px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+const GUIDES=[
+{icon:'🧠',color:'#8b5cf6',cat:'NEUROCIÊNCIA',title:'Fome Real vs Fome Emocional',desc:'Como o cérebro distingue — e como ele te engana.',tags:['Hipotálamo','Grelina','Leptina','Fome hedônica'],
+intro:'Seu cérebro tem DOIS sistemas de fome completamente diferentes. Confundi-los é a razão #1 pela qual você come sem precisar. Aprender a diferença muda tudo.',
+lessons:[
+  {title:'Dois Sistemas, Uma Boca',type:'FUNDAMENTO',content:'Seu cérebro controla a fome por dois caminhos separados:<br><br><b>1. Fome Homeostática (Real)</b><br>Controlada pelo hipotálamo. Ativada quando o corpo PRECISA de energia: glicose baixa, estômago vazio, nutrientes em falta. Sinais: estômago ronca, leve fraqueza, dificuldade de concentrar.<br><br><b>2. Fome Hedônica (Emocional)</b><br>Controlada pelo sistema límbico (centro de prazer). Ativada por emoções, memórias, cheiros, imagens. Sinais: vontade específica ("quero chocolate"), boca saliva, pensamento fixo em comida.<br><br>A maioria das pessoas come 70-80% das vezes por fome hedônica. Ou seja: não estão com fome — estão com vontade.',practice:'Nas próximas 3 refeições, antes de comer, pare e pergunte: "Meu estômago está roncar? Tenho fraqueza física?" Se sim = fome real. Se não = fome emocional. Anote o resultado.',quote:'Não é o estômago que manda na maioria das suas refeições — é o sistema de recompensa do seu cérebro buscando prazer rápido.',source:'Lutter, M. — Journal of Clinical Investigation, 2017'},
+  {title:'Grelina e Leptina — Os Hormônios da Fome',type:'HORMÔNIOS',content:'Dois hormônios controlam fome e saciedade:<br><br><b>Grelina</b> (hormônio da FOME):<br>Produzida no estômago quando está vazio. Sobe antes das refeições e desce depois. Pico em 30 min se você não come — depois DESCE sozinha. A fome é uma onda, não uma rampa.<br><br><b>Leptina</b> (hormônio da SACIEDADE):<br>Produzida pelas células de gordura. Deveria dizer "pare de comer" ao cérebro. Mas em pessoas com sobrepeso, o cérebro desenvolve RESISTÊNCIA à leptina — como um alarme que toca tanto que você para de ouvir.<br><br><b>O segredo:</b> Grelina sobe e DESCE em ondas de 15-20 minutos. Se você esperar 20 min sem comer, a onda passa. A maioria das pessoas come no pico da onda e nunca descobre que ela passaria.',practice:'Quando sentir fome, olhe o relógio e espere 20 minutos. Observe: a fome sobe, atinge um pico, e depois desce. Se depois de 20 min ainda estiver com fome real — coma. Se passou, era onda hormonal.',quote:'A grelina é uma onda — não um tsunami. Se você esperar 20 minutos, ela recua. Mas a maioria das pessoas nunca espera.',source:'Cummings, D.E. — NEJM, 2004'},
+  {title:'Fome Hedônica — O Hack do Prazer',type:'NEUROCIÊNCIA',content:'A fome hedônica é ativada por:<br><br>• <b>Cheiro</b> — Seu cérebro associa cheiros a memórias de prazer. Cheiro de pizza = dopamina antes de comer.<br>• <b>Visual</b> — Ver comida (inclusive em foto/vídeo) dispara salivação e desejo. Redes sociais são minas terrestres.<br>• <b>Emoção</b> — Estresse, tédio, tristeza e ansiedade ativam o sistema de busca de recompensa. Comida é a recompensa mais acessível.<br>• <b>Hábito</b> — Associações tipo "TV = pipoca", "cinema = doce", "15h = café com biscoito" são automáticas.<br><br>O problema: a fome hedônica IGNORA a leptina. Você pode estar 100% satisfeito fisicamente e ainda sentir "fome" porque o sistema de prazer quer mais dopamina.',practice:'Identifique seu gatilho hedônico mais forte: cheiro, visual, emoção ou hábito? Hoje, quando ele aparecer, diga em voz alta: "Isso é fome hedônica, não real." Nomear desativa parcialmente o impulso (defusão cognitiva).',quote:'A fome hedônica não precisa do estômago. Ela mora no sistema límbico — o mesmo que controla vícios.',source:'Berridge, K.C. — Neuroscience & Biobehavioral Reviews, 2009'}
+]},
+{icon:'🍫',color:'#ef4444',cat:'VÍCIO ALIMENTAR',title:'Açúcar, Dopamina e o Loop do Prazer',desc:'Por que junk food vicia como droga — literalmente.',tags:['Dopamina','Nucleus Accumbens','Abstinência','Reset'],
+intro:'Em 2008, pesquisadores de Yale criaram a Yale Food Addiction Scale — e confirmaram o que muitos suspeitavam: alimentos ultraprocessados ativam os MESMOS circuitos cerebrais que drogas como cocaína e heroína. Não é força de vontade. É bioquímica.',
+lessons:[
+  {title:'O Circuito de Recompensa',type:'NEUROCIÊNCIA',content:'Quando você come açúcar, farinha refinada ou gordura hidrogenada, seu cérebro libera dopamina no <b>nucleus accumbens</b> — o centro de prazer. É o MESMO circuito ativado por drogas, sexo e jogos de azar.<br><br>O problema: com exposição repetida, seus receptores de dopamina se dessensibilizam (downregulation). Você precisa de MAIS estímulo pra sentir o MESMO prazer. Isso é <b>tolerância</b> — exatamente como funciona vício em drogas.<br><br><b>O loop:</b><br>Come açúcar → Dopamina sobe → Prazer → Dopamina cai → Vazio → Come mais → Precisa de mais pra sentir igual → Come AINDA mais<br><br>Não é gula. É neuroquímica.',practice:'Faça um "inventário de vício": liste os 3 alimentos que você come compulsivamente (os que você não consegue parar depois de começar). Esses são seus gatilhos dopaminérgicos primários. Eliminá-los por 7 dias inicia o reset dos receptores.',quote:'O açúcar libera dopamina no mesmo circuito cerebral que a cocaína. A diferença? O açúcar está em cada esquina.',source:'Avena, N.M. — Neuroscience & Biobehavioral Reviews, Yale, 2008'},
+  {title:'Reset Dopaminérgico — Como Sair do Loop',type:'PRÁTICA',content:'A boa notícia: receptores de dopamina se REGENERAM em 7-14 dias de abstinência do estímulo.<br><br><b>O Protocolo de Reset:</b><br><br>Dias 1-3: Mais difíceis. Abstinência real: irritabilidade, cansaço, dor de cabeça, desejo intenso. É seu cérebro gritando por dopamina.<br><br>Dias 4-7: O pior passou. Desejos diminuem. Comida real começa a ter mais sabor. Energia estabiliza.<br><br>Dias 8-14: Receptores se recalibram. Você sente prazer com coisas simples: uma fruta parece doce, água tem sabor, sono melhora.<br><br>Depois de 14 dias: Seu paladar é OUTRO. Junk food parece enjoativo. Você quebrou o ciclo.',practice:'Desafio de 7 dias: elimine os 3 alimentos do seu inventário de vício. Substitua por: frutas, castanhas e chocolate 70%+. Nos dias 1-3, quando o desejo apertar, caminhe 10 minutos ou beba 500ml de água gelada. Anote a intensidade do desejo de 1-10 cada dia.',quote:'Não é questão de willpower. É questão de bioquímica. Resete os receptores e o jogo muda.',source:'Volkow, N.D. — Nature Neuroscience, NIH, 2005'}
+]},
+{icon:'⏱️',color:'#f59e0b',cat:'JEJUM',title:'Protocolos de Jejum que Funcionam',desc:'16:8, OMAD, jejum de açúcar — ciência e prática.',tags:['Autofagia','Insulina','GH','Janelas'],
+intro:'O jejum intermitente não é dieta — é padrão alimentar. Você não muda O QUE come, muda QUANDO come. E os efeitos na composição corporal, hormônios e longevidade são respaldados por centenas de estudos.',
+lessons:[
+  {title:'16:8 — O Protocolo Base',type:'PROTOCOLO',content:'O método mais acessível e estudado:<br><br><b>16 horas sem comer</b> + <b>8 horas de janela alimentar</b><br><br>Exemplo: Última refeição às 20h → Próxima às 12h do dia seguinte.<br><br>O que acontece no corpo durante as 16h:<br>• <b>0-4h:</b> Digestão da última refeição. Insulina alta.<br>• <b>4-8h:</b> Insulina cai. Corpo começa a usar gordura como combustível.<br>• <b>8-12h:</b> GH (hormônio do crescimento) sobe até 500%. Queima de gordura acelera.<br>• <b>12-16h:</b> Autofagia se inicia — células reciclam componentes danificados. Anti-envelhecimento celular.<br><br>Permitido durante o jejum: água, café preto, chá sem açúcar. NADA com caloria.',practice:'Comece gradual: pule o café da manhã amanhã. Primeira refeição ao meio-dia. Última às 20h. Beba bastante água e café preto pela manhã. Faça isso por 5 dias seguidos e observe como sua fome matinal DESAPARECE (ela era hábito, não necessidade).',quote:'O jejum intermitente 16:8 melhora sensibilidade à insulina, eleva GH em 500% e ativa autofagia — a reciclagem celular do corpo.',source:'Mattson, M.P. — New England Journal of Medicine, 2019'},
+  {title:'Autofagia — Seu Corpo se Limpando',type:'CIÊNCIA',content:'Autofagia (do grego: "comer a si mesmo") é o processo onde suas células reciclam componentes velhos, danificados ou disfuncionais. É como uma faxina celular que só acontece em estado de jejum.<br><br>Yoshinori Ohsumi ganhou o Nobel de Medicina em 2016 por desvendar os mecanismos da autofagia.<br><br><b>Benefícios comprovados:</b><br>• Remove proteínas danificadas (prevenção de Alzheimer, Parkinson)<br>• Recicla mitocôndrias disfuncionais (mais energia)<br>• Elimina patógenos intracelulares (imunidade)<br>• Retarda envelhecimento celular<br><br>A autofagia se intensifica após 12-16h de jejum e atinge pico entre 24-48h. O protocolo 16:8 já ativa o processo — jejuns mais longos intensificam.',practice:'2x por semana, estenda seu jejum para 18-20h (em vez de 16h). Isso maximiza a autofagia sem ser extremo. Ex: última refeição às 18h, próxima às 12h-14h do dia seguinte.',quote:'A autofagia é o mecanismo anti-envelhecimento mais poderoso que seu corpo possui — e é ativada simplesmente ao não comer.',source:'Ohsumi, Y. — Prêmio Nobel de Medicina, 2016'}
+]},
+{icon:'🧘',color:'#14b8a6',cat:'MINDFULNESS',title:'Comer Consciente — MB-EAT',desc:'Como a meditação aplicada à comida elimina binge eating.',tags:['Urge surfing','Atenção plena','Saciedade','Presença'],
+intro:'O Mindfulness-Based Eating Awareness Training (MB-EAT) foi desenvolvido na Indiana State University e reduz episódios de binge eating em até 73%. O princípio é simples: quanto mais presente você está enquanto come, menos come e mais satisfeito fica.',
+lessons:[
+  {title:'Urge Surfing — Surfar o Impulso',type:'TÉCNICA CENTRAL',content:'Quando um impulso alimentar aparece, a reação instintiva é lutar contra ele (resistir) ou ceder a ele (comer). As duas opções alimentam o ciclo.<br><br>O Urge Surfing propõe uma terceira via: <b>OBSERVAR</b>.<br><br><b>Como funciona:</b><br>1. Sinta o impulso aparecer. Não lute. Não ceda.<br>2. Observe como sensação física: "Onde está no meu corpo? Boca? Estômago? Peito?"<br>3. Dê uma nota de 1-10 pra intensidade.<br>4. Observe a intensidade subir... atingir o pico... e DESCER.<br>5. O impulso é uma onda. Ele dura 15-20 minutos. Se você "surfar" a onda sem reagir, ela passa.<br><br>Cada vez que você surfa um impulso, o próximo fica 10-15% mais fraco. Em 2 semanas, os impulsos perdem força significativa.',practice:'Na próxima vez que sentir vontade de comer algo impulsivo: sente, feche os olhos, coloque um timer de 20 minutos. Observe o desejo como uma onda. Dê nota de 1-10 a cada 5 minutos. Não coma até o timer acabar. Anote se a onda passou.',quote:'O impulso é uma onda — não um comando. Você não precisa obedecer ao mar. Precisa aprender a surfar.',source:'Marlatt, A. — Relapse Prevention, University of Washington, 2005'},
+  {title:'A Refeição de 20 Minutos',type:'PRÁTICA',content:'O cérebro leva 20 minutos pra registrar saciedade (via CCK e leptina). Se você come em 5-7 minutos, termina ANTES do cérebro saber que está satisfeito — e come mais.<br><br><b>Protocolo da Refeição Consciente:</b><br><br>1. Sente em mesa, sem tela, sem distração<br>2. Olhe a comida por 5 segundos antes de começar<br>3. Primeira garfada: mastigue 20 vezes<br>4. Coloque o garfo na mesa entre garfadas<br>5. A cada 3 garfadas, avalie de 1-10: quão satisfeito está?<br>6. Pare quando chegar em 7/10 (80% satisfeito)<br>7. A refeição deve durar mínimo 20 minutos<br><br>Resultado: você come 15-25% menos, sente mais sabor e fica satisfeito por mais tempo.',practice:'Na próxima refeição, coloque um timer de 20 minutos visível. Não termine antes do timer. Mastigue devagar, solte o garfo, beba água entre garfadas. Anote quanto comeu vs o normal — a diferença vai te surpreender.',quote:'Quando você come devagar, o corpo tem tempo de dizer "já chega" antes que seja tarde.',source:'Robinson, E. — American Journal of Clinical Nutrition, 2014'}
+]},
+{icon:'🛒',color:'#059669',cat:'AMBIENTE',title:'Design de Ambiente Anti-Impulso',desc:'Reorganize cozinha e rotina pra vencer sem willpower.',tags:['Distância','Visibilidade','Pratos','Atrito'],
+intro:'Brian Wansink da Cornell University provou que o ambiente onde você come importa mais do que sua força de vontade. Pequenas mudanças no design da cozinha e da rotina reduzem consumo em 20-50% SEM esforço consciente.',
+lessons:[
+  {title:'O Princípio da Distância',type:'DESIGN AMBIENTAL',content:'O estudo mais famoso de Wansink: chocolates colocados NA MESA do escritório foram consumidos 48% mais do que quando colocados na GAVETA (1.8m de distância).<br><br><b>A regra é brutal:</b> quanto mais perto e mais visível a comida, mais você come. Quanto mais longe e escondida, menos.<br><br><b>Aplicações práticas:</b><br>• Doces/snacks: armário alto, fundo da prateleira, dentro de pote opaco<br>• Frutas/saudáveis: bancada da cozinha, na frente da geladeira, visíveis<br>• Geladeira: vegetais na prateleira do meio (altura dos olhos), besteiras atrás<br>• Casa: não estoque junk food. Se não está lá, não come. Eliminar > resistir.<br><br>Você não precisa de mais disciplina. Precisa de menos tentação ao alcance.',practice:'Agora: reorganize 1 prateleira da cozinha. Mova o alimento mais tentador pra trás/cima/dentro de pote opaco. Coloque algo saudável no lugar. Essa mudança de 3 minutos reduz consumo de junk por semanas.',quote:'A melhor decisão alimentar é aquela que você nem precisa tomar — porque o ambiente já decidiu por você.',source:'Wansink, B. — Slim by Design, Cornell, 2014'},
+  {title:'Prato Menor = Come Menos',type:'HACK VISUAL',content:'A ilusão de Delboeuf prova que o tamanho do prato altera a percepção da porção:<br><br>• Prato grande (30cm): a mesma porção parece PEQUENA → você coloca mais<br>• Prato pequeno (22cm): a mesma porção parece GRANDE → você se satisfaz<br><br>Estudos de Wansink: trocar prato de 30cm por 22cm reduz consumo em 22% — sem a pessoa perceber ou sentir fome.<br><br><b>Outros hacks visuais:</b><br>• Copo alto e fino em vez de curto e largo (bebe 30% menos líquido calórico)<br>• Servir na cozinha, comer na mesa (não deixar travessa na mesa — quem vê repete)<br>• Usar pratos de cor contrastante com a comida (mais consciência visual)',practice:'Na próxima refeição, use o menor prato que tiver. Sirva uma porção normal. Coma devagar. Observe: você se sente satisfeito com menos. Se ainda tiver fome real depois de 20 min, sirva mais. A maioria não precisa.',quote:'Reduzir o prato de 30 para 22 centímetros elimina 200 calorias por dia — sem fome, sem esforço, sem perceber.',source:'Wansink, B. — Journal of Consumer Research, Cornell, 2006'}
+]},
+{icon:'🔄',color:'#3b82f6',cat:'HÁBITOS',title:'Substituição de Hábitos Alimentares',desc:'O loop do hábito e como reprogramar gatilhos.',tags:['Loop','Substituição','Atrito','Identidade'],
+intro:'Charles Duhigg em "O Poder do Hábito" demonstrou que hábitos não são eliminados — são SUBSTITUÍDOS. Você não pode apagar um circuito neural de hábito. Mas pode redirecionar o circuito pra um comportamento diferente.',
+lessons:[
+  {title:'O Loop: Gatilho → Rotina → Recompensa',type:'MODELO CENTRAL',content:'Todo hábito alimentar segue um loop de 3 partes:<br><br><b>1. GATILHO</b> — O que dispara o comportamento<br>Ex: "São 15h" / "Tô entediado" / "Vi propaganda" / "Cheguei do trabalho"<br><br><b>2. ROTINA</b> — O comportamento em si<br>Ex: Abrir o armário → pegar biscoito → comer no sofá<br><br><b>3. RECOMPENSA</b> — O que o cérebro ganha<br>Ex: Dopamina / alívio do tédio / conforto / distração<br><br><b>O segredo:</b> O gatilho e a recompensa são FIXOS. O que você muda é a ROTINA. O cérebro quer a recompensa (dopamina/alívio) — não necessariamente o biscoito.<br><br>Substitua a rotina mantendo gatilho e recompensa: "São 15h (gatilho) → faço 20 flexões (nova rotina) → endorfina + orgulho (recompensa)".',practice:'Mapeie 1 hábito alimentar ruim: qual é o gatilho? Qual é a recompensa real (não a comida, mas o que ela te dá: alívio, prazer, distração)? Agora escolha 1 rotina substitutiva que dê a MESMA recompensa: caminhar, flexões, ligar pra alguém, respiração profunda. Teste por 3 dias.',quote:'Você não elimina um mau hábito. Você o substitui. O circuito neural é permanente — mas o destino pode mudar.',source:'Duhigg, C. — O Poder do Hábito, 2012'},
+  {title:'Friction Design — Adicione Atrito ao Ruim',type:'ESTRATÉGIA AVANÇADA',content:'O princípio do design de atrito (friction design) é simples: torne comportamentos ruins MAIS DIFÍCEIS de executar e comportamentos bons MAIS FÁCEIS.<br><br><b>Adicionar atrito ao ruim:</b><br>• Não compre junk food (ir à loja = atrito máximo)<br>• Coloque doces em pote opaco, no armário alto, atrás de outras coisas<br>• Delete apps de delivery do celular<br>• Embale snacks em porções individuais antes (ter que abrir = atrito)<br><br><b>Remover atrito do bom:</b><br>• Deixe frutas lavadas e cortadas na geladeira<br>• Tenha água sempre visível e cheia<br>• Prepare marmita no domingo (comer saudável = pegar e esquentar)<br>• Castanhas em potinho na mesa<br><br>Cada segundo de atrito reduz a probabilidade de ação em 20%. 3 segundos de atrito = 60% menos chance de ceder.',practice:'Adicione 1 atrito ao seu hábito alimentar ruim: mude o app de delivery de tela, jogue fora 1 alimento tentador, coloque algo saudável no lugar mais visível da cozinha. 1 mudança hoje = semanas de resultado.',quote:'Não confie na sua disciplina. Confie no design do seu ambiente. O ambiente vence a vontade todas as vezes.',source:'Thaler, R.H. — Nudge: Improving Decisions, 2008'}
+]}
+];
+
+function renderGuide(){
+  if(S.openGuide!==undefined&&S.openGuide!==null) return renderGuideDetail(S.openGuide);
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px">📖</div><div style="font-size:18px;font-weight:900;color:var(--mint)">GUIA DO CONTROLE</div><div style="font-size:10px;color:var(--dim);margin-top:4px">Toque para abrir cada módulo</div></div>`;
+  GUIDES.forEach((g,i)=>{
+    h+=`<div class="guide-card" onclick="S.openGuide=${i};S.openGLesson=null;render()"><div style="display:flex;align-items:flex-start;gap:14px"><div style="width:44px;height:44px;border-radius:12px;background:${g.color}12;border:1px solid ${g.color}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${g.icon}</div><div style="flex:1"><div style="font-size:8px;font-weight:700;letter-spacing:2px;color:${g.color};margin-bottom:3px">${g.cat}</div><div style="font-size:14px;font-weight:800;color:var(--bone);margin-bottom:4px">${g.title}</div><div style="font-size:11px;color:var(--muted);line-height:1.5">${g.desc}</div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><div style="display:flex;gap:4px;flex-wrap:wrap">${g.tags.map(t=>`<span style="font-size:8px;background:${g.color}10;color:${g.color};padding:3px 8px;border-radius:3px;font-weight:700">${t}</span>`).join('')}</div><span style="font-size:10px;color:${g.color};font-weight:700">${g.lessons.length} lições →</span></div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderGuideDetail(idx){
+  const g=GUIDES[idx];
+  let h=`<div style="padding:6px 0"><button onclick="S.openGuide=null;S.openGLesson=null;render()" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px">← VOLTAR</button></div>`;
+  h+=`<div style="text-align:center;padding:16px 0 20px"><div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 16px ${g.color}40)">${g.icon}</div><div style="font-size:8px;color:${g.color};letter-spacing:3px;font-weight:700;margin-bottom:6px">${g.cat}</div><div style="font-size:20px;font-weight:900;color:var(--bone);line-height:1.3">${g.title}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">${g.lessons.length} lições</div></div>`;
+  h+=`<div class="insight" style="border-color:${g.color}12"><div class="insight-label" style="color:${g.color}">📖 INTRODUÇÃO</div><div style="font-size:12px;color:var(--muted);line-height:1.8">${g.intro}</div></div>`;
+  g.lessons.forEach((l,i)=>{
+    const isOpen=S.openGLesson===i;
+    h+=`<div class="card" style="cursor:pointer;border-color:${isOpen?g.color+'30':'var(--border)'};margin-bottom:8px" onclick="S.openGLesson=${isOpen?'null':i};render()"><div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:28px;border-radius:8px;background:${g.color}12;border:1px solid ${g.color}20;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:${g.color};flex-shrink:0">${i+1}</div><div><div style="font-size:13px;font-weight:700;color:${isOpen?'var(--bone)':'var(--sage)'}">${l.title}</div><div style="font-size:9px;color:var(--dim);margin-top:1px">${l.type}</div></div></div><span style="font-size:14px;color:var(--dim);transition:transform .3s;display:inline-block;transform:rotate(${isOpen?'90':'0'}deg)">›</span></div>${isOpen?`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:12px;color:var(--muted);line-height:1.9">${l.content}</div>${l.practice?`<div style="margin-top:12px;background:${g.color}06;border:1px solid ${g.color}12;border-radius:10px;padding:14px"><div style="font-size:8px;color:${g.color};letter-spacing:2px;font-weight:700;margin-bottom:6px">⚡ EXERCÍCIO PRÁTICO</div><div style="font-size:11px;color:var(--bone);line-height:1.8">${l.practice}</div></div>`:''}<div style="margin-top:12px;padding:12px;border-left:2px solid ${g.color}40;font-style:italic;font-family:Georgia,serif;font-size:12px;color:var(--muted);line-height:1.7">"${l.quote}"<div style="font-size:9px;color:var(--dim);margin-top:4px;font-style:normal">— ${l.source}</div></div></div>`:''}</div>`;
+  });
+  return h;
+}
+
+checkDay();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0608">
+<title>🔥 Protocolo Hormonal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#0a0608;color:#e8e0d8;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:72px;overflow-x:hidden}
+
+/* PALETTE: Deep crimson + burnt orange + bone white */
+:root{--bg:#0a0608;--card:#12090c;--border:#1f1318;--accent:#dc2626;--accent2:#ea580c;--accent3:#f59e0b;--bone:#e8e0d8;--muted:#8a7e76;--dim:#5c524a;--green:#22c55e;--purple:#a855f7}
+
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer;transition:color .2s}
+.nav-item.active{color:var(--accent)}
+
+/* HEADER */
+.header{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center}
+.header-left .h-title{font-size:16px;font-weight:900;color:var(--accent);letter-spacing:1px}
+.header-left .h-sub{font-size:10px;color:var(--dim);letter-spacing:1px;margin-top:2px}
+.header-right{display:flex;align-items:center;gap:10px}
+.streak-badge{background:var(--accent)15;border:1px solid var(--accent)30;border-radius:10px;padding:6px 12px;text-align:center}
+.streak-num{font-size:16px;font-weight:900;color:var(--accent)}
+.streak-label{font-size:8px;color:var(--dim);letter-spacing:1px}
+
+/* MAIN CONTENT */
+.content{padding:0 16px}
+
+/* HORMONE METER */
+.meter{position:relative;text-align:center;padding:20px 0}
+.meter-ring{position:relative;width:160px;height:160px;margin:0 auto}
+.meter-svg{width:160px;height:160px;transform:rotate(-90deg)}
+.meter-bg{fill:none;stroke:var(--border);stroke-width:10}
+.meter-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease,stroke 1s ease}
+.meter-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.meter-val{font-size:36px;font-weight:900;color:#fff}
+.meter-label{font-size:9px;color:var(--dim);letter-spacing:2px;font-weight:700;margin-top:2px}
+.meter-status{margin-top:10px;font-size:11px;font-weight:700;letter-spacing:1px}
+
+/* PILLAR TAGS */
+.pillar-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.pillar-tag{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;white-space:nowrap}
+.pillar-tag.active{border-color:var(--accent);color:var(--accent);background:var(--accent)08}
+
+/* MISSION CARD */
+.mission{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:all .3s;position:relative;overflow:hidden}
+.mission.done{opacity:.5}
+.mission.done::after{content:'';position:absolute;inset:0;background:rgba(34,197,94,.03);pointer-events:none}
+.mission-top{display:flex;align-items:flex-start;gap:12px}
+.mission-check{width:28px;height:28px;border-radius:8px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;font-size:12px;color:transparent}
+.mission-check.checked{border-color:var(--green);background:var(--green);color:#fff}
+.mission-body{flex:1}
+.mission-pillar{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.mission-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.mission-desc{font-size:11px;color:var(--muted);line-height:1.6}
+.mission-science{font-size:9px;color:var(--dim);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.5;font-style:italic}
+.mission-science b{color:var(--accent2);font-style:normal}
+.mission-duration{position:absolute;top:16px;right:16px;font-size:9px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.mission-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--accent3);margin-top:6px;letter-spacing:1px}
+
+/* DAILY INSIGHT */
+.insight{background:linear-gradient(135deg,#1a0a10,var(--card));border:1px solid var(--accent)15;border-radius:14px;padding:18px;margin-bottom:14px}
+.insight-label{font-size:8px;color:var(--accent);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.insight-text{font-size:14px;color:var(--bone);line-height:1.7;font-style:italic}
+.insight-source{font-size:9px;color:var(--dim);margin-top:8px}
+
+/* PROGRESS SCREEN */
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;text-align:center}
+.prog-card-icon{font-size:28px;margin-bottom:4px}
+.prog-card-val{font-size:22px;font-weight:900;color:#fff}
+.prog-card-label{font-size:9px;color:var(--dim);letter-spacing:1px;font-weight:700}
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+
+/* LEVEL BAR */
+.level-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.level-name{font-size:14px;font-weight:800;color:var(--accent)}
+.level-next{font-size:10px;color:var(--dim)}
+.level-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.level-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));transition:width 1s ease}
+
+/* RANKINGS */
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-pos{font-size:14px;font-weight:900;width:28px;text-align:center}
+.rank-icon{font-size:24px}
+.rank-name{font-size:13px;font-weight:700;color:#fff}
+.rank-req{font-size:10px;color:var(--dim)}
+
+/* LEARN SCREEN */
+.article{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;cursor:pointer;transition:border-color .3s}
+.article:hover{border-color:var(--accent)30}
+.article-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.article-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px}
+.article-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.article-meta{font-size:9px;color:var(--dim);margin-top:8px;display:flex;gap:12px}
+
+/* SETTINGS SCREEN */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-left{display:flex;align-items:center;gap:10px}
+.setting-icon{font-size:18px}
+.setting-name{font-size:13px;font-weight:600;color:var(--bone)}
+.toggle{width:42px;height:24px;border-radius:12px;background:var(--border);cursor:pointer;position:relative;transition:background .3s}
+.toggle.on{background:var(--accent)}
+.toggle-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:transform .3s}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+
+/* ANIMATIONS */
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px var(--accent)40)}50%{filter:drop-shadow(0 0 16px var(--accent)60)}}
+
+/* SCREEN CONTAINERS */
+.screen{display:none}.screen.active{display:block}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ==============================
+// PROTOCOLO HORMONAL — ENGINE
+// ==============================
+
+// === 7 PILARES HORMONAIS (Base científica) ===
+const PILLARS = [
+  {id:'sleep',name:'SONO',icon:'🌙',color:'#7c3aed',desc:'Otimização do sono profundo'},
+  {id:'nutrition',name:'NUTRIÇÃO',icon:'🥩',color:'#ea580c',desc:'Alimentação pró-testosterona'},
+  {id:'training',name:'TREINO',icon:'💪',color:'#dc2626',desc:'Exercícios que elevam T'},
+  {id:'cold',name:'FRIO',icon:'🧊',color:'#0ea5e9',desc:'Exposição ao frio tático'},
+  {id:'sun',name:'SOL',icon:'☀️',color:'#f59e0b',desc:'Vitamina D e ritmo circadiano'},
+  {id:'stress',name:'ESTRESSE',icon:'🧠',color:'#22c55e',desc:'Controle do cortisol'},
+  {id:'habits',name:'HÁBITOS',icon:'⚡',color:'#f43e5e',desc:'Protocolos anti-estrogênio'}
+];
+
+// === MISSÕES POR PILAR (Pool gigante — nunca acaba) ===
+const MISSIONS = {
+  sleep: [
+    {t:"Blackout total",d:"Elimine TODA luz do quarto: cubra LEDs, use cortina blackout ou fita preta nas frestas.",sci:"Melatonina é suprimida por até 50% com exposição a luz azul/verde à noite. — Journal of Clinical Endocrinology, 2011",dur:"Noite",xp:30},
+    {t:"Tela off 1h antes",d:"Desligue celular, TV e computador 60 minutos antes de dormir. Leia ou medite.",sci:"Telas reduzem melatonina em 22% e atrasam o sono REM em 30 min. — PNAS, 2014",dur:"60 min",xp:35},
+    {t:"Quarto a 18-20°C",d:"Ajuste ventilador/ar pra manter o quarto frio. Durma sem cobertor pesado.",sci:"Temperatura corporal precisa cair 1-2°C para iniciar sono profundo. Fases 3/4 do sono elevam GH em até 75%. — Sleep Medicine Reviews",dur:"Noite",xp:25},
+    {t:"Magnésio 400mg",d:"Tome 400mg de magnésio bisglicinato 30 min antes de dormir.",sci:"Magnésio ativa o sistema nervoso parassimpático e melhora qualidade do sono em 37%. — Journal of Research in Medical Sciences, 2012",dur:"5 min",xp:20},
+    {t:"Acorde sem alarme",d:"Durma cedo o suficiente pra acordar naturalmente. Sem despertador.",sci:"Acordar durante sono profundo eleva cortisol em 50% e suprime testosterona matinal. — Psychoneuroendocrinology, 2007",dur:"Noite",xp:40},
+    {t:"Zero cafeína após 14h",d:"Nenhuma fonte de cafeína depois das 14h: café, chá verde, energético, chocolate.",sci:"Meia-vida da cafeína é 5-6 horas. Consumo às 15h reduz sono profundo em 20%. — Journal of Clinical Sleep Medicine, 2013",dur:"Dia todo",xp:25},
+    {t:"Respiração 4-7-8",d:"Faça 6 ciclos: inspire 4s, segure 7s, expire 8s. Deitado, olhos fechados.",sci:"Respiração lenta ativa nervo vago, reduz cortisol e aumenta ondas delta pré-sono. — Frontiers in Human Neuroscience, 2018",dur:"5 min",xp:20},
+    {t:"Banho morno antes de dormir",d:"Banho morno (não quente) 90 min antes de deitar. O corpo resfria depois e induz sono.",sci:"Banho quente 1-2h antes de dormir melhora latência do sono em 36%. — Sleep Medicine Reviews, 2019",dur:"15 min",xp:20},
+    {t:"Janela de sono fixa",d:"Durma e acorde no mesmo horário hoje — incluindo fim de semana. ±30 min de variação máx.",sci:"Ritmo circadiano irregular reduz testosterona em 15% e aumenta resistência à insulina. — Current Biology, 2017",dur:"Noite",xp:35},
+    {t:"Diário pré-sono",d:"Escreva 3 preocupações e 3 gratidões em papel antes de deitar. Esvazia a mente.",sci:"Journaling pré-sono reduz latência do sono em 9 min e diminui ruminação. — Journal of Experimental Psychology, 2018",dur:"10 min",xp:20},
+  ],
+  nutrition: [
+    {t:"3 ovos inteiros no café",d:"Coma 3 ovos inteiros (com gema!) no café da manhã. Fritos, cozidos ou mexidos.",sci:"Colesterol da gema é precursor direto da testosterona. Homens que comem 3 ovos/dia têm T 15% maior. — Journal of Clinical Lipidology, 2018",dur:"15 min",xp:25},
+    {t:"Elimine açúcar hoje",d:"Zero açúcar refinado: sem refrigerante, doce, suco de caixinha, biscoito.",sci:"75g de glicose reduzem testosterona em 25% por até 2 horas. — Clinical Endocrinology, 2013",dur:"Dia todo",xp:40},
+    {t:"Coma brócolis ou couve-flor",d:"Inclua brócolis, couve-flor, repolho ou couve em pelo menos 1 refeição.",sci:"Crucíferas contêm DIM (diindolilmetano) que ajuda a metabolizar excesso de estrogênio. — Journal of Nutrition, 2016",dur:"Refeição",xp:25},
+    {t:"Zinco: carne vermelha ou ostras",d:"Coma 150g de carne vermelha ou 6 ostras (se possível). Alternativa: castanha do Pará (3 unidades).",sci:"Deficiência de zinco reduz testosterona em até 50%. Reposição eleva T em 93% após 6 meses. — Nutrition, 1996",dur:"Refeição",xp:30},
+    {t:"Gordura saudável em cada refeição",d:"Inclua azeite, abacate, castanhas ou manteiga em toda refeição hoje.",sci:"Dietas com <20% de gordura reduzem T em 12-15%. — Journal of Steroid Biochemistry, 2021",dur:"Dia todo",xp:30},
+    {t:"Jejum de 16h",d:"Não coma por 16h (ex: última refeição 20h, próxima às 12h). Água, café preto e chá liberados.",sci:"Jejum intermitente eleva GH em até 2000% em 24h e melhora sensibilidade à insulina. — Journal of Clinical Investigation, 2011",dur:"16h",xp:45},
+    {t:"Alho cru em 1 refeição",d:"Coma 2-3 dentes de alho cru amassados (espere 10 min após amassar antes de comer).",sci:"Alicina do alho reduz cortisol e aumenta disponibilidade de testosterona nos testículos. — Journal of Nutrition, 2001",dur:"5 min",xp:20},
+    {t:"Hidrate com 3L de água",d:"Beba pelo menos 3 litros de água ao longo do dia. Marque numa garrafa.",sci:"Desidratação de 2% eleva cortisol em 15% e reduz performance hormonal. — Journal of Sports Sciences, 2008",dur:"Dia todo",xp:25},
+    {t:"Elimine soja hoje",d:"Zero soja: leite de soja, tofu, proteína de soja, shoyu. Leia rótulos.",sci:"Isoflavonas da soja são fitoestrógenos que podem reduzir T em homens. — Fertility and Sterility, 2010",dur:"Dia todo",xp:30},
+    {t:"Vitamina D3 — tome sol ou suplemente",d:"Se não pegou sol: tome 5000 UI de D3 com gordura.",sci:"Homens com vitamina D >30ng/mL têm testosterona 25% maior que deficientes. — Hormone and Metabolic Research, 2011",dur:"5 min",xp:25},
+  ],
+  training: [
+    {t:"Agachamento pesado — 5x5",d:"Faça 5 séries de 5 reps de agachamento com a maior carga que conseguir manter forma.",sci:"Exercícios compostos pesados elevam T em 15-20% por 30 min pós-treino. Agachamento é o mais potente. — Journal of Strength & Conditioning, 2014",dur:"25 min",xp:40},
+    {t:"Sprint 10x30s",d:"10 tiros de 30 segundos correndo na intensidade máxima. 60s de descanso entre cada.",sci:"HIIT eleva testosterona e GH significativamente mais que cardio moderado. — Journal of Endocrinological Investigation, 2012",dur:"20 min",xp:45},
+    {t:"Levantamento terra — 5x5",d:"5 séries de 5 reps de deadlift. Foco em carga pesada e forma perfeita.",sci:"Deadlift recruta mais massa muscular que qualquer outro exercício, gerando o maior pico de T pós-treino. — European Journal of Applied Physiology, 2006",dur:"25 min",xp:40},
+    {t:"Treino de pernas completo",d:"Agachamento + Leg Press + Stiff + Extensora + Panturrilha. 4x8-12 cada.",sci:"Treinar pernas libera 3x mais hormônio do crescimento que treinar braços. — Medicine & Science in Sports, 2004",dur:"40 min",xp:50},
+    {t:"100 flexões no dia",d:"Faça 100 flexões ao longo do dia. Divida como quiser (10x10, 5x20, etc).",sci:"Volume moderado de push-ups com descansos curtos mantém resposta hormonal elevada por horas. — Journal of Exercise Physiology, 2017",dur:"Dia todo",xp:30},
+    {t:"Treino em menos de 45 min",d:"Faça seu treino INTEIRO em menos de 45 minutos. Alta intensidade, baixo descanso.",sci:"Após 45-60 min de treino intenso, cortisol supera testosterona. Treinos curtos preservam o ratio T/C. — European Journal of Applied Physiology, 2009",dur:"45 min",xp:35},
+    {t:"Supino pesado — 5x5",d:"5 séries de 5 reps de supino reto com carga alta. Descanse 2-3 min entre séries.",sci:"Movimentos compostos de membros superiores elevam T em 10-15% agudamente. — Endocrine Research, 2014",dur:"25 min",xp:35},
+    {t:"Caminhada de 30 min em jejum",d:"Caminhe em ritmo moderado por 30 minutos em estado de jejum (antes de comer).",sci:"Exercício em jejum aumenta oxidação de gordura em 20% e potencializa efeito do GH elevado matinal. — British Journal of Nutrition, 2013",dur:"30 min",xp:25},
+  ],
+  cold: [
+    {t:"Banho gelado 2 minutos",d:"Finalize seu banho com 2 minutos de água 100% gelada. Respire controlado.",sci:"Exposição ao frio eleva noradrenalina em 200-300%, melhora circulação testicular e sensibilidade a andrógenos. — European Journal of Applied Physiology, 2000",dur:"2 min",xp:35},
+    {t:"Banho gelado 5 minutos",d:"5 minutos completos de água gelada. Sem esquentar. Respire: inspire 4s, expire 6s.",sci:"Exposição prolongada ao frio (11°C) eleva metabolismo basal em 350% e ativa gordura marrom. — Bioscience Reports, 2017",dur:"5 min",xp:50},
+    {t:"Mergulho de rosto em água gelada",d:"Encha uma bacia com água gelada e gelo. Mergulhe o rosto por 30s, 3x.",sci:"Reflexo de mergulho ativa nervo vago, reduz frequência cardíaca e cortisol imediatamente. — Frontiers in Neuroscience, 2018",dur:"5 min",xp:20},
+    {t:"Evite água quente hoje",d:"Todo banho hoje em água fria ou morna (máx. 25°C). Sem água quente.",sci:"Calor excessivo nos testículos reduz espermatogênese e pode impactar produção de T. — Human Reproduction, 2007",dur:"Dia todo",xp:30},
+    {t:"Exposição ao frio matinal",d:"Ao acordar, vá pra varanda/janela e fique 5 min no ar frio (sem camisa se possível).",sci:"Frio matinal sincroniza ritmo circadiano e ativa eixo HPA de forma saudável. — Temperature, 2015",dur:"5 min",xp:25},
+    {t:"Respiração Wim Hof — 3 rounds",d:"30 respirações profundas rápidas → segura na expiração o máximo → inspira e segura 15s. Repita 3x.",sci:"Método Wim Hof eleva adrenalina em 300%, reduz inflamação e melhora resposta imune. — PNAS, 2014",dur:"15 min",xp:35},
+  ],
+  sun: [
+    {t:"15 min de sol matinal sem óculos",d:"Saia e tome sol nos primeiros 60 min após acordar. Sem óculos escuros. Não olhe direto pro sol.",sci:"Luz solar matinal regula ritmo circadiano, cortisol e melatonina. Reduz cortisol noturno em 25%. — Journal of Biological Rhythms, 2017",dur:"15 min",xp:30},
+    {t:"Sol no torso 15 min",d:"Tire a camisa e tome sol direto no torso/costas por 15 min entre 10h-14h.",sci:"Exposição UV-B na pele gera vitamina D3 — 10 min de sol produzem 10.000 UI. D3 é precursor hormonal direto. — Dermato-Endocrinology, 2013",dur:"15 min",xp:30},
+    {t:"Sol nos testículos",d:"Se tiver privacidade, exponha a região dos testículos ao sol por 10-15 min.",sci:"Estudo da Boston University mostrou que UV nos testículos pode elevar T em até 200%. Pesquisa original de 1939 por Dr. Abraham Myerson. — NEJM, 1939",dur:"15 min",xp:45},
+    {t:"Assista o nascer do sol",d:"Acorde antes do sol e assista o nascer. Fique ao ar livre durante o evento.",sci:"Luz vermelha e infravermelha do nascer do sol melhora função mitocondrial e produção de ATP celular. — Photochemistry and Photobiology, 2016",dur:"20 min",xp:25},
+    {t:"Caminhe ao ar livre 20 min",d:"Caminhada ao ar livre durante horário com sol. Braços expostos, sem manga.",sci:"Combinação de luz solar + exercício leve potencializa síntese de vitamina D e reduz cortisol. — Environmental Health Perspectives, 2011",dur:"20 min",xp:25},
+  ],
+  stress: [
+    {t:"Meditação 10 min",d:"Sente, feche os olhos, foque na respiração. Quando a mente vagar, volte. 10 minutos.",sci:"Meditação regular reduz cortisol em 23% e melhora ratio testosterona/cortisol em 4 semanas. — Psychoneuroendocrinology, 2013",dur:"10 min",xp:30},
+    {t:"Zero redes sociais hoje",d:"Não abra Instagram, TikTok, Twitter ou Facebook hoje. Desative notificações.",sci:"Uso de redes sociais >2h/dia eleva cortisol em 18% e reduz dopamina basal. — Computers in Human Behavior, 2019",dur:"Dia todo",xp:45},
+    {t:"Grounding — pés na terra",d:"Fique descalço na grama, terra ou areia por 15 minutos.",sci:"Contato com a terra reduz viscosidade sanguínea, cortisol e inflamação. — Journal of Environmental and Public Health, 2012",dur:"15 min",xp:25},
+    {t:"Box breathing — 5 min",d:"4s inspira, 4s segura, 4s expira, 4s segura. Repita por 5 minutos.",sci:"Técnica usada por Navy SEALs. Reduz resposta de estresse em 40% e ativa parassimpático. — International Journal of Stress Management, 2017",dur:"5 min",xp:20},
+    {t:"Diga NÃO para algo hoje",d:"Recuse um compromisso, favor ou demanda que drena sua energia. Proteja seu tempo.",sci:"Sobrecarga de compromissos eleva cortisol cronicamente. Estabelecer limites é proteção hormonal. — Psychological Science, 2012",dur:"1 min",xp:30},
+    {t:"Natureza 30 min",d:"Passe 30 min em parque, trilha, rio ou qualquer ambiente natural.",sci:"Exposição à natureza (Shinrin-yoku) reduz cortisol em 16% e pressão arterial em 10%. — Environmental Health and Preventive Medicine, 2010",dur:"30 min",xp:30},
+    {t:"Escrita expressiva",d:"Escreva por 15 min sobre algo que te estressa. Sem filtro. Depois rasgue/delete.",sci:"Escrita expressiva reduz cortisol e melhora função imune em 4 dias de prática. — Advances in Psychiatric Treatment, 2005",dur:"15 min",xp:25},
+    {t:"Risada intencional",d:"Assista algo engraçado por 20 min. Comédia, vídeos de humor, memes. Ria de verdade.",sci:"Riso reduz cortisol em 39% e adrenalina em 70%. Eleva endorfinas e dopamina. — Alternative Therapies in Health and Medicine, 2010",dur:"20 min",xp:20},
+  ],
+  habits: [
+    {t:"Zero pornografia hoje",d:"Sem pornografia. Sem masturbação. Canalize a energia pra treino ou trabalho.",sci:"Abstinência de ejaculação por 7 dias eleva T sérica em 45.7% no pico (dia 7). Porn eleva prolactina que suprime T. — Journal of Zhejiang University, 2003",dur:"Dia todo",xp:50},
+    {t:"Zero álcool hoje",d:"Nenhuma gota de álcool. Nem cerveja, nem vinho, nem dose.",sci:"Álcool reduz testosterona em 6.8% por dose e eleva aromatase (conversão T→estrogênio). — Alcoholism: Clinical and Experimental Research, 2004",dur:"Dia todo",xp:35},
+    {t:"Durma sem cueca/roupa apertada",d:"Durma sem cueca ou com cueca samba-canção. Nada apertado na região.",sci:"Boxers vs briefs: homens que usam cuecas soltas têm contagem espermática 25% maior. Temperatura testicular importa. — Human Reproduction, 2018",dur:"Noite",xp:20},
+    {t:"Evite plásticos quentes",d:"Não esquente comida em plástico no microondas. Use vidro ou cerâmica.",sci:"BPA e ftalatos de plásticos aquecidos são disruptores endócrinos que reduzem T em até 10%. — Environmental Health Perspectives, 2013",dur:"Dia todo",xp:25},
+    {t:"Postura de poder — 5 min",d:"Fique em pé com peito aberto, mãos na cintura, queixo levantado por 5 minutos.",sci:"Posturas expansivas elevam testosterona em 20% e reduzem cortisol em 25% em 2 minutos. — Psychological Science, 2010 (Carney et al.)",dur:"5 min",xp:20},
+    {t:"Competição saudável",d:"Jogue algo competitivo hoje: esporte, game, debate, aposta amigável.",sci:"Competição e vitória elevam T agudamente. Mesmo antecipar competição gera pico hormonal. — Hormones and Behavior, 2006",dur:"30 min",xp:30},
+    {t:"Contato social masculino",d:"Passe tempo com amigos homens. Conversa, esporte, churrasco. Sem telas.",sci:"Interação social masculina de qualidade eleva T e ocitocina simultaneamente. Isolamento reduz ambos. — Adaptive Human Behavior, 2015",dur:"60 min",xp:30},
+    {t:"Desafio de desconforto",d:"Faça algo desconfortável intencionalmente: conversa difícil, banho frio, treino mais pesado.",sci:"Exposição voluntária a estresse agudo (eustress) eleva T e resiliência. Conforto crônico suprime eixo HPG. — Frontiers in Endocrinology, 2019",dur:"Variável",xp:35},
+  ]
+};
+
+// === LEVELS ===
+const LEVELS=[
+  {name:'Iniciante',icon:'🔰',min:0},
+  {name:'Desperto',icon:'⚡',min:200},
+  {name:'Guerreiro',icon:'⚔️',min:500},
+  {name:'Dominante',icon:'🔥',min:1000},
+  {name:'Alpha',icon:'🐺',min:1800},
+  {name:'Titã',icon:'🗿',min:3000},
+  {name:'Supremo',icon:'👑',min:5000}
+];
+
+// === DAILY QUOTES ===
+const QUOTES=[
+  "Seu corpo produz a droga mais poderosa do mundo. Otimize a fábrica.",
+  "Testosterona não se compra. Se constrói.",
+  "Cada hábito é um tijolo na fortaleza hormonal.",
+  "O homem moderno é deficiente por design. Rebele-se.",
+  "Sol, frio, ferro e sono. A fórmula que ninguém vende porque é grátis.",
+  "Cortisol é o imposto que o estresse cobra do seu shape.",
+  "Enquanto você scrolla, seu cortisol sobe e sua T desce.",
+  "A natureza te projetou pra ser forte. A sociedade te projetou pra ser manso.",
+  "Mais sol, menos tela. Mais ferro, menos sofá. Mais silêncio, menos ruído.",
+  "Seu avô tinha mais testosterona que você sem tomar nada. Pense nisso."
+];
+
+// === STATE ===
+const LS={get(k){try{return JSON.parse(localStorage.getItem("ph_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("ph_"+k,JSON.stringify(v))}catch{}}};
+let S={
+  screen:'home',
+  streak:LS.get('streak')||0,
+  xp:LS.get('xp')||0,
+  completedToday:LS.get('completedToday')||{},
+  lastDay:LS.get('lastDay')||'',
+  totalCompleted:LS.get('totalCompleted')||0,
+  daysActive:LS.get('daysActive')||0,
+  pillarFilter:'all',
+  settings:{notif:true,darkMode:true,sound:true}
+};
+
+function save(){LS.set('streak',S.streak);LS.set('xp',S.xp);LS.set('completedToday',S.completedToday);LS.set('lastDay',S.lastDay);LS.set('totalCompleted',S.totalCompleted);LS.set('daysActive',S.daysActive)}
+function today(){return new Date().toISOString().slice(0,10)}
+function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+
+// Check new day
+function checkDay(){
+  const t=today();
+  if(S.lastDay!==t){
+    if(S.lastDay&&isYesterday(S.lastDay)){S.streak++}else if(S.lastDay){S.streak=1}else{S.streak=1}
+    S.completedToday={};S.lastDay=t;S.daysActive++;save()
+  }
+}
+function isYesterday(d){const y=new Date();y.setDate(y.getDate()-1);return d===y.toISOString().slice(0,10)}
+
+// Generate daily missions (deterministic based on day — infinite unique combos)
+function getDailyMissions(){
+  const doy=dayOfYear();const missions=[];const pillars=Object.keys(MISSIONS);
+  // 7 missions per day, cycling through pillars with offset
+  for(let i=0;i<7;i++){
+    const pIdx=(doy+i)%pillars.length;
+    const pillar=pillars[pIdx];
+    const pool=MISSIONS[pillar];
+    const mIdx=(doy*7+i*13+doy%3)%pool.length; // pseudo-random but deterministic
+    missions.push({...pool[mIdx],pillar,id:`${doy}-${i}`});
+  }
+  return missions;
+}
+
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNextLevel(){const cur=getLevel();const idx=LEVELS.indexOf(cur);return idx<LEVELS.length-1?LEVELS[idx+1]:null}
+function getLevelProgress(){const cur=getLevel();const next=getNextLevel();if(!next)return 100;return Math.min(100,Math.round((S.xp-cur.min)/(next.min-cur.min)*100))}
+
+function completeMission(id,xp){
+  if(S.completedToday[id])return;
+  S.completedToday[id]=true;S.xp+=xp;S.totalCompleted++;save();render();
+}
+
+function todayProgress(){
+  const m=getDailyMissions();
+  const done=m.filter(x=>S.completedToday[x.id]).length;
+  return Math.round(done/m.length*100);
+}
+
+function getPillarInfo(id){return PILLARS.find(p=>p.id===id)}
+
+// === RENDER ===
+function render(){
+  checkDay();
+  const app=document.getElementById('app');
+  const screens={home:renderHome,progress:renderProgress,learn:renderLearn,settings:renderSettings};
+  const content=screens[S.screen]?screens[S.screen]():'';
+  const navItems=[
+    {id:'home',icon:'🔥',label:'Hoje'},
+    {id:'progress',icon:'📊',label:'Progresso'},
+    {id:'learn',icon:'📖',label:'Aprender'},
+    {id:'settings',icon:'⚙️',label:'Config'}
+  ];
+  const nav=`<div class="nav">${navItems.map(n=>`<div class="nav-item ${S.screen===n.id?'active':''}" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--accent)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+  app.innerHTML=renderHeader()+`<div class="content fade">${content}</div>`+nav;
+}
+
+function renderHeader(){
+  const lvl=getLevel();
+  return`<div class="header"><div class="header-left"><div class="h-title">🔥 PROTOCOLO HORMONAL</div><div class="h-sub">${lvl.icon} ${lvl.name} · DIA ${S.daysActive||1}</div></div><div class="header-right"><div class="streak-badge"><div class="streak-num">🔥 ${S.streak}</div><div class="streak-label">STREAK</div></div></div></div>`;
+}
+
+function renderHome(){
+  const missions=getDailyMissions();
+  const prog=todayProgress();
+  const quote=QUOTES[dayOfYear()%QUOTES.length];
+  const filtered=S.pillarFilter==='all'?missions:missions.filter(m=>m.pillar===S.pillarFilter);
+  const doneCount=missions.filter(m=>S.completedToday[m.id]).length;
+
+  let h='';
+
+  // Meter
+  const r=65,c=2*Math.PI*r,o=c-c*prog/100;
+  const meterColor=prog<30?'var(--accent)':prog<70?'var(--accent2)':'var(--green)';
+  h+=`<div class="card" style="text-align:center;border-color:${prog>=100?'var(--green)30':'var(--border)'}">
+    <div class="meter"><div class="meter-ring">
+      <svg class="meter-svg" viewBox="0 0 160 160"><circle class="meter-bg" cx="80" cy="80" r="${r}"/><circle class="meter-fill" cx="80" cy="80" r="${r}" stroke="${meterColor}" stroke-dasharray="${c}" stroke-dashoffset="${o}"/></svg>
+      <div class="meter-center"><div class="meter-val">${prog}%</div><div class="meter-label">PROTOCOLO</div></div>
+    </div>
+    <div class="meter-status" style="color:${meterColor}">${doneCount}/${missions.length} MISSÕES · ${prog>=100?'PROTOCOLO COMPLETO ✓':'EM ANDAMENTO'}</div>
+  </div></div>`;
+
+  // Level bar
+  const lvl=getLevel(),next=getNextLevel(),lp=getLevelProgress();
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lvl.icon} ${lvl.name}</div><div class="level-next">${next?next.icon+' '+next.name+' →':''} ${S.xp} XP</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Insight
+  h+=`<div class="insight"><div class="insight-label">💡 INSIGHT DO DIA</div><div class="insight-text">"${quote}"</div></div>`;
+
+  // Pillar filter
+  h+=`<div class="pillar-scroll"><div class="pillar-tag ${S.pillarFilter==='all'?'active':''}" onclick="S.pillarFilter='all';render()">TODAS</div>`;
+  PILLARS.forEach(p=>{h+=`<div class="pillar-tag ${S.pillarFilter===p.id?'active':''}" onclick="S.pillarFilter='${p.id}';render()" style="${S.pillarFilter===p.id?'border-color:'+p.color+';color:'+p.color:''}">${p.icon} ${p.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const p=getPillarInfo(m.pillar);
+    const done=S.completedToday[m.id];
+    h+=`<div class="mission ${done?'done':''}">
+      <div class="mission-duration">${m.dur}</div>
+      <div class="mission-top">
+        <div class="mission-check ${done?'checked':''}" onclick="completeMission('${m.id}',${m.xp})">${done?'✓':''}</div>
+        <div class="mission-body">
+          <div class="mission-pillar" style="color:${p.color}">${p.icon} ${p.name}</div>
+          <div class="mission-title" style="${done?'text-decoration:line-through':''}">${m.t}</div>
+          <div class="mission-desc">${m.d}</div>
+          <div class="mission-science">📚 <b>Ciência:</b> ${m.sci}</div>
+          <div class="mission-xp">⚡ +${m.xp} XP</div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  return h;
+}
+
+function renderProgress(){
+  const lvl=getLevel(),next=getNextLevel(),lp=getLevelProgress();
+  let h='';
+
+  h+=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;margin-bottom:6px">${lvl.icon}</div><div style="font-size:20px;font-weight:900;color:var(--accent)">${lvl.name}</div><div style="font-size:12px;color:var(--dim);margin-top:4px">${S.xp} XP TOTAL</div></div>`;
+
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lvl.icon} ${lvl.name}</div><div class="level-next">${next?'Próximo: '+next.icon+' '+next.name+' ('+next.min+' XP)':'NÍVEL MÁXIMO'}</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+
+  h+=`<div class="prog-grid">
+    <div class="prog-card"><div class="prog-card-icon">🔥</div><div class="prog-card-val">${S.streak}</div><div class="prog-card-label">STREAK</div></div>
+    <div class="prog-card"><div class="prog-card-icon">📅</div><div class="prog-card-val">${S.daysActive||1}</div><div class="prog-card-label">DIAS ATIVOS</div></div>
+    <div class="prog-card"><div class="prog-card-icon">✅</div><div class="prog-card-val">${S.totalCompleted}</div><div class="prog-card-label">MISSÕES</div></div>
+  </div>`;
+
+  // Rankings
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:12px">🏆 HIERARQUIA</div>`;
+  LEVELS.forEach(l=>{
+    const unlocked=S.xp>=l.min;
+    h+=`<div class="rank-item" style="opacity:${unlocked?1:.4}"><div class="rank-pos" style="color:${unlocked?'var(--accent)':'var(--dim)'}">${l.icon}</div><div style="flex:1"><div class="rank-name" style="color:${unlocked?'#fff':'var(--dim)'}">${l.name}</div><div class="rank-req">${l.min} XP</div></div>${unlocked?'<span style="color:var(--green)">✓</span>':''}</div>`;
+  });
+  h+=`</div>`;
+
+  // Pillar stats
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:12px">📊 PILARES</div>`;
+  PILLARS.forEach(p=>{
+    h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:18px">${p.icon}</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${p.color}">${p.name}</div><div style="font-size:10px;color:var(--dim)">${p.desc}</div></div></div>`;
+  });
+  h+=`</div>`;
+
+  return h;
+}
+
+function renderLearn(){
+  const articles=[
+    {cat:'TESTOSTERONA',color:'var(--accent)',title:'O que realmente aumenta testosterona naturalmente',desc:'Revisão de 47 estudos sobre métodos comprovados.',time:'8 min'},
+    {cat:'SONO',color:'#7c3aed',title:'O papel do sono profundo na produção hormonal',desc:'Como cada fase do sono afeta GH e testosterona.',time:'6 min'},
+    {cat:'NUTRIÇÃO',color:'var(--accent2)',title:'Alimentos que destroem sua testosterona',desc:'Soja, açúcar, álcool e mais: o que a ciência diz.',time:'7 min'},
+    {cat:'FRIO',color:'#0ea5e9',title:'Exposição ao frio: o protocolo Wim Hof explicado',desc:'Como o frio afeta noradrenalina, dopamina e T.',time:'10 min'},
+    {cat:'ESTRESSE',color:'var(--green)',title:'Cortisol: o assassino silencioso da testosterona',desc:'Como o estresse crônico destrói seu perfil hormonal.',time:'5 min'},
+    {cat:'TREINO',color:'var(--accent)',title:'Os 5 exercícios que mais elevam testosterona',desc:'Compostos pesados vs isolados: o que a ciência mostra.',time:'6 min'},
+    {cat:'HÁBITOS',color:'var(--accent3)',title:'Pornografia e testosterona: a relação científica',desc:'O que acontece com seus hormônios na abstinência.',time:'8 min'},
+    {cat:'VITAMINAS',color:'var(--accent2)',title:'Zinco, Magnésio e D3: a tríade hormonal',desc:'Por que esses 3 suplementos são não-negociáveis.',time:'5 min'},
+  ];
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:32px;margin-bottom:6px">📖</div><div style="font-size:18px;font-weight:900;color:var(--accent)">BASE DE CONHECIMENTO</div><div style="font-size:11px;color:var(--dim);margin-top:4px">Artigos baseados em ciência</div></div>`;
+  articles.forEach(a=>{
+    h+=`<div class="article"><div class="article-cat" style="color:${a.color}">${a.cat}</div><div class="article-title">${a.title}</div><div class="article-desc">${a.desc}</div><div class="article-meta"><span>📚 ${a.time} leitura</span><span>🔬 Peer-reviewed</span></div></div>`;
+  });
+  return h;
+}
+
+function renderSettings(){
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:32px;margin-bottom:6px">⚙️</div><div style="font-size:18px;font-weight:900;color:var(--accent)">CONFIGURAÇÕES</div></div>`;
+  h+=`<div class="card">`;
+  [{icon:'🔔',name:'Notificações',key:'notif'},{icon:'🌙',name:'Modo escuro',key:'darkMode'},{icon:'🔊',name:'Sons',key:'sound'}].forEach(s=>{
+    const on=S.settings[s.key];
+    h+=`<div class="setting-row"><div class="setting-left"><div class="setting-icon">${s.icon}</div><div class="setting-name">${s.name}</div></div><div class="toggle ${on?'on':''}" onclick="S.settings.${s.key}=!S.settings.${s.key};render()"><div class="toggle-knob"></div></div></div>`;
+  });
+  h+=`</div>`;
+
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:12px">📊 ESTATÍSTICAS</div>
+    <div style="font-size:12px;color:var(--muted);line-height:2.2">
+      Dias ativos: <b style="color:#fff">${S.daysActive||1}</b><br>
+      Missões completadas: <b style="color:#fff">${S.totalCompleted}</b><br>
+      XP total: <b style="color:#fff">${S.xp}</b><br>
+      Nível: <b style="color:var(--accent)">${getLevel().name}</b><br>
+      Maior streak: <b style="color:#fff">${S.streak}</b>
+    </div>
+  </div>`;
+
+  h+=`<div class="card" style="text-align:center"><button onclick="if(confirm('Resetar todo progresso?')){S.streak=0;S.xp=0;S.completedToday={};S.lastDay='';S.totalCompleted=0;S.daysActive=0;save();render()}" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:1px">🔄 RESETAR PROGRESSO</button></div>`;
+
+  return h;
+}
+
+// INIT
+checkDay();
+render();
+</script>
+</body>
+</html>

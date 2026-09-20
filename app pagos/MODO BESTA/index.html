@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080404">
+<title>💀 MODO BESTA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#080404;color:#d4c4c4;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px;overflow-x:hidden}
+:root{--bg:#080404;--card:#100808;--border:#201414;--red:#dc2626;--red2:#991b1b;--blood:#7f1d1d;--bone:#e8dcd4;--muted:#8a7272;--dim:#5c4444;--green:#22c55e;--amber:#f59e0b;--white:#f5f0ec}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,38,38,.03),transparent 60%);pointer-events:none;z-index:0}
+.z1{position:relative;z-index:1}
+.card{background:var(--card);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--border)}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0a0505e0;backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer}
+
+/* HEADER */
+.hdr{padding:16px 16px 6px;display:flex;justify-content:space-between;align-items:center}
+.hdr-left{display:flex;align-items:center;gap:8px}
+.hdr-skull{font-size:24px;filter:drop-shadow(0 0 8px rgba(220,38,38,.4))}
+.hdr-title{font-size:15px;font-weight:900;color:var(--red);letter-spacing:3px}
+.hdr-sub{font-size:8px;color:var(--dim);letter-spacing:1px;margin-top:1px}
+.hdr-right{display:flex;gap:8px}
+.hdr-badge{background:var(--red)10;border:1px solid var(--red)20;border-radius:8px;padding:5px 10px;text-align:center}
+.hdr-badge-val{font-size:13px;font-weight:900;color:var(--red)}
+.hdr-badge-label{font-size:7px;color:var(--dim);letter-spacing:1px}
+
+.content{padding:0 14px}
+
+/* TODAY'S CHALLENGE — THE MAIN EVENT */
+.challenge-card{background:linear-gradient(135deg,#180808,#100606);border:2px solid var(--red)20;border-radius:18px;padding:0;margin-bottom:14px;overflow:hidden;position:relative}
+.challenge-header{background:var(--red);padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.challenge-header-left{font-size:10px;font-weight:900;color:#fff;letter-spacing:3px;display:flex;align-items:center;gap:6px}
+.challenge-header-right{font-size:9px;color:#ffffff80;font-weight:700;letter-spacing:1px}
+.challenge-body{padding:20px 18px}
+.challenge-category{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.challenge-title{font-size:clamp(20px,5vw,26px);font-weight:900;color:var(--white);line-height:1.2;margin-bottom:10px}
+.challenge-desc{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.challenge-why{font-size:11px;color:var(--dim);line-height:1.7;padding:12px;background:#0a0505;border-radius:8px;border-left:3px solid var(--red)40;margin-bottom:14px}
+.challenge-why b{color:var(--red);font-weight:700}
+.challenge-diff{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.challenge-diff-label{font-size:9px;color:var(--dim);letter-spacing:1px;font-weight:700}
+.challenge-diff-bar{display:flex;gap:3px}
+.challenge-diff-dot{width:18px;height:6px;border-radius:3px;background:var(--border)}
+.challenge-diff-dot.active{background:var(--red)}
+.challenge-xp{font-size:10px;color:var(--amber);font-weight:700;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:4px}
+
+/* ACTION BUTTONS */
+.action-row{display:flex;gap:8px}
+.btn-beast{flex:1;padding:14px;border:none;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;letter-spacing:2px;transition:all .2s;text-transform:uppercase}
+.btn-beast:active{transform:scale(.96)}
+.btn-done{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(220,38,38,.25)}
+.btn-done:hover{box-shadow:0 4px 24px rgba(220,38,38,.35)}
+.btn-done.completed{background:var(--green);box-shadow:0 4px 16px rgba(34,197,94,.25)}
+.btn-skip{background:var(--border);color:var(--dim);font-size:11px}
+
+/* BONUS MISSIONS */
+.bonus-label{font-size:9px;color:var(--red);letter-spacing:3px;font-weight:700;margin:16px 0 10px;display:flex;align-items:center;gap:6px}
+.bonus{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;transition:all .3s}
+.bonus.done{opacity:.4}
+.bonus-check{width:24px;height:24px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:10px;color:transparent;transition:all .3s}
+.bonus-check.checked{border-color:var(--green);background:var(--green);color:#fff}
+.bonus-body{flex:1}
+.bonus-cat{font-size:7px;font-weight:700;letter-spacing:2px;margin-bottom:2px}
+.bonus-title{font-size:13px;font-weight:700;color:var(--bone);margin-bottom:3px}
+.bonus-desc{font-size:10px;color:var(--dim);line-height:1.6}
+.bonus-xp{font-size:9px;color:var(--amber);font-weight:700;margin-top:4px;letter-spacing:1px}
+
+/* DAILY QUOTE */
+.quote-card{background:linear-gradient(135deg,#120808,var(--card));border:1px solid var(--red)08;border-radius:14px;padding:18px;margin-bottom:14px}
+.quote-label{font-size:7px;color:var(--red);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.quote-text{font-size:14px;color:var(--bone);line-height:1.7;font-family:Georgia,serif;font-style:italic}
+
+/* LEVEL */
+.level-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.level-name{font-size:12px;font-weight:800;color:var(--red)}
+.level-info{font-size:9px;color:var(--dim)}
+.level-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.level-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red2),var(--red),var(--amber));transition:width 1s ease}
+
+/* CALENDAR */
+.cal-grid{display:flex;gap:3px;flex-wrap:wrap;margin:12px 0}
+.cal-day{width:calc((100% - 18px)/7);aspect-ratio:1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:var(--border);color:var(--dim)}
+.cal-day.done{background:var(--red);color:#fff}
+.cal-day.today{border:2px solid var(--red);color:var(--red)}
+.cal-day.skip{background:#1a1010;color:var(--dim)}
+
+/* PROGRESS GRID */
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.prog-icon{font-size:22px;margin-bottom:4px}
+.prog-val{font-size:18px;font-weight:900;color:var(--white)}
+.prog-label{font-size:7px;color:var(--dim);letter-spacing:1px;font-weight:700}
+
+/* RANKS */
+.rank-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-ico{font-size:20px}
+.rank-name{font-size:12px;font-weight:700;color:var(--bone)}
+.rank-req{font-size:9px;color:var(--dim)}
+
+/* RULES */
+.rule{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
+.rule-num{width:24px;height:24px;border-radius:50%;background:var(--red)15;border:1px solid var(--red)25;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--red);flex-shrink:0}
+.rule-text{font-size:12px;color:var(--muted);line-height:1.6}
+.rule-text b{color:var(--bone)}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ============================
+// MODO BESTA — ENGINE BRUTAL
+// ============================
+
+const ZONES=[
+  {id:'body',name:'CORPO',icon:'💪',color:'#dc2626',desc:'Desafios físicos brutais'},
+  {id:'mind',name:'MENTE',icon:'🧠',color:'#a855f7',desc:'Resistência mental e foco'},
+  {id:'social',name:'SOCIAL',icon:'🗣️',color:'#f59e0b',desc:'Coragem social e exposição'},
+  {id:'discomfort',name:'DESCONFORTO',icon:'🧊',color:'#06b6d4',desc:'Voluntariamente sofra'},
+  {id:'discipline',name:'DISCIPLINA',icon:'⚔️',color:'#ef4444',desc:'Hábitos que doem'},
+  {id:'fear',name:'MEDO',icon:'👁️',color:'#8b5cf6',desc:'Enfrente o que evita'},
+  {id:'silence',name:'SILÊNCIO',icon:'🤫',color:'#64748b',desc:'Poder da privação'}
+];
+
+// MAIN CHALLENGES — 1 por dia, pesado
+const MAIN={
+  body:[
+    {t:"200 burpees",d:"200 burpees ao longo do dia. Divida como quiser, mas complete. Sem negociação.",why:"O burpee é o exercício que todo mundo odeia — por isso funciona. Recruta corpo inteiro, eleva frequência cardíaca ao máximo e destrói a preguiça. 200 é o número onde o corpo quer parar e a mente decide.",diff:5,xp:80},
+    {t:"1 hora de treino sem música",d:"Treino pesado por 60 minutos. Sem fone. Sem música. Sem podcast. Só você e o ferro.",why:"A música é muleta. Sem ela, você confronta o silêncio, o desconforto e a voz interna que diz 'para'. Treinar sem som é treinar a mente junto com o corpo.",diff:4,xp:60},
+    {t:"500 flexões no dia",d:"500 flexões distribuídas ao longo do dia. Sem limite de séries. Marque cada uma.",why:"O número assusta — e é esse o ponto. Seu corpo aguenta 500. Sua mente que diz que não. Hoje você prova quem manda.",diff:5,xp:90},
+    {t:"Corra 5km sem parar",d:"Saia e corra 5km sem caminhar. Se nunca correu, comece agora. A dor é parte do processo.",why:"Correr é o teste mais honesto de disciplina. Não tem atalho, não tem hack. É você contra o asfalto e contra a voz que pede pra parar.",diff:4,xp:70},
+    {t:"100 agachamentos + 100 abdominais + 100 flexões",d:"O treino Spartan. Complete as 300 repetições. Tempo não importa — completar importa.",why:"300 reps. O número dos espartanos. Simples, brutal, inegociável. Quando terminar, saberá do que é feito.",diff:4,xp:70},
+    {t:"Prancha até falhar — 3 vezes",d:"Segure prancha até o corpo desabar. Descanse 2 min. Repita 3 vezes. Anote os tempos.",why:"A prancha não testa músculo — testa caráter. É 100% mental depois do primeiro minuto. Quantos segundos de dor você aguenta?",diff:3,xp:50},
+  ],
+  mind:[
+    {t:"Zero dopamina artificial até 18h",d:"Sem celular, sem redes sociais, sem jogos, sem vídeos, sem açúcar, sem música até as 18h. Só trabalho, leitura e silêncio.",why:"Seu cérebro está viciado em dopamina barata. Hoje você faz um reset. O tédio que sentir é abstinência — e provar que aguenta é retomar o controle.",diff:5,xp:85},
+    {t:"Medite 30 minutos sem mover",d:"Sente. Timer de 30 min. Não mova nenhuma parte do corpo. Quando coçar, não coce. Quando doer, não ajuste. Imóvel.",why:"A meditação imóvel confronta a necessidade compulsiva de reagir a todo estímulo. Se não consegue ficar parado 30 min, como espera ter foco por horas?",diff:4,xp:65},
+    {t:"Leia 50 páginas de um livro difícil",d:"Não audiobook. Não resumo. 50 páginas de texto denso. Com anotações. Sem pular parágrafo.",why:"A atenção profunda é o músculo mais atrofiado do homem moderno. 50 páginas é a carga que força a adaptação.",diff:3,xp:50},
+    {t:"Escreva 1000 palavras à mão",d:"Pegue papel e caneta. Escreva 1000 palavras sobre qualquer tema: seus medos, seus sonhos, sua raiva. Sem parar.",why:"Escrever à mão é lento, desconfortável e revelador. Não tem backspace. Não tem corretor. É você cru no papel.",diff:3,xp:50},
+    {t:"Dia inteiro sem reclamar",d:"Zero reclamação: nem verbal, nem mental. Cada vez que um pensamento de reclamação surgir, substitua por ação ou aceitação.",why:"Reclamar é o hábito mais destrutivo e mais ignorado. Consome energia, não resolve nada e programa o cérebro pra buscar problemas em vez de soluções.",diff:4,xp:65},
+  ],
+  social:[
+    {t:"Fale com 5 desconhecidos",d:"Puxe conversa com 5 pessoas que não conhece. Pode ser no mercado, na rua, no café. Assunto livre.",why:"O medo social é a prisão invisível. Todo dia você evita conexões por medo de julgamento. Hoje você quebra isso 5 vezes.",diff:4,xp:70},
+    {t:"Faça 1 elogio genuíno a um estranho",d:"Encontre algo genuinamente bom em alguém que não conhece e diga em voz alta. Sem segundas intenções.",why:"Elogiar um estranho exige coragem social + vulnerabilidade. É desconfortável porque quebra scripts sociais. E é exatamente por isso que funciona.",diff:3,xp:45},
+    {t:"Peça desconto em 3 lugares",d:"Em 3 estabelecimentos diferentes, peça desconto. Não importa se conseguir — importa que PEDIU.",why:"Pedir é a habilidade mais subestimada. A maioria dos homens não pede porque tem medo do 'não'. Hoje você coleciona 'nãos' como troféus.",diff:3,xp:50},
+    {t:"Ligue pra alguém que não fala há meses",d:"Identifique alguém que sumiu da sua vida. Ligue — não mande mensagem. Ligação de voz.",why:"Ligar é vulnerabilidade pura. Mensagem é covardia confortável. A voz humana cria conexão que texto nunca criará.",diff:3,xp:45},
+    {t:"Apresente-se a alguém que admira",d:"Encontre alguém (online ou presencial) que você admira e se apresente. Diga quem é e o que faz.",why:"Pessoas bem-sucedidas são surpreendentemente acessíveis. O que falta não é oportunidade — é coragem de se apresentar. Hoje você cria a sua.",diff:4,xp:60},
+  ],
+  discomfort:[
+    {t:"Banho 100% gelado — 5 minutos",d:"Banho gelado do começo ao fim. 5 minutos cronometrados. Sem aquecer antes. Respire controlado.",why:"O frio é o teste mais honesto de vontade. Seu corpo GRITA pra sair. Cada segundo que você fica é uma vitória sobre o instinto de fuga.",diff:4,xp:60},
+    {t:"Durma no chão esta noite",d:"Sem colchão, sem travesseiro. Lençol no chão. Durma assim.",why:"O conforto excessivo amolece corpo e mente. Musashi dormia no chão. Monges dormem no chão. Uma noite te reconecta com a dureza necessária.",diff:3,xp:50},
+    {t:"Jejum de 24 horas",d:"Nenhuma comida por 24 horas. Água, café preto e chá estão liberados. Nada mais.",why:"A fome é o desconforto que mais evitamos. Jejum de 24h te mostra que você NÃO morre sem comer 1 dia — e que a maioria da fome é emocional.",diff:5,xp:80},
+    {t:"Ande descalço por 30 minutos",d:"Saia de casa descalço. Caminhe na rua, grama, terra — o que tiver. 30 minutos.",why:"O homem moderno colocou 3 camadas entre ele e o mundo real. Tirar o sapato é tirar uma camada de proteção. Desconforto = presença.",diff:2,xp:35},
+    {t:"Fique em silêncio total por 4 horas",d:"Não fale NADA por 4 horas consecutivas. Nem sussurro. Se alguém perguntar, faça gestos.",why:"O silêncio voluntário expõe sua dependência de preencher espaço com palavras. 4 horas sem falar te obriga a OUVIR — a si mesmo e aos outros.",diff:3,xp:55},
+  ],
+  discipline:[
+    {t:"Acorde às 5h da manhã",d:"Alarme às 5h. Pés no chão em 10 segundos. Sem negociar. Comece o dia com vitória.",why:"Quem vence a cama vence o dia. 5h é quando a maioria dorme — e é por isso que funciona. Você ganha horas que a preguiça dos outros desperdiça.",diff:4,xp:55},
+    {t:"Faça sua cama como militar",d:"Assim que levantar: cama feita com perfeição. Lençol esticado, travesseiro alinhado, sem rugas. Padrão militar.",why:"É a menor tarefa do dia — e a primeira. Se não consegue fazer uma cama, como espera construir um império? Disciplina começa no travesseiro.",diff:1,xp:20},
+    {t:"Zero tela por 3 horas após acordar",d:"Sem celular, sem computador, sem TV por 3 horas depois de acordar. Café, treino, leitura, silêncio.",why:"As primeiras 3 horas definem o tom do dia. Se você começa scrollando, o cérebro entra em modo reativo. Sem tela = modo criativo.",diff:4,xp:60},
+    {t:"Cumpra TODA sua rotina sem falha",d:"Lista toda tarefa que se comprometeu a fazer hoje. Complete 100%. Sem exceção, sem postergar.",why:"A maioria dos homens cumpre 60-70% do que planejam. Hoje é 100%. Isso exige planejamento realista E execução implacável.",diff:4,xp:65},
+    {t:"Termine algo que abandonou",d:"Identifique 1 projeto, tarefa ou compromisso que abandonou. Termine HOJE. Nem que demore horas.",why:"Todo projeto abandonado é uma ferida aberta na sua autoconfiança. Cada vez que você não termina, seu cérebro registra: 'ele desiste'. Hoje você reescreve essa história.",diff:4,xp:70},
+  ],
+  fear:[
+    {t:"Confronte 1 conversa que está evitando",d:"Aquela ligação, aquele papo difícil, aquele limite que precisa impor. HOJE. Sem adiar mais.",why:"Conversas evitadas se transformam em ansiedade crônica. A dor de ter a conversa dura 10 minutos. A dor de evitar dura meses.",diff:4,xp:65},
+    {t:"Poste algo vulnerável publicamente",d:"Instagram, WhatsApp, status — poste algo real sobre você. Uma luta, uma falha, um aprendizado. Sem filtro.",why:"Vulnerabilidade pública é o medo mais comum do homem. Postar algo real te liberta da prisão de parecer perfeito.",diff:4,xp:60},
+    {t:"Diga NÃO 3 vezes hoje",d:"Recuse 3 pedidos, convites ou demandas. Sem culpa. Sem explicação longa. Apenas: não.",why:"Dizer não é exercício de autoridade pessoal. Se você não consegue dizer não, seus sins não valem nada.",diff:3,xp:50},
+    {t:"Faça algo que te dá vergonha",d:"Cante em público, dance sozinho, fale num microfone, use uma roupa diferente. Quebre o medo do ridículo.",why:"O medo do julgamento é a jaula mais eficiente do mundo. Quebrá-lo intencionalmente prova que a vergonha não mata — te fortalece.",diff:5,xp:75},
+    {t:"Peça feedback honesto a 3 pessoas",d:"Pergunte a 3 pessoas: 'Qual meu maior defeito?' Ouça sem se defender. Agradeça.",why:"A verdade dói — e é exatamente o que você precisa ouvir. Quem foge do feedback foge do crescimento.",diff:4,xp:60},
+  ],
+  silence:[
+    {t:"Dia sem redes sociais",d:"Desinstale ou desative Instagram, TikTok, Twitter, YouTube por 24h. Não é opção — é ordem.",why:"Cada scroll é uma dose de dopamina que enfraquece sua capacidade de foco. 24h sem redes recalibra o sistema de recompensa do cérebro.",diff:3,xp:55},
+    {t:"Sem música o dia inteiro",d:"Nenhuma música: no carro, no treino, em casa. Silêncio ou sons naturais apenas.",why:"A música é anestesia emocional. Sem ela, você sente tudo: tédio, ansiedade, inquietação. E sentir é o primeiro passo pra resolver.",diff:3,xp:45},
+    {t:"Coma 1 refeição em silêncio total",d:"Sem celular, sem TV, sem conversa, sem leitura. Apenas você e a comida. Coma devagar. Mastigue 20x.",why:"Comer sem distração é uma prática meditativa. Você percebe fome real vs emocional, saboreia de verdade e come menos naturalmente.",diff:2,xp:30},
+    {t:"30 minutos olhando pra parede",d:"Sente em frente a uma parede em branco. Sem celular, sem nada. 30 minutos. Observe seus pensamentos.",why:"Se você não consegue ficar 30 minutos sem estímulo, seu cérebro é refém de dopamina. Este é o exercício que revela o nível do vício.",diff:4,xp:60},
+    {t:"Dia sem opinar",d:"Não dê sua opinião sobre NADA hoje. Ouça, observe, absorva. Quando pedirem sua opinião: 'Estou só observando hoje.'",why:"Opinar é gasto de energia social. Um dia sem opinar revela quantas vezes você fala sem necessidade — e como o silêncio muda a dinâmica.",diff:3,xp:50},
+  ]
+};
+
+// BONUS MISSIONS (menores, complementares)
+const BONUSES={
+  body:[
+    {t:"100 abdominais",d:"Qualquer variação, faça 100.",xp:20},{t:"3 min de prancha",d:"Segure sem parar.",xp:25},
+    {t:"50 polichinelos",d:"Antes do café da manhã.",xp:15},{t:"Suba escadas 5x",d:"Suba e desça 5 andares.",xp:20},
+  ],
+  mind:[
+    {t:"10 min meditação",d:"Sente, respire, observe.",xp:20},{t:"Leia 20 páginas",d:"Livro físico, sem resumo.",xp:20},
+    {t:"Escreva 3 gratidões",d:"Mão no papel.",xp:15},{t:"Visualize seu eu ideal 5 min",d:"Olhos fechados, detalhado.",xp:15},
+  ],
+  discipline:[
+    {t:"Banho frio 2 min",d:"Agua gelada, respire.",xp:25},{t:"Beba 3L de água",d:"Marque numa garrafa.",xp:15},
+    {t:"Sem doce hoje",d:"Zero açúcar refinado.",xp:20},{t:"Cama feita ao acordar",d:"Militar style.",xp:10},
+  ],
+  social:[
+    {t:"Elogie alguém",d:"Genuíno, sem esperar nada.",xp:15},{t:"Olho no olho 3s",d:"Em toda conversa.",xp:15},
+    {t:"Ombros abertos o dia todo",d:"Postura de comando.",xp:20},{t:"Caminhe mais devagar",d:"10% mais lento.",xp:15},
+  ]
+};
+
+const LEVELS=[
+  {name:'Verme',icon:'🪱',min:0},
+  {name:'Recruta',icon:'🔰',min:200},
+  {name:'Guerreiro',icon:'⚔️',min:500},
+  {name:'Brutal',icon:'💀',min:1000},
+  {name:'Implacável',icon:'🔥',min:2000},
+  {name:'Titã',icon:'🗿',min:3500},
+  {name:'Besta',icon:'👹',min:5500},
+  {name:'Lenda',icon:'⚡',min:8000}
+];
+
+const QUOTES=[
+  "Conforto é veneno lento. A dor é o antídoto.",
+  "Seu corpo aguenta. Quem desiste é sua mente.",
+  "Enquanto você negocia com a preguiça, alguém está agindo.",
+  "O homem que escolhe o fácil se torna fraco. O que escolhe o difícil se torna invencível.",
+  "Desculpa não queima gordura. E também não constrói nada.",
+  "Não existe hack pra disciplina. Existe fazer ou não fazer.",
+  "O desconforto voluntário é o preço da liberdade.",
+  "A versão de você que tem medo é a versão que precisa morrer.",
+  "Ninguém liga pro seu cansaço. Levanta.",
+  "Todo dia que você não age, a besta dentro de você enfraquece.",
+  "O mundo recompensa quem age. Não quem planeja agir.",
+  "Se fosse fácil, não valia a pena.",
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("mb_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("mb_"+k,JSON.stringify(v))}catch{}}};
+let S={screen:'home',streak:LS.get('sk')||0,xp:LS.get('xp')||0,mainDone:LS.get('md')||false,mainSkipped:LS.get('ms')||false,bonusDone:LS.get('bd')||{},lastDay:LS.get('ld')||'',totalMain:LS.get('tm')||0,totalBonus:LS.get('tb')||0,daysActive:LS.get('da')||0,skips:LS.get('sp')||0,calendar:LS.get('cal')||{}};
+function save(){LS.set('sk',S.streak);LS.set('xp',S.xp);LS.set('md',S.mainDone);LS.set('ms',S.mainSkipped);LS.set('bd',S.bonusDone);LS.set('ld',S.lastDay);LS.set('tm',S.totalMain);LS.set('tb',S.totalBonus);LS.set('da',S.daysActive);LS.set('sp',S.skips);LS.set('cal',S.calendar)}
+function today(){return new Date().toISOString().slice(0,10)}
+function doy(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.lastDay!==t){if(S.lastDay){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.lastDay===y.toISOString().slice(0,10)?(S.streak+1):1}else S.streak=1;S.mainDone=false;S.mainSkipped=false;S.bonusDone={};S.lastDay=t;S.daysActive++;save()}}
+
+function getDailyMain(){
+  const d=doy(),zk=Object.keys(MAIN),zI=d%zk.length,zone=zk[zI],pool=MAIN[zone],mI=(d*3+d%5)%pool.length;
+  return{...pool[mI],zone};
+}
+function getDailyBonuses(){
+  const d=doy(),bk=Object.keys(BONUSES),out=[];
+  for(let i=0;i<4;i++){const zI=(d+i*3)%bk.length;const zone=bk[zI];const pool=BONUSES[zone];const mI=(d*4+i*7)%pool.length;out.push({...pool[mI],zone,id:'b'+i})}
+  return out;
+}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNext(){const c=getLevel(),i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLvlProg(){const c=getLevel(),n=getNext();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function completeMain(xp){if(S.mainDone)return;S.mainDone=true;S.xp+=xp;S.totalMain++;S.calendar[today()]='done';save();render()}
+function skipMain(){if(S.mainDone||S.mainSkipped)return;S.mainSkipped=true;S.skips++;S.calendar[today()]='skip';save();render()}
+function completeBonus(id,xp){if(S.bonusDone[id])return;S.bonusDone[id]=true;S.xp+=xp;S.totalBonus++;save();render()}
+function getZone(id){return ZONES.find(z=>z.id===id)}
+
+function render(){
+  checkDay();const app=document.getElementById('app');
+  const sc={home:renderHome,progress:renderProgress,rules:renderRules};
+  const content=sc[S.screen]?sc[S.screen]():'';
+  const nav=[{id:'home',icon:'💀',label:'Desafio'},{id:'progress',icon:'📊',label:'Progresso'},{id:'rules',icon:'📜',label:'Regras'}];
+  const navH=`<div class="nav">${nav.map(n=>`<div class="nav-item" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--red)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+  app.innerHTML=renderHdr()+`<div class="content z1 fade">${content}</div>`+navH;
+}
+
+function renderHdr(){
+  const l=getLevel();
+  return`<div class="hdr z1"><div class="hdr-left"><span class="hdr-skull">💀</span><div><div class="hdr-title">MODO BESTA</div><div class="hdr-sub">${l.icon} ${l.name} · DIA ${S.daysActive||1}</div></div></div><div class="hdr-right"><div class="hdr-badge"><div class="hdr-badge-val">🔥${S.streak}</div><div class="hdr-badge-label">STREAK</div></div><div class="hdr-badge"><div class="hdr-badge-val">${S.xp}</div><div class="hdr-badge-label">XP</div></div></div></div>`;
+}
+
+function renderHome(){
+  const main=getDailyMain(),zone=getZone(main.zone),bonuses=getDailyBonuses();
+  const quote=QUOTES[doy()%QUOTES.length];
+  const lv=getLevel(),nx=getNext(),lp=getLvlProg();
+  let h='';
+
+  // Level
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lv.icon} ${lv.name}</div><div class="level-info">${nx?nx.icon+' '+nx.name+' → '+nx.min+'XP':'NÍVEL MÁXIMO'} · ${S.xp} XP</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Quote
+  h+=`<div class="quote-card"><div class="quote-label">💀 LEMBRETE DO DIA</div><div class="quote-text">"${quote}"</div></div>`;
+
+  // MAIN CHALLENGE
+  h+=`<div class="challenge-card"><div class="challenge-header"><div class="challenge-header-left">⚡ DESAFIO DO DIA</div><div class="challenge-header-right">DIA ${S.daysActive||1}</div></div><div class="challenge-body">`;
+  h+=`<div class="challenge-category" style="color:${zone.color}">${zone.icon} ${zone.name}</div>`;
+  h+=`<div class="challenge-title">${main.t}</div>`;
+  h+=`<div class="challenge-desc">${main.d}</div>`;
+  h+=`<div class="challenge-why"><b>POR QUE:</b> ${main.why}</div>`;
+  h+=`<div class="challenge-diff"><div class="challenge-diff-label">DIFICULDADE</div><div class="challenge-diff-bar">${[1,2,3,4,5].map(i=>`<div class="challenge-diff-dot ${i<=main.diff?'active':''}"></div>`).join('')}</div></div>`;
+  h+=`<div class="challenge-xp">⚡ +${main.xp} XP</div>`;
+
+  if(S.mainDone){
+    h+=`<div class="action-row"><button class="btn-beast btn-done completed" disabled>✓ DESAFIO CONQUISTADO</button></div>`;
+  }else if(S.mainSkipped){
+    h+=`<div class="action-row"><button class="btn-beast btn-skip" disabled>PULADO — COVARDE</button></div>`;
+  }else{
+    h+=`<div class="action-row"><button class="btn-beast btn-done" onclick="completeMain(${main.xp})">💀 COMPLETEI</button><button class="btn-beast btn-skip" onclick="if(confirm('Vai pular? Isso fica registrado.'))skipMain()">PULAR</button></div>`;
+  }
+  h+=`</div></div>`;
+
+  // BONUS MISSIONS
+  h+=`<div class="bonus-label">⚡ MISSÕES BÔNUS</div>`;
+  bonuses.forEach(b=>{
+    const z=getZone(b.zone)||{color:'var(--red)',icon:'⚡',name:'EXTRA'};
+    const dn=S.bonusDone[b.id];
+    h+=`<div class="bonus ${dn?'done':''}"><div class="bonus-check ${dn?'checked':''}" onclick="completeBonus('${b.id}',${b.xp})">${dn?'✓':''}</div><div class="bonus-body"><div class="bonus-cat" style="color:${z.color}">${z.icon} ${z.name}</div><div class="bonus-title" style="${dn?'text-decoration:line-through':''}">${b.t}</div><div class="bonus-desc">${b.d}</div><div class="bonus-xp">⚡ +${b.xp} XP</div></div></div>`;
+  });
+
+  return h;
+}
+
+function renderProgress(){
+  const lv=getLevel(),nx=getNext(),lp=getLvlProg();
+  let h='';
+  h+=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;filter:drop-shadow(0 0 20px rgba(220,38,38,.4))">💀</div><div style="font-size:20px;font-weight:900;color:var(--red);margin-top:6px">${lv.name}</div><div style="font-size:11px;color:var(--dim);margin-top:4px">${S.xp} XP TOTAL</div></div>`;
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lv.icon} ${lv.name}</div><div class="level-info">${nx?'→ '+nx.icon+' '+nx.name:'MÁX'}</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="prog-grid"><div class="prog-card"><div class="prog-icon">🔥</div><div class="prog-val">${S.streak}</div><div class="prog-label">STREAK</div></div><div class="prog-card"><div class="prog-icon">💀</div><div class="prog-val">${S.totalMain}</div><div class="prog-label">DESAFIOS</div></div><div class="prog-card"><div class="prog-icon">⚡</div><div class="prog-val">${S.totalBonus}</div><div class="prog-label">BÔNUS</div></div><div class="prog-card"><div class="prog-icon">📅</div><div class="prog-val">${S.daysActive||1}</div><div class="prog-label">DIAS</div></div><div class="prog-card"><div class="prog-icon">🏳️</div><div class="prog-val" style="color:var(--red)">${S.skips}</div><div class="prog-label">PULADOS</div></div><div class="prog-card"><div class="prog-icon">✅</div><div class="prog-val">${S.totalMain+S.totalBonus}</div><div class="prog-label">TOTAL</div></div></div>`;
+
+  // Calendar
+  h+=`<div class="card"><div style="font-size:10px;font-weight:800;color:var(--red);letter-spacing:2px;margin-bottom:10px">📅 CALENDÁRIO DE GUERRA</div><div class="cal-grid">`;
+  const now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
+  for(let i=0;i<first;i++)h+=`<div class="cal-day" style="opacity:0"></div>`;
+  for(let d=1;d<=days;d++){
+    const dateStr=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const status=S.calendar[dateStr];
+    const isToday=dateStr===today();
+    const cls=status==='done'?'done':status==='skip'?'skip':isToday?'today':'';
+    h+=`<div class="cal-day ${cls}">${status==='done'?'✓':status==='skip'?'✕':d}</div>`;
+  }
+  h+=`</div></div>`;
+
+  // Ranks
+  h+=`<div class="card"><div style="font-size:10px;font-weight:800;color:var(--red);letter-spacing:2px;margin-bottom:10px">🏆 HIERARQUIA</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.3}"><div class="rank-ico">${l.icon}</div><div style="flex:1"><div class="rank-name" style="color:${u?'var(--bone)':'var(--dim)'}">${l.name}</div><div class="rank-req">${l.min} XP</div></div>${u?'<span style="color:var(--green)">✓</span>':''}</div>`});
+  h+=`</div>`;
+
+  // Reset
+  h+=`<div class="card" style="text-align:center"><button onclick="if(confirm('Resetar TUDO?')){Object.keys(localStorage).filter(k=>k.startsWith('mb_')).forEach(k=>localStorage.removeItem(k));location.reload()}" style="background:var(--red);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:11px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+function renderRules(){
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:40px;filter:drop-shadow(0 0 16px rgba(220,38,38,.3))">💀</div><div style="font-size:18px;font-weight:900;color:var(--red);letter-spacing:2px;margin-top:6px">REGRAS DO MODO BESTA</div><div style="font-size:10px;color:var(--dim);margin-top:4px">Quebre uma e a besta morre dentro de você</div></div>`;
+  const rules=[
+    {t:"<b>Todo dia tem um desafio.</b> Não existe dia de folga. Não existe 'hoje não estou no clima'. A besta não descansa — você também não."},
+    {t:"<b>Complete ou assuma a covardia.</b> Não existe 'tentei'. Completou ou não completou. Se pulou, o app registra. Suas fugas são contadas."},
+    {t:"<b>Sem adaptar pra baixo.</b> O desafio diz 200 burpees? São 200. Não 150. Não 'o que conseguir'. O número é inegociável."},
+    {t:"<b>O desconforto é o objetivo.</b> Se está confortável, não está no Modo Besta. O app existe pra te empurrar pro limite — não pra te acariciar."},
+    {t:"<b>Streak é honra.</b> Cada dia completado é um tijolo na sua fortaleza. Cada dia pulado é uma rachadura. Quantas rachaduras antes de desmoronar?"},
+    {t:"<b>XP não mente.</b> Seu nível é reflexo direto de quantas vezes você escolheu a dor em vez do conforto. De Verme a Lenda — o caminho é feito de ação."},
+    {t:"<b>Missões bônus multiplicam.</b> O desafio principal é obrigatório. Os bônus são oportunidade. Quem faz ambos sobe 2x mais rápido."},
+    {t:"<b>Sem desculpa.</b> Choveu? Faça dentro de casa. Cansado? Faça cansado. Sem tempo? Acorde mais cedo. A besta não aceita justificativa."},
+  ];
+  rules.forEach((r,i)=>{
+    h+=`<div class="rule"><div class="rule-num">${i+1}</div><div class="rule-text">${r.t}</div></div>`;
+  });
+
+  h+=`<div class="card" style="text-align:center;margin-top:16px;border-color:var(--red)15"><div style="font-size:14px;color:var(--red);font-weight:800;letter-spacing:1px;margin-bottom:6px">O PACTO</div><div style="font-size:12px;color:var(--muted);line-height:1.8;font-style:italic;font-family:Georgia,serif">"Eu aceito que o desconforto é o preço da grandeza. Eu escolho a dor que fortalece em vez do conforto que enfraquece. Eu não pulo. Eu não negocio. Eu não reclamo. Eu ajo."</div><div style="font-size:10px;color:var(--dim);margin-top:8px">— O Pacto do Modo Besta</div></div>`;
+
+  h+=`<div style="text-align:center;margin-top:20px"><div style="font-size:11px;color:var(--red);letter-spacing:2px;font-weight:700">"DESCULPA NÃO QUEIMA GORDURA."</div></div>`;
+  return h;
+}
+
+checkDay();render();
+</script>
+</body>
+</html>

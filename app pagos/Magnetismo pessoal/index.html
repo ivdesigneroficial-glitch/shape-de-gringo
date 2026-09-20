@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0D0B14">
+<title>🧲 Magnetismo Pessoal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --pink:#EC4899;--pink2:#F472B6;--purple:#8B5CF6;--purple2:#A78BFA;
+  --gold:#F59E0B;--gold2:#FCD34D;--teal:#14B8A6;--teal2:#2DD4BF;
+  --red:#EF4444;--orange:#F97316;--blue:#3B82F6;--green:#10B981;
+  --bg:#0D0B14;--card:#13111F;--card2:#1A1730;--border:#2A2540;
+  --txt:#E5E7EB;--muted:#6B7280;--muted2:#9CA3AF;
+}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;overflow-x:hidden;padding-bottom:80px}
+.fade{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.shimmer{background:linear-gradient(90deg,var(--pink),var(--purple),var(--pink));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.btn{border:none;border-radius:12px;padding:14px 20px;font-weight:800;font-size:15px;cursor:pointer;width:100%;letter-spacing:.5px;transition:all .25s;font-family:inherit}
+.btn:active{transform:scale(.97);opacity:.85}
+.btn-pink{background:linear-gradient(135deg,var(--pink),#BE185D);color:#fff}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#6D28D9);color:#fff}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#D97706);color:#000}
+.btn-ghost{background:#1F1B35;color:var(--muted2);border:1px solid var(--border)}
+.inp{background:#1A1730;border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:#fff;font-size:15px;width:100%;outline:none;font-family:inherit;transition:border-color .2s}
+.inp:focus{border-color:var(--pink)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#13111F;border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0 8px;cursor:pointer;transition:color .2s}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:9px;font-weight:700;margin-top:2px;letter-spacing:.5px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;overflow-y:auto}
+.modal{background:#13111F;border-radius:22px;padding:28px;max-width:380px;width:100%;text-align:center;border:2px solid var(--pink);max-height:90vh;overflow-y:auto}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
+.card-glow-pink{border-color:rgba(236,72,153,.3);background:linear-gradient(135deg,rgba(236,72,153,.06),var(--card))}
+.card-glow-purple{border-color:rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(139,92,246,.06),var(--card))}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px}
+.badge-pink{background:rgba(236,72,153,.15);color:var(--pink);border:1px solid rgba(236,72,153,.3)}
+.badge-purple{background:rgba(139,92,246,.15);color:var(--purple2);border:1px solid rgba(139,92,246,.3)}
+.badge-gold{background:rgba(245,158,11,.15);color:var(--gold2);border:1px solid rgba(245,158,11,.3)}
+.badge-teal{background:rgba(20,184,166,.15);color:var(--teal2);border:1px solid rgba(20,184,166,.3)}
+.pbar-track{background:#1A1730;border-radius:8px;height:7px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:8px;transition:width .6s ease}
+.avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.avatar-opt{background:var(--card2);border:2px solid var(--border);border-radius:14px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:36px}
+.avatar-opt.sel{border-color:var(--pink);background:rgba(236,72,153,.12);transform:scale(1.06)}
+#onboard{position:fixed;inset:0;z-index:500;background:var(--bg);overflow-y:auto;display:flex;align-items:flex-start;justify-content:center}
+.onboard-inner{width:100%;max-width:440px;padding:40px 24px 60px;text-align:center}
+.mission-item{display:flex;align-items:flex-start;gap:14px;padding:14px;background:var(--card);border-radius:14px;margin-bottom:10px;border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.mission-item:active{transform:scale(.98)}
+.mission-item.done{opacity:.6;border-color:rgba(16,185,129,.3)}
+.mission-check{width:28px;height:28px;border-radius:8px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all .2s}
+.mission-check.done{background:var(--green);border-color:var(--green);color:#fff}
+.lesson-card{background:var(--card);border-radius:16px;margin-bottom:12px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .2s}
+.lesson-card:active{transform:scale(.99)}
+.sci-box{background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(236,72,153,.05));border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:16px 18px;margin:16px 0}
+.sci-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--purple2);margin-bottom:6px}
+.sci-text{font-size:13px;color:#C4B8D8;line-height:1.72}
+.sci-text strong{color:#fff}
+.sci-journal{font-size:10px;color:var(--muted);font-style:italic;margin-top:6px}
+.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ach-card{background:var(--card);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--border)}
+.ach-card.unlocked{border-color:rgba(245,158,11,.4);background:linear-gradient(135deg,rgba(245,158,11,.08),var(--card))}
+.bg-s1{background:linear-gradient(160deg,#0D0B14 0%,#160D20 100%)}
+.bg-s2{background:linear-gradient(160deg,#0D0B14 0%,#0D1420 100%)}
+.bg-s3{background:linear-gradient(160deg,#0D0B14 0%,#140D0D 100%)}
+.bg-s4{background:linear-gradient(160deg,#0D0B14 0%,#0D140F 100%)}
+.bg-s5{background:linear-gradient(160deg,#0D0B14 0%,#14110D 100%)}
+</style>
+</head>
+<body>
+<div id="onboard"><div class="onboard-inner" id="ob-content"></div></div>
+<div id="app" style="display:none"></div>
+<script>
+const LS={get(k){try{return JSON.parse(localStorage.getItem('mag_'+k))}catch{return null}},set(k,v){try{localStorage.setItem('mag_'+k,JSON.stringify(v))}catch{}}};
+
+const AVATARS=['🦁','🐺','🔥','👑','⚡','🐉','🗡️','🦅'];
+
+const MISSIONS=[
+  [{id:'m1a',t:'Postura do Guerreiro',d:'10 min com ombros abertos e coluna reta. Sente, ande, fique de pé assim.',e:'🏛️',xp:20,tm:'10 min'},{id:'m1b',t:'Contato Visual Consciente',d:'Em 3 conversas hoje, mantenha contato visual 3 segundos a mais do habitual.',e:'👁️',xp:15,tm:'Dia todo'},{id:'m1c',t:'Voz do Abdômen',d:'Fale 5 frases em voz alta respirando pelo diafragma. Grave e ouça.',e:'🎙️',xp:25,tm:'5 min'}],
+  [{id:'m2a',t:'Entrada Deliberada',d:'Entre em 2 ambientes hoje de forma lenta, cabeça erguida, sem pressa.',e:'🚪',xp:20,tm:'Dia todo'},{id:'m2b',t:'Aperto Magnético',d:'Pratique o aperto de mão firme com 3 pessoas. Sorria genuinamente.',e:'🤝',xp:15,tm:'Dia todo'},{id:'m2c',t:'Meditação de Presença',d:'5 min em silêncio. Respire 4-4-4. Visualize como quer ser percebido.',e:'🧘',xp:30,tm:'5 min'}],
+  [{id:'m3a',t:'Espaço Expansivo',d:'Em conversas, ocupe mais espaço. Cotovelos afastados, postura aberta.',e:'↔️',xp:20,tm:'Dia todo'},{id:'m3b',t:'Silêncio Poderoso',d:'Após falar algo importante, aguarde 3s antes de continuar. Não preencha silêncio.',e:'🤫',xp:25,tm:'Dia todo'},{id:'m3c',t:'Sorriso Genuíno',d:'Pratique no espelho: o sorriso começa pelos olhos, não pela boca.',e:'😏',xp:15,tm:'5 min'}],
+  [{id:'m4a',t:'Andar de Presença',d:'Ande 20% mais devagar que seu ritmo habitual. Observe o que muda ao redor.',e:'🚶',xp:25,tm:'Dia todo'},{id:'m4b',t:'Curiosidade Genuína',d:'Em 2 conversas, faça perguntas de follow-up. Ouça sem planejar resposta.',e:'❓',xp:20,tm:'Dia todo'},{id:'m4c',t:'Declaração de Identidade',d:'Diga 3x: "Eu sou magnético. Minha presença impacta." Em voz alta.',e:'🗣️',xp:15,tm:'2 min'}],
+  [{id:'m5a',t:'Posição Alpha',d:'Em grupos hoje, posicione-se no centro ou de pé enquanto outros sentam.',e:'⚡',xp:20,tm:'Dia todo'},{id:'m5b',t:'Discordância Educada',d:'Discorde de algo com alguém de forma respeitosa e firme. Sem recuar.',e:'🎯',xp:30,tm:'Dia todo'},{id:'m5c',t:'Elogio Específico',d:'Elogie alguém de forma específica e genuína. Olho no olho, voz firme.',e:'✨',xp:20,tm:'5 min'}],
+  [{id:'m6a',t:'Tom de Voz Grave',d:'Fale 10 frases intencionalmente mais devagar e grave. Use o peito.',e:'🎵',xp:25,tm:'Dia todo'},{id:'m6b',t:'Escuta Ativa',d:'Em 1 conversa, repita o que a pessoa disse com suas palavras antes de responder.',e:'👂',xp:15,tm:'Dia todo'},{id:'m6c',t:'Movimento Deliberado',d:'Todas ações físicas hoje: lentas, intencionais. Pegar copo, abrir porta, sentar.',e:'🎯',xp:20,tm:'Dia todo'}],
+  [{id:'m7a',t:'Converse com Desconhecido',d:'Inicie conversa genuína com alguém que nunca falou. Contexto natural.',e:'🌍',xp:40,tm:'Dia todo'},{id:'m7b',t:'Journaling de Presença',d:'Escreva: 3 momentos em que foi magnético esta semana. O que funcionou?',e:'📓',xp:25,tm:'10 min'},{id:'m7c',t:'Revisão da Semana 1',d:'Qual foi a missão mais difícil? Repita ela hoje com intenção total.',e:'📋',xp:15,tm:'10 min'}],
+  [{id:'m8a',t:'Microlinguagem Facial',d:'No espelho: sobrancelha levantada, olhar de interesse genuíno. 3 min.',e:'🎭',xp:20,tm:'3 min'},{id:'m8b',t:'Liderar a Conversa',d:'Proponha o tema e ritmo de 1 conversa hoje. Não espere o outro puxar.',e:'📡',xp:25,tm:'Dia todo'},{id:'m8c',t:'Checagem de Postura',d:'Configure alarme a cada 2h. A cada alarme, corrija e mantenha por 5 min.',e:'⏰',xp:20,tm:'Dia todo'}],
+  [{id:'m9a',t:'Humor Natural',d:'Faça alguém rir de forma genuína — não force. Humor situacional.',e:'😄',xp:25,tm:'Dia todo'},{id:'m9b',t:'Silêncio Confortável',d:'Fique 2 min em silêncio numa situação social sem sentir necessidade de falar.',e:'🌑',xp:30,tm:'Dia todo'},{id:'m9c',t:'Influência Sutil',d:'Sugira algo (restaurante, tema, atividade) e veja o grupo seguir. Sem pressionar.',e:'🧲',xp:30,tm:'Dia todo'}],
+  [{id:'m10a',t:'Storytelling',d:'Conte uma história de 2 min com começo, tensão e resolução. Pratique 3x.',e:'📖',xp:25,tm:'10 min'},{id:'m10b',t:'Piso Firme',d:'Quando alguém interromper agressivamente, respire, mantenha voz calma.',e:'🪨',xp:20,tm:'Dia todo'},{id:'m10c',t:'Presença Digital',d:'No WhatsApp: responda com intenção. Sem resposta automática. Qualidade > velocidade.',e:'📱',xp:15,tm:'Dia todo'}],
+  [{id:'m11a',t:'Vocabulário de Poder',d:'Elimine "acho que", "não sei bem", "tipo assim" por 1 dia. Fale com certeza.',e:'💡',xp:25,tm:'Dia todo'},{id:'m11b',t:'Conexão Profunda',d:'Em 1 conversa, vá além do superficial. Pergunte sobre sonhos e valores.',e:'🔗',xp:35,tm:'Dia todo'},{id:'m11c',t:'Ritual do Espelho',d:'5 min: contato visual consigo mesmo. Diga o que está construindo.',e:'🪞',xp:20,tm:'5 min'}],
+  [{id:'m12a',t:'Palco Social',d:'Em um grupo, tome a palavra e conclua 3 pensamentos sem ser interrompido.',e:'🎤',xp:30,tm:'Dia todo'},{id:'m12b',t:'Reciprocidade',d:'Faça algo inesperado por alguém sem pedir nada em troca. Observe o impacto.',e:'🎁',xp:20,tm:'Dia todo'},{id:'m12c',t:'Aura de Calma',d:'No momento mais estressante do dia: respire fundo, diminua o ritmo. Seja a calma.',e:'🌊',xp:25,tm:'Dia todo'}],
+  [{id:'m13a',t:'Magnetismo em Grupo',d:'Coordene uma atividade em grupo. Assuma a liderança de forma natural.',e:'👥',xp:35,tm:'Dia todo'},{id:'m13b',t:'Feedback Real',d:'Peça feedback: "Como você me percebe quando entro numa sala?"',e:'🔄',xp:30,tm:'Dia todo'},{id:'m13c',t:'Anchoring Físico',d:'Crie um gesto pessoal que acione seu estado de presença.',e:'⚓',xp:20,tm:'5 min'}],
+  [{id:'m14a',t:'Semana 2 — Revisão',d:'O que mudou na forma como as pessoas respondem a você? Escreva 3 observações.',e:'📊',xp:20,tm:'10 min'},{id:'m14b',t:'Desafio da Semana',d:'Aborde alguém que normalmente não abordaria. Conversa de 3+ minutos.',e:'🔥',xp:50,tm:'Dia todo'},{id:'m14c',t:'Reflexão de Identidade',d:'Escreva: Quem sou eu quando estou no meu nível mais magnético?',e:'✍️',xp:25,tm:'10 min'}],
+  [{id:'m15a',t:'Influência por Perguntas',d:'Mude a opinião de alguém através de perguntas — sem afirmar diretamente.',e:'♟️',xp:35,tm:'Dia todo'},{id:'m15b',t:'Resistência Social',d:'Recuse algo hoje de forma direta e sem culpa. "Não vou conseguir, obrigado."',e:'🚫',xp:30,tm:'Dia todo'},{id:'m15c',t:'Narrativa Pessoal',d:'Escreva 3 linhas de "quem você está se tornando". Leia antes de dormir.',e:'📜',xp:25,tm:'10 min'}],
+  [{id:'m16a',t:'Congruência Total',d:'Certifique-se que roupa, postura, voz e palavras estão alinhadas. Sem dissonância.',e:'🎯',xp:25,tm:'Dia todo'},{id:'m16b',t:'Atenção Plena Social',d:'Desative notificações por 4h. Esteja 100% presente nas interações físicas.',e:'📵',xp:30,tm:'4h'},{id:'m16c',t:'Gratidão em Público',d:'Agradeça alguém em público de forma específica. Voz clara, olho no olho.',e:'🙏',xp:20,tm:'Dia todo'}],
+  [{id:'m17a',t:'Liderar pelo Exemplo',d:'Faça algo que outros hesitam. Seja o primeiro a agir, falar, propor.',e:'🦁',xp:35,tm:'Dia todo'},{id:'m17b',t:'Calibração Emocional',d:'Quando sentir ansiedade social, nomeie a emoção. Isso reduz a intensidade.',e:'🌡️',xp:25,tm:'Dia todo'},{id:'m17c',t:'Rede de Influência',d:'Conecte 2 pessoas que deveriam se conhecer. Seja o conector.',e:'🕸️',xp:30,tm:'Dia todo'}],
+  [{id:'m18a',t:'Discurso de 60s',d:'Prepare e pratique 1 min falando sobre quem você é e o que faz. Natural.',e:'🎬',xp:30,tm:'10 min'},{id:'m18b',t:'Energia de Contribuição',d:'Em todas interações hoje: "O que posso agregar aqui?" antes de falar.',e:'💡',xp:25,tm:'Dia todo'},{id:'m18c',t:'Presença Noturna',d:'Antes de dormir: 5 min sem tela. Reflita sobre quem você foi hoje.',e:'🌙',xp:15,tm:'5 min'}],
+  [{id:'m19a',t:'Imagem Integrada',d:'Foto de como você se apresenta hoje. Avalie: roupa, postura, expressão.',e:'📸',xp:20,tm:'5 min'},{id:'m19b',t:'Expressão Autêntica',d:'Expresse uma opinião autêntica sobre algo que normalmente evitaria comentar.',e:'💬',xp:30,tm:'Dia todo'},{id:'m19c',t:'Gerenciamento de Espaço',d:'Numa refeição, organize sua área de forma ordenada e expansiva.',e:'🍽️',xp:15,tm:'Refeição'}],
+  [{id:'m20a',t:'Palco Final',d:'Fale para um grupo de 5+ pessoas sobre algo que conhece bem. Sem script.',e:'📣',xp:50,tm:'Dia todo'},{id:'m20b',t:'Nível: Influência',d:'Coordene uma decisão de grupo. Lidere sem ser explicitamente o líder.',e:'🧲',xp:40,tm:'Dia todo'},{id:'m20c',t:'Reflexão Final',d:'O que mudou em você desde o Dia 1? Escreva com honestidade total.',e:'✍️',xp:30,tm:'15 min'}],
+  [{id:'m21a',t:'DIA FINAL — Revisão Completa',d:'Releia todas as missões. Identifique as 3 que mais transformaram você.',e:'🏆',xp:30,tm:'20 min'},{id:'m21b',t:'Carta para o Futuro',d:'Escreva para você daqui 90 dias: "O magnético que me tornei..."',e:'✉️',xp:30,tm:'15 min'},{id:'m21c',t:'O Maior Desafio',d:'Execute hoje a missão que mais te gerou desconforto ao longo dos 21 dias.',e:'🔥',xp:60,tm:'Dia todo'}],
+];
+
+const LESSONS=[
+  {id:1,i:'🧠',c:'#8B5CF6',b:'FUNDAÇÃO',t:'O Que é Magnetismo Pessoal de Verdade',dur:'8 min',txt:`<p style="margin-bottom:14px">Magnetismo pessoal não é um dom — é um sistema que se constrói deliberadamente.</p><div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#A78BFA;margin-bottom:6px">🔬 PESQUISA — MEHRABIAN (UCLA)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7"><strong style="color:#fff">55% da impressão que causamos vem da linguagem corporal</strong>, 38% do tom de voz e apenas 7% das palavras. O argumento mais inteligente do mundo é destruído por postura encolhida.</p></div><p style="margin-bottom:14px">Amy Cuddy (Harvard, 2010) demonstrou que adotar posturas de poder por apenas 2 minutos <strong>aumenta testosterona em 20% e reduz cortisol em 25%.</strong> Seu corpo muda sua química antes de qualquer palavra.</p><p style="margin-bottom:14px">Magnetismo tem três pilares identificados por pesquisadores de Harvard e Lausanne:</p><p style="margin-bottom:8px"><strong>1. PRESENÇA</strong> — Estar completamente aqui, sem monitorar o ego.</p><p style="margin-bottom:8px"><strong>2. PODER</strong> — A percepção de que você tem capacidade de agir e influenciar.</p><p style="margin-bottom:0"><strong>3. CALOR</strong> — A percepção de que você se importa genuinamente com o outro.</p>`},
+  {id:2,i:'🏛️',c:'#EC4899',b:'CORPO',t:'A Linguagem Corporal que Fala Mais Alto',dur:'7 min',txt:`<p style="margin-bottom:14px">Antes de você dizer uma palavra, dezenas de sinais já foram processados: postura, espaço ocupado, velocidade dos movimentos, direção do olhar.</p><div style="background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#F472B6;margin-bottom:6px">🔬 WATKINS ET AL. (2010)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7">A <strong style="color:#fff">relação ombro-quadril é o fator mais determinante na percepção de dominância</strong> — mais do que altura, riqueza ou qualidade facial.</p></div><p style="margin-bottom:14px"><strong>Os 4 elementos da linguagem corporal magnética:</strong></p><p style="margin-bottom:8px">🏛️ <strong>Postura:</strong> Ombros levemente para trás, queixo paralelo ao chão. Expansão natural, não rigidez.</p><p style="margin-bottom:8px">⏳ <strong>Velocidade:</strong> Movimentos 20% mais lentos. Calma comunica poder.</p><p style="margin-bottom:8px">👁️ <strong>Olhar:</strong> Contato visual 70% ao falar, 100% ao ouvir. Desviar comunica insegurança.</p><p style="margin-bottom:0">🌍 <strong>Espaço:</strong> Ocupe o espaço que lhe pertence. Não se encolha.</p>`},
+  {id:3,i:'🎙️',c:'#F59E0B',b:'VOZ',t:'Voz — O Instrumento Mais Subestimado',dur:'6 min',txt:`<p style="margin-bottom:14px">Você pode ter a postura perfeita e as melhores roupas. Se a voz treme em situações de pressão, o sinal de insegurança chega primeiro.</p><div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#FCD34D;margin-bottom:6px">🔬 RIDING ET AL. (2006)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7">Pessoas avaliam <strong style="color:#fff">vozes mais graves como mais confiantes, mais atraentes e indicadoras de maior saúde</strong> — de forma automática e pré-consciente.</p></div><p style="margin-bottom:14px"><strong>3 hábitos que mudam a voz:</strong></p><p style="margin-bottom:8px">💨 <strong>Respiração diafragmática:</strong> A voz grave vem do abdômen. Pratique falar expirando lentamente.</p><p style="margin-bottom:8px">🐌 <strong>Velocidade:</strong> Pessoas ansiosas falam rápido. A pausa comunica que você não precisa de aprovação.</p><p style="margin-bottom:0">📢 <strong>Projeção:</strong> Fale para a última fileira. Não grite — projete. Abra o peito, direcione a voz.</p>`},
+  {id:4,i:'👁️',c:'#14B8A6',b:'OLHAR',t:'O Contato Visual que Cria Conexão',dur:'5 min',txt:`<p style="margin-bottom:14px">O contato visual é o canal de comunicação mais primitivo e poderoso. Antes da linguagem, nossos ancestrais comunicavam intenção e status pelos olhos.</p><div style="background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#2DD4BF;margin-bottom:6px">🔬 MASON ET AL. (2005)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7">Pessoas que mantêm contato visual por períodos mais longos são avaliadas como <strong style="color:#fff">mais confiantes, mais inteligentes e mais atraentes</strong> — sem qualquer outra interação.</p></div><p style="margin-bottom:14px"><strong>Técnica do Triângulo:</strong> Alterne o olhar entre olho esquerdo → olho direito → boca da pessoa. Ciclos de 3-4 segundos. Nunca olhe fixo num único ponto — isso amedronta.</p><p style="margin-bottom:0">O olhar genuíno não é fixo — é levemente suavizado, sobrancelhas relaxadas e levemente elevadas. Pratique no espelho até naturalizar.</p>`},
+  {id:5,i:'🔥',c:'#EF4444',b:'BIOQUÍMICA',t:'A Bioquímica do Magnetismo',dur:'7 min',txt:`<p style="margin-bottom:14px">Magnetismo não é só psicologia. É bioquímica. Seus hormônios criam sinais que outros detectam inconscientemente.</p><div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#FCA5A5;margin-bottom:6px">🔬 GETTLER ET AL. (2011)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7">Homens com testosterona mais elevada são percebidos como <strong style="color:#fff">mais atraentes, dominantes e saudáveis</strong> — julgamento automático via postura, tom de voz e odor corporal.</p></div><p style="margin-bottom:14px"><strong>O que aumenta testosterona naturalmente:</strong></p><p style="margin-bottom:8px">💪 Treino de força com exercícios multiarticulares</p><p style="margin-bottom:8px">😴 7-9h de sono profundo (GH liberado no N3)</p><p style="margin-bottom:8px">🧘 Meditação e controle de cortisol</p><p style="margin-bottom:0">🌞 Vitamina D + Zinco adequados — veja o App Protocolo Hormonal para detalhes.</p>`},
+  {id:6,i:'🧲',c:'#F97316',b:'CARISMA',t:'Carisma — Ciência, não Sorte',dur:'8 min',txt:`<p style="margin-bottom:14px">Carisma é frequentemente descrito como algo que se tem ou não se tem. A neurociência moderna desmontou esse mito completamente.</p><div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#FED7AA;margin-bottom:6px">🔬 HARVARD & LAUSANNE</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7">Três componentes mensuráveis do carisma: <strong style="color:#fff">Presença, Poder e Calor.</strong> Todos são treináveis. Nenhum é inato.</p></div><p style="margin-bottom:14px">Olivia Fox Cabane (<em>The Charisma Myth</em>) descreve o <em>estado carismático</em>: atenção plena + abertura corporal + ausência de autocrítica. Qualquer pessoa pode aprender a acessar esse estado.</p><p style="margin-bottom:0">Paulo Vieira acrescenta a dimensão da <em>intenção de servir</em>: as pessoas mais carismáticas entram em interações perguntando "o que posso agregar?" em vez de "como serei percebido?"</p>`},
+  {id:7,i:'👑',c:'#A855F7',b:'IDENTIDADE',t:'Identidade Magnética — O Núcleo de Tudo',dur:'9 min',txt:`<p style="margin-bottom:14px">James Clear (<em>Hábitos Atômicos</em>) descreve a hierarquia das mudanças: a mudança mais duradoura não começa no comportamento — começa na identidade.</p><div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:#DDD6FE;margin-bottom:6px">🔬 COHEN & SHERMAN (2014)</div><p style="font-size:13px;color:#C4B8D8;line-height:1.7"><strong style="color:#fff">Declarações identitárias consistentes alteram padrões de ativação do córtex pré-frontal</strong>, reduzindo a resistência a comportamentos alinhados com a identidade declarada.</p></div><p style="margin-bottom:14px">David Goggins chama isso de <em>accountability mirror</em>: olhar para si mesmo com honestidade total e declarar quem está escolhendo ser — não quem gostaria de ser se as condições fossem perfeitas.</p><p style="margin-bottom:14px"><strong>Declaração de identidade magnética:</strong></p><p style="font-style:italic;color:#E879F9;border-left:3px solid #A855F7;padding-left:12px;margin-bottom:0">"Eu sou alguém que entra em qualquer ambiente e deixa as pessoas melhores. Minha presença tem peso. Minha voz tem autoridade. Eu escolho conectar."</p>`},
+];
+
+const ACHS=[
+  {id:'a1',i:'🌱',n:'Primeiro Passo',d:'Complete sua primeira missão',ok:s=>s.td>=1},
+  {id:'a2',i:'🔥',n:'3 Dias de Fogo',d:'3 dias de streak',ok:s=>s.st>=3},
+  {id:'a3',i:'💪',n:'Semana 1 Completa',d:'7 dias de streak',ok:s=>s.st>=7},
+  {id:'a4',i:'🧲',n:'Campo Magnético',d:'100 XP acumulados',ok:s=>s.xp>=100},
+  {id:'a5',i:'👁️',n:'Olhar de Poder',d:'Leia 3 lições',ok:s=>s.lr>=3},
+  {id:'a6',i:'🦁',n:'Presença de Leão',d:'14 dias de streak',ok:s=>s.st>=14},
+  {id:'a7',i:'📖',n:'Estudioso',d:'Leia todas as 7 lições',ok:s=>s.lr>=7},
+  {id:'a8',i:'⚡',n:'Energia Máxima',d:'500 XP acumulados',ok:s=>s.xp>=500},
+  {id:'a9',i:'🏆',n:'Mestre do Magnetismo',d:'Complete os 21 dias',ok:s=>s.st>=21},
+  {id:'a10',i:'👑',n:'Lendário',d:'1000 XP acumulados',ok:s=>s.xp>=1000},
+];
+
+let S={on:false,nm:'',av:0,sc:'home',day:1,done:{},lr:{},xp:0,st:0,ld:'',td:0,modal:null};
+function load(){const d=LS.get('st');if(d)S=Object.assign(S,d)}
+function save(){LS.set('st',{on:S.on,nm:S.nm,av:S.av,sc:S.sc,day:S.day,done:S.done,lr:S.lr,xp:S.xp,st:S.st,ld:S.ld,td:S.td})}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function today(){return new Date().toISOString().split('T')[0]}
+function dk(d){return 'd'+d}
+function mDone(d){return Object.keys(S.done[dk(d)]||{}).length}
+function allDone(d){const m=MISSIONS[d-1]||[];return m.length>0&&mDone(d)>=m.length}
+function getRank(){
+  const x=S.xp;
+  if(x<100)return{n:'Iniciante',i:'🌱',c:'#6B7280'};
+  if(x<300)return{n:'Observado',i:'👁️',c:'#3B82F6'};
+  if(x<600)return{n:'Presente',i:'🧲',c:'#8B5CF6'};
+  if(x<1000)return{n:'Carismático',i:'🔥',c:'#EC4899'};
+  if(x<1500)return{n:'Magnético',i:'⚡',c:'#F59E0B'};
+  return{n:'Lendário',i:'👑',c:'#A855F7'};
+}
+function updStreak(){
+  const t=today();if(S.ld===t)return;
+  const y=new Date();y.setDate(y.getDate()-1);const ys=y.toISOString().split('T')[0];
+  S.st=S.ld===ys?S.st+1:1;S.ld=t;save();
+}
+function chkAch(){
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td};
+  ACHS.forEach(a=>{if(!LS.get('ach_'+a.id)&&a.ok(stats)){LS.set('ach_'+a.id,true);S.modal={type:'ach',a};render();}});
+}
+function doMission(day,mid){
+  if(!S.done[dk(day)])S.done[dk(day)]={};
+  if(S.done[dk(day)][mid])return;
+  S.done[dk(day)][mid]=true;
+  const m=(MISSIONS[day-1]||[]).find(x=>x.id===mid);
+  if(m){S.xp+=m.xp;S.td++;}
+  updStreak();save();chkAch();render();
+}
+function advDay(){if(S.day<21)S.day++;save();render();}
+function resetAll(){
+  ['st',...ACHS.map(a=>'ach_'+a.id)].forEach(k=>localStorage.removeItem('mag_'+k));
+  S={on:false,nm:'',av:0,sc:'home',day:1,done:{},lr:{},xp:0,st:0,ld:'',td:0,modal:null};
+  obS=0;obAv=0;obNm='';
+  document.getElementById('onboard').style.display='flex';
+  document.getElementById('app').style.display='none';
+  renderOb();
+}
+
+// ONBOARD
+let obS=0,obAv=0,obNm='';
+function renderOb(){
+  const el=document.getElementById('ob-content');if(!el)return;
+  const steps=[ob0,ob1,ob2];el.innerHTML=steps[obS]();
+}
+function ob0(){return`
+<div style="margin-bottom:32px">
+  <div style="font-size:80px;margin-bottom:16px" class="pulse">🧲</div>
+  <div style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--pink);margin-bottom:8px">SHAPE DE GRINGO — ARSENAL EXTRA</div>
+  <div class="shimmer" style="font-size:34px;font-weight:900;line-height:1.1;margin-bottom:12px">APP MAGNETISMO<br>PESSOAL</div>
+  <div style="font-size:14px;color:var(--muted2);line-height:1.7;margin-bottom:28px">21 dias para transformar presença, linguagem corporal e carisma — com ciência real por trás de cada missão.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px">
+    ${[['🎯','21 Missões\nPráticas'],['📖','7 Aulas\nCientíficas'],['🏆','Conquistas\n& XP'],['🧲','Tracker de\nPresença']].map(([i,t])=>`<div style="background:var(--card);border-radius:12px;padding:14px 10px;text-align:center;border:1px solid var(--border)"><div style="font-size:26px;margin-bottom:6px">${i}</div><div style="font-size:11px;color:var(--muted2);font-weight:600;line-height:1.4;white-space:pre-line">${t}</div></div>`).join('')}
+  </div>
+  <button class="btn btn-pink" onclick="obS=1;renderOb()">COMEÇAR AGORA →</button>
+</div>`}
+function ob1(){return`
+<div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--pink);margin-bottom:8px">PASSO 1 DE 2</div>
+  <div style="font-size:26px;font-weight:900;color:#fff;margin-bottom:6px">Qual é o seu nome?</div>
+  <div style="font-size:13px;color:var(--muted2);margin-bottom:20px">Como quer ser chamado aqui dentro?</div>
+  <input class="inp" id="ob-nm" type="text" placeholder="Seu nome..." value="${esc(obNm)}" oninput="obNm=this.value" maxlength="20" style="margin-bottom:24px;font-size:17px;text-align:center;font-weight:700"/>
+  <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:14px">Escolha seu avatar:</div>
+  <div class="avatar-grid">${AVATARS.map((av,i)=>`<div class="avatar-opt${obAv===i?' sel':''}" onclick="obAv=${i};renderOb()" style="font-size:36px">${av}</div>`).join('')}</div>
+  <button class="btn btn-pink" style="margin-top:16px" onclick="if(!obNm.trim()){alert('Digite seu nome!');return}obS=2;renderOb()">PRÓXIMO →</button>
+  <button class="btn btn-ghost" style="margin-top:8px" onclick="obS=0;renderOb()">← VOLTAR</button>
+</div>`}
+function ob2(){return`
+<div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--pink);margin-bottom:8px">PASSO 2 DE 2</div>
+  <div style="font-size:26px;font-weight:900;color:#fff;margin-bottom:8px">Tudo pronto,<br>${esc(obNm)}!</div>
+  <div style="margin:20px auto;width:100px;height:100px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--pink);font-size:52px">${AVATARS[obAv]}</div>
+  <div style="font-size:13px;color:var(--muted2);margin-bottom:22px;line-height:1.7">Você está prestes a iniciar 21 dias de transformação. Cada missão é baseada em pesquisas de psicologia social e neurociência.</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;margin-bottom:22px">
+    <div style="font-size:11px;font-weight:700;color:var(--pink);margin-bottom:8px;letter-spacing:1px">📌 COMO FUNCIONA</div>
+    <div style="font-size:13px;color:var(--muted2);line-height:1.8">✅ Complete as missões do dia para ganhar XP<br>📖 Leia as aulas para aprofundar a ciência<br>🏆 Desbloqueie conquistas ao longo da jornada<br>🔥 Mantenha o streak para construir o hábito</div>
+  </div>
+  <button class="btn btn-pink" onclick="finOb()">⚡ ENTRAR NO APP</button>
+</div>`}
+function finOb(){
+  S.on=true;S.nm=obNm.trim();S.av=obAv;updStreak();save();
+  document.getElementById('onboard').style.display='none';
+  document.getElementById('app').style.display='block';render();
+}
+
+// RENDER
+function render(){
+  const app=document.getElementById('app');if(!app)return;
+  let modal='';
+  if(S.modal){
+    if(S.modal.type==='ach'){const a=S.modal.a;modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal" onclick="event.stopPropagation()" style="border-color:var(--gold)"><div style="font-size:64px;margin-bottom:8px">${a.i}</div><div style="font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:700;margin-bottom:6px">CONQUISTA DESBLOQUEADA!</div><div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px">${a.n}</div><div style="font-size:13px;color:var(--muted2);margin-bottom:20px">${a.d}</div><button class="btn btn-gold" onclick="S.modal=null;render()">INCRÍVEL! 🏆</button></div></div>`;}
+    if(S.modal.type==='lesson'){const l=S.modal.l;modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal" onclick="event.stopPropagation()" style="border-color:${l.c};max-width:420px;text-align:left;padding:22px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="width:44px;height:44px;background:${l.c}25;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${l.i}</div><div><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:${l.c};margin-bottom:2px">${l.b}</div><div style="font-size:14px;font-weight:800;color:#fff;line-height:1.2">${l.t}</div></div></div><div style="font-size:14px;color:var(--muted2);line-height:1.85;max-height:55vh;overflow-y:auto;padding-right:4px">${l.txt}</div><button class="btn btn-pink" style="margin-top:16px" onclick="S.modal=null;render()">CONCLUÍDO ✓</button></div></div>`;}
+    if(S.modal.type==='reset'){modal=`<div class="overlay" onclick="S.modal=null;render()"><div class="modal" onclick="event.stopPropagation()" style="border-color:var(--red)"><div style="font-size:48px;margin-bottom:8px">⚠️</div><div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:8px">Resetar tudo?</div><div style="font-size:13px;color:var(--muted2);margin-bottom:20px">Todo o progresso será apagado. Não pode ser desfeito.</div><button class="btn" style="background:var(--red);color:#fff;margin-bottom:8px" onclick="resetAll()">SIM, RESETAR</button><button class="btn btn-ghost" onclick="S.modal=null;render()">CANCELAR</button></div></div>`;}
+  }
+  const navC={home:'var(--pink)',missions:'var(--purple2)',lessons:'var(--gold)',achievements:'var(--teal2)',profile:'var(--muted2)'};
+  const navItems=[
+    {id:'home',i:'🏠',l:'Início'},
+    {id:'missions',i:'🎯',l:'Missões'},
+    {id:'lessons',i:'📖',l:'Aulas'},
+    {id:'achievements',i:'🏆',l:'Troféus'},
+    {id:'profile',i:'👤',l:'Perfil'},
+  ];
+  const nav=`<div class="nav">${navItems.map(n=>`<div class="nav-item" style="color:${S.sc===n.id?navC[n.id]:'var(--muted)'}" onclick="S.sc='${n.id}';render()"><div class="nav-icon">${n.i}</div><div class="nav-label">${n.l}</div></div>`).join('')}</div>`;
+  const screens={home:renderHome,missions:renderMissions,lessons:renderLessons,achievements:renderAch,profile:renderProfile};
+  const content=screens[S.sc]?screens[S.sc]():'';
+  app.innerHTML=modal+`<div class="fade">${content}</div>`+nav;
+}
+
+function renderHome(){
+  const rk=getRank();
+  const ms=MISSIONS[S.day-1]||[];
+  const dc=mDone(S.day);
+  const pct=ms.length>0?Math.round(dc/ms.length*100):0;
+  const xpMap=[100,300,600,1000,1500,9999];
+  const xpPrev=[0,100,300,600,1000,1500];
+  const ri=Math.min(xpMap.findIndex(v=>v>S.xp),5);
+  const xpPct=Math.round((S.xp-xpPrev[ri])/(xpMap[ri]-xpPrev[ri])*100);
+  return `<div class="bg-s1" style="min-height:100vh;padding:0 16px 20px">
+  <div style="padding:20px 0 14px;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--pink)">⚡ SHAPE DE GRINGO</div>
+      <div style="font-size:20px;font-weight:900;color:#fff">Olá, ${esc(S.nm)} 👋</div>
+      <div style="font-size:12px;color:${rk.c};margin-top:2px">${rk.i} ${rk.n} • ${S.xp} XP</div>
+    </div>
+    <div style="position:relative">
+      <div style="width:54px;height:54px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--pink);font-size:30px">${AVATARS[S.av||0]}</div>
+      <div style="position:absolute;bottom:-2px;right:-2px;background:var(--pink);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid var(--bg)">🔥</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+    <div class="card" style="text-align:center;padding:14px 10px;margin-bottom:0"><div style="font-size:30px;font-weight:900;color:var(--pink);line-height:1">${S.st}</div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-top:4px">STREAK 🔥</div></div>
+    <div class="card" style="text-align:center;padding:14px 10px;margin-bottom:0"><div style="font-size:26px;font-weight:900;color:var(--purple2);line-height:1">DIA ${S.day}</div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-top:4px">DE 21 🧲</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;padding:14px 16px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:${rk.c}">${rk.i} ${rk.n}</span><span style="font-size:11px;color:var(--muted)">${S.xp} XP</span></div>
+    <div class="pbar-track"><div class="pbar-fill" style="width:${Math.min(xpPct,100)}%;background:linear-gradient(90deg,var(--pink),var(--purple))"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:5px;text-align:right">Próximo rank: ${rk.n==='Lendário'?'MAX':xpMap[ri]+' XP'}</div>
+  </div>
+
+  <div class="card card-glow-pink" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div><div style="font-size:11px;color:var(--pink);font-weight:700;letter-spacing:1px">MISSÕES DE HOJE</div><div style="font-size:17px;font-weight:900;color:#fff;margin-top:2px">${allDone(S.day)?'✅ Dia Completo!':dc+'/'+ms.length+' feitas'}</div></div>
+      <div style="font-size:28px;font-weight:900;color:var(--pink)">${pct}%</div>
+    </div>
+    <div class="pbar-track"><div class="pbar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--pink),var(--gold))"></div></div>
+    ${allDone(S.day)&&S.day<21?`<button class="btn btn-pink" style="margin-top:14px" onclick="advDay()">AVANÇAR PARA DIA ${S.day+1} →</button>`:`<button class="btn btn-ghost" style="margin-top:14px" onclick="S.sc='missions';render()">VER MISSÕES DO DIA →</button>`}
+  </div>
+
+  <div class="card card-glow-purple" style="margin-bottom:14px">
+    <div style="font-size:11px;color:var(--purple2);font-weight:700;letter-spacing:1px;margin-bottom:8px">📖 AULA EM DESTAQUE</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:44px;height:44px;background:rgba(139,92,246,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${LESSONS[0].i}</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#fff">${LESSONS[0].t}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">⏱ ${LESSONS[0].dur}</div></div>
+    </div>
+    <button class="btn btn-purple" style="margin-top:12px" onclick="openLesson(1)">LER AGORA →</button>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(236,72,153,.08),rgba(139,92,246,.06));border:1px solid rgba(236,72,153,.2);border-radius:16px;padding:18px;margin-bottom:14px;text-align:center">
+    <div style="font-size:13px;font-style:italic;color:#C4B8D8;line-height:1.7;margin-bottom:8px">"Magnetismo não é o que você faz. É o estado em que você está quando faz."</div>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700">OLIVIA FOX CABANE — THE CHARISMA MYTH</div>
+  </div>
+
+  <div class="card" style="margin-bottom:0">
+    <div style="font-size:11px;color:var(--pink);font-weight:700;letter-spacing:1px;margin-bottom:12px">📅 MAPA DOS 21 DIAS</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+      ${Array.from({length:21},(_,i)=>{const d=i+1;const dn=allDone(d);const cur=d===S.day;return`<div style="aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;${dn?'background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff':cur?'background:rgba(236,72,153,.2);border:2px solid var(--pink);color:var(--pink)':'background:var(--card2);color:var(--muted);border:1px solid var(--border)'}" onclick="S.day=${d};S.sc='missions';render()">${dn?'✓':d}</div>`;}).join('')}
+    </div>
+  </div>
+</div>`}
+
+function renderMissions(){
+  const ms=MISSIONS[S.day-1]||[];
+  const dc=mDone(S.day);
+  return`<div class="bg-s3" style="min-height:100vh;padding:0 16px 20px">
+  <div style="padding:20px 0 14px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--pink);margin-bottom:4px">MISSÕES DO DIA</div>
+    <div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:2px">DIA ${S.day} DE 21</div>
+    <div style="font-size:13px;color:var(--muted2)">${dc}/${ms.length} concluídas • ${ms.reduce((a,m)=>a+m.xp,0)} XP disponíveis</div>
+  </div>
+  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;-webkit-overflow-scrolling:touch">
+    ${MISSIONS.map((_,i)=>{const d=i+1;const dn=allDone(d);const cur=d===S.day;return`<div style="min-width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;${dn?'background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff':cur?'background:rgba(236,72,153,.2);border:2px solid var(--pink);color:var(--pink)':'background:var(--card2);color:var(--muted);border:1px solid var(--border)'}" onclick="S.day=${d};render()">${d}</div>`;}).join('')}
+  </div>
+  ${ms.map(m=>{const dn=!!(S.done[dk(S.day)]||{})[m.id];return`<div class="mission-item${dn?' done':''}" onclick="doMission(${S.day},'${m.id}')"><div class="mission-check${dn?' done':''}" style="${dn?'':'border-color:var(--pink)'}">${dn?'✓':''}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font-size:18px">${m.e}</span><div style="font-size:14px;font-weight:700;color:#fff">${m.t}</div></div><div style="font-size:12px;color:var(--muted2);line-height:1.5">${m.d}</div><div style="display:flex;gap:8px;margin-top:8px"><span class="badge badge-pink">+${m.xp} XP</span><span style="font-size:11px;color:var(--muted)">⏱ ${m.tm}</span></div></div></div>`;}).join('')}
+  ${dc===ms.length&&ms.length>0?`<div style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));border:1px solid rgba(16,185,129,.3);border-radius:16px;padding:18px;text-align:center;margin-top:8px"><div style="font-size:32px;margin-bottom:8px">🏆</div><div style="font-size:16px;font-weight:800;color:var(--green);margin-bottom:4px">DIA ${S.day} COMPLETO!</div><div style="font-size:13px;color:var(--muted2);margin-bottom:12px">Você ganhou ${ms.reduce((a,m)=>a+m.xp,0)} XP hoje.</div>${S.day<21?`<button class="btn btn-pink" onclick="advDay()">AVANÇAR PARA DIA ${S.day+1} →</button>`:`<button class="btn btn-gold">👑 21 DIAS COMPLETOS!</button>`}</div>`:''}
+</div>`}
+
+function renderLessons(){
+  const lr=Object.keys(S.lr).length;
+  return`<div class="bg-s2" style="min-height:100vh;padding:0 16px 20px">
+  <div style="padding:20px 0 14px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--purple2);margin-bottom:4px">BIBLIOTECA CIENTÍFICA</div>
+    <div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:2px">7 Aulas de Magnetismo</div>
+    <div style="font-size:13px;color:var(--muted2)">${lr}/7 aulas concluídas</div>
+  </div>
+  <div class="pbar-track" style="margin-bottom:20px"><div class="pbar-fill" style="width:${Math.round(lr/7*100)}%;background:linear-gradient(90deg,var(--purple),var(--pink))"></div></div>
+  ${LESSONS.map(l=>{const rd=!!S.lr[l.id];return`<div class="lesson-card" onclick="openLesson(${l.id})"><div style="padding:16px 18px;display:flex;align-items:center;gap:14px"><div style="width:44px;height:44px;background:${l.c}22;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${l.i}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span class="badge" style="background:${l.c}22;color:${l.c};border:1px solid ${l.c}44">${l.b}</span>${rd?`<span class="badge badge-teal">✓ LIDO</span>`:''}</div><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">${l.t}</div><div style="font-size:11px;color:var(--muted)">⏱ ${l.dur}</div></div><div style="color:var(--muted);font-size:18px">›</div></div></div>`;}).join('')}
+</div>`}
+
+function openLesson(id){
+  const l=LESSONS.find(x=>x.id===id);if(!l)return;
+  S.lr[l.id]=true;save();chkAch();
+  S.modal={type:'lesson',l};render();
+}
+
+function renderAch(){
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td};
+  const ul=ACHS.filter(a=>a.ok(stats)).length;
+  return`<div class="bg-s4" style="min-height:100vh;padding:0 16px 20px">
+  <div style="padding:20px 0 14px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--teal2);margin-bottom:4px">CONQUISTAS</div>
+    <div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:2px">Seus Troféus 🏆</div>
+    <div style="font-size:13px;color:var(--muted2)">${ul}/${ACHS.length} desbloqueadas</div>
+  </div>
+  <div class="pbar-track" style="margin-bottom:20px"><div class="pbar-fill" style="width:${Math.round(ul/ACHS.length*100)}%;background:linear-gradient(90deg,var(--teal),var(--purple))"></div></div>
+  <div class="ach-grid">${ACHS.map(a=>{const ok=a.ok(stats);return`<div class="ach-card${ok?' unlocked':''}"><div style="font-size:32px;margin-bottom:6px;${ok?'':'filter:grayscale(1);opacity:.35'}">${a.i}</div><div style="font-size:12px;font-weight:700;color:${ok?'#fff':'var(--muted)'};margin-bottom:2px">${a.n}</div><div style="font-size:10px;color:var(--muted);line-height:1.4">${a.d}</div>${ok?`<div style="margin-top:6px"><span class="badge badge-gold">✓</span></div>`:''}</div>`;}).join('')}</div>
+</div>`}
+
+function renderProfile(){
+  const rk=getRank();
+  const stats={xp:S.xp,st:S.st,lr:Object.keys(S.lr).length,td:S.td};
+  const ul=ACHS.filter(a=>a.ok(stats)).length;
+  return`<div class="bg-s5" style="min-height:100vh;padding:0 16px 20px">
+  <div style="padding:20px 0 0;text-align:center">
+    <div style="width:90px;height:90px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--pink);margin:0 auto 12px;font-size:48px">${AVATARS[S.av||0]}</div>
+    <div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:4px">${esc(S.nm)}</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:${rk.c}22;border:1px solid ${rk.c}44;border-radius:20px;padding:4px 14px;margin-bottom:20px"><span style="font-size:14px">${rk.i}</span><span style="font-size:12px;font-weight:700;color:${rk.c}">${rk.n}</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+    ${[['⚡',S.xp,'XP Total','var(--pink)'],['🔥',S.st,'Dias Streak','var(--orange)'],['✅',S.td,'Missões','var(--green)'],['🏆',ul,'Conquistas','var(--gold)']].map(([ic,v,l,c])=>`<div class="card" style="text-align:center;padding:14px 10px;margin-bottom:0"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:4px">${ic} ${l}</div><div style="font-size:28px;font-weight:900;color:${c}">${v}</div></div>`).join('')}
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(236,72,153,.05));border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:16px;margin-bottom:16px">
+    <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:var(--purple2);margin-bottom:6px">💡 JAMES CLEAR — HÁBITOS ATÔMICOS</div>
+    <div style="font-size:13px;color:#C4B8D8;line-height:1.72">Quando você se define como <strong style="color:#fff">"magnético"</strong>, seu cérebro automaticamente busca ações que confirmem essa identidade. Identidade supera motivação.</div>
+  </div>
+  <div style="text-align:center;margin-bottom:16px">
+    <div style="font-size:10px;color:var(--muted);letter-spacing:2px;font-weight:700">⚡ SHAPE DE GRINGO — APP MAGNETISMO PESSOAL</div>
+  </div>
+  <button class="btn btn-ghost" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="S.modal={type:'reset'};render()">🔄 RESETAR PROGRESSO</button>
+</div>`}
+
+load();
+if(S.on){
+  document.getElementById('onboard').style.display='none';
+  document.getElementById('app').style.display='block';
+  updStreak();render();
+}else{renderOb();}
+</script>
+</body>
+</html>

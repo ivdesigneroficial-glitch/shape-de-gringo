@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#08080a">
+<title>👔 Estilo & Imagem</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#08080a;color:#e2ddd5;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:72px;overflow-x:hidden}
+:root{--bg:#08080a;--card:#0f0f12;--border:#1c1c22;--gold:#c9a84c;--gold2:#a68a3a;--champagne:#e8dcc8;--cream:#f5f0e6;--muted:#7a746c;--dim:#4a463e;--green:#4ade80;--red:#f87171;--slate:#94a3b8}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0b0b0e;border-top:1px solid var(--border);display:flex;z-index:100}
+.nav-item{flex:1;text-align:center;padding:10px 0;cursor:pointer;transition:color .2s}
+
+/* HEADER */
+.header{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center}
+.h-brand{display:flex;align-items:center;gap:8px}
+.h-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:16px}
+.h-title{font-size:15px;font-weight:800;color:var(--champagne);letter-spacing:2px}
+.h-sub{font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:1px}
+.h-streak{background:var(--gold)12;border:1px solid var(--gold)25;border-radius:10px;padding:6px 12px;text-align:center}
+.h-streak-num{font-size:14px;font-weight:900;color:var(--gold)}
+.h-streak-label{font-size:7px;color:var(--dim);letter-spacing:1px}
+
+.content{padding:0 16px}
+
+/* STYLE SCORE RING */
+.score-card{text-align:center;background:linear-gradient(135deg,#13111a,var(--card));border:1px solid var(--gold)10;border-radius:16px;padding:24px 18px;margin-bottom:14px}
+.score-ring{position:relative;width:140px;height:140px;margin:0 auto}
+.score-svg{width:140px;height:140px;transform:rotate(-90deg)}
+.score-bg{fill:none;stroke:var(--border);stroke-width:8}
+.score-fill{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.score-val{font-size:32px;font-weight:900;color:var(--cream);font-family:'Georgia',serif}
+.score-label{font-size:8px;color:var(--dim);letter-spacing:2px;font-weight:700;margin-top:2px}
+.score-status{margin-top:12px;font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px}
+
+/* CATEGORY PILLS */
+.cat-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.cat-pill{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:all .3s;white-space:nowrap}
+.cat-pill.active{border-color:var(--gold);color:var(--gold);background:var(--gold)08}
+
+/* MISSION */
+.mission{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:all .3s;position:relative;overflow:hidden}
+.mission.done{opacity:.45}
+.mission-top{display:flex;align-items:flex-start;gap:12px}
+.mission-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .3s;font-size:11px;color:transparent}
+.mission-check.checked{border-color:var(--gold);background:var(--gold);color:#000}
+.mission-body{flex:1}
+.mission-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:3px}
+.mission-title{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.mission-desc{font-size:11px;color:var(--muted);line-height:1.7}
+.mission-tip{font-size:10px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6}
+.mission-tip b{color:var(--gold);font-weight:700}
+.mission-dur{position:absolute;top:16px;right:16px;font-size:8px;color:var(--dim);font-weight:700;letter-spacing:1px}
+.mission-xp{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--gold);margin-top:6px;letter-spacing:1px}
+
+/* DAILY TIP */
+.daily-tip{background:linear-gradient(135deg,#14120a,var(--card));border:1px solid var(--gold)12;border-radius:14px;padding:18px;margin-bottom:14px}
+.daily-tip-label{font-size:8px;color:var(--gold);letter-spacing:3px;font-weight:700;margin-bottom:8px}
+.daily-tip-text{font-size:14px;color:var(--champagne);line-height:1.7;font-style:italic;font-family:Georgia,serif}
+.daily-tip-source{font-size:9px;color:var(--dim);margin-top:8px}
+
+/* LEVEL */
+.level-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.level-name{font-size:13px;font-weight:800;color:var(--gold)}
+.level-next{font-size:9px;color:var(--dim)}
+.level-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.level-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold2),var(--gold),var(--champagne));transition:width 1s ease}
+
+/* WARDROBE SCREEN */
+.ward-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .3s}
+.ward-card:hover{border-color:var(--gold)30}
+.ward-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.ward-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ward-title{font-size:14px;font-weight:800;color:var(--cream)}
+.ward-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.ward-items{display:flex;gap:6px;flex-wrap:wrap}
+.ward-item{font-size:10px;background:var(--border);color:var(--muted);padding:4px 10px;border-radius:4px;font-weight:600}
+
+/* PROGRESS */
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.prog-card-icon{font-size:24px;margin-bottom:4px}
+.prog-card-val{font-size:20px;font-weight:900;color:var(--cream)}
+.prog-card-label{font-size:8px;color:var(--dim);letter-spacing:1px;font-weight:700}
+
+/* RANKS */
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-icon{font-size:22px}
+.rank-name{font-size:13px;font-weight:700;color:var(--cream)}
+.rank-req{font-size:9px;color:var(--dim)}
+
+/* GUIDE CARD */
+.guide{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;cursor:pointer;transition:border-color .3s}
+.guide:hover{border-color:var(--gold)25}
+.guide-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.guide-body{padding:14px 16px}
+.guide-cat{font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
+.guide-title{font-size:14px;font-weight:800;color:var(--cream);margin-bottom:4px}
+.guide-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.guide-meta{font-size:9px;color:var(--dim);margin-top:8px;display:flex;gap:12px}
+
+/* SETTINGS */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-left{display:flex;align-items:center;gap:10px}
+.setting-icon{font-size:18px}
+.setting-name{font-size:13px;font-weight:600;color:var(--champagne)}
+.toggle{width:42px;height:24px;border-radius:12px;background:var(--border);cursor:pointer;position:relative;transition:background .3s}
+.toggle.on{background:var(--gold)}
+.toggle-knob{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:transform .3s}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+
+.fade{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.screen{display:none}.screen.active{display:block}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ===========================
+// ESTILO & IMAGEM — ENGINE
+// ===========================
+
+const CATS=[
+  {id:'fit',name:'CAIMENTO',icon:'👔',color:'#c9a84c',desc:'Roupas que valorizam o shape'},
+  {id:'color',name:'CORES',icon:'🎨',color:'#e879f9',desc:'Combinações e paletas'},
+  {id:'groom',name:'GROOMING',icon:'💈',color:'#38bdf8',desc:'Barba, cabelo e cuidados'},
+  {id:'shoes',name:'CALÇADOS',icon:'👟',color:'#fb923c',desc:'Tênis, botas e sapatos'},
+  {id:'style',name:'ESTILO',icon:'🪞',color:'#4ade80',desc:'Identidade visual pessoal'},
+  {id:'body',name:'LINGUAGEM',icon:'🧍',color:'#f87171',desc:'Postura e presença'},
+  {id:'accs',name:'ACESSÓRIOS',icon:'⌚',color:'#a78bfa',desc:'Relógio, óculos, pulseiras'},
+];
+
+const MISSIONS={
+  fit:[
+    {t:"Use uma camiseta que marca o bíceps",d:"Escolha uma camiseta com manga que termina exatamente no ponto mais largo do bíceps. Nem frouxa, nem apertada — moldada.",tip:"A manga ideal termina no terço médio do bíceps. Se passar do cotovelo, tá grande. Se subir demais, vira regata disfarçada.",dur:"Dia todo",xp:25},
+    {t:"Teste a regra dos 2 dedos na cintura",d:"Vista sua calça preferida. Passe 2 dedos entre a cintura e o cós. Se couber mais, tá folgada. Se não couber, tá apertada.",tip:"Calça no tamanho certo valoriza quadril e pernas. Folgada demais esconde o shape. Apertada demais grita insegurança.",dur:"5 min",xp:20},
+    {t:"Dobre a manga da camisa social",d:"Vista uma camisa de manga longa e dobre até abaixo do cotovelo. 2 dobras largas, não enrola.",tip:"Dobrar a manga mostra o antebraço — um dos maiores sinais de masculinidade visual. Técnica: dobre o punho pra cima e depois a manga por cima.",dur:"2 min",xp:15},
+    {t:"Use uma peça justa + uma peça solta",d:"Combine uma peça mais moldada no corpo (camiseta slim) com uma peça mais solta (calça reta ou jogger). Ou vice-versa.",tip:"Contraste de volumes é o segredo do estilo masculino. Tudo justo = desconfortável visualmente. Tudo largo = sem forma. O equilíbrio é tudo.",dur:"Dia todo",xp:30},
+    {t:"Confira o comprimento da sua camiseta",d:"Vista uma camiseta e levante os braços. Se aparecer a barriga, é curta demais. Se passar do zíper da calça, é longa demais.",tip:"Comprimento ideal: cobre o cinto mas não passa da braguilha. Testa com braços levantados — não deve subir além do umbigo.",dur:"3 min",xp:15},
+    {t:"Elimine uma peça que não serve mais",d:"Abra o guarda-roupa e tire 1 peça que não te serve, está desbotada ou não te representa mais. Doe ou descarte.",tip:"Guarda-roupa cheio de peças ruins te faz escolher mal. Menos peças boas > muitas peças ruins. Curadoria é estilo.",dur:"10 min",xp:25},
+    {t:"Polo day — use uma polo hoje",d:"Vista uma camisa polo que marque levemente os ombros e peitorais. Gola abotoada ou com 1 botão aberto.",tip:"A polo é a peça mais versátil do homem com shape. Marca ombros, bíceps e peito sem parecer que está tentando. Cores neutras primeiro.",dur:"Dia todo",xp:20},
+    {t:"Use calça de cintura média-alta",d:"Troque a calça de cintura baixa por uma de cintura média ou alta. Observe como muda a silhueta.",tip:"Cintura baixa achata o torso e encurta as pernas. Cintura média-alta alonga a silhueta e define a linha V do abdômen.",dur:"Dia todo",xp:25},
+  ],
+  color:[
+    {t:"Vista monocromático hoje",d:"Escolha um tom e vista peças no mesmo espectro de cor: todo preto, todo azul marinho, todo cinza, todo cáqui.",tip:"Look monocromático alonga a silhueta, transmite elegância e é impossível de errar. Varie nos tons (claro + escuro do mesmo).",dur:"Dia todo",xp:30},
+    {t:"Use preto + um ponto de cor",d:"Base toda preta (calça + camiseta/camisa) com UMA peça ou acessório de cor forte: tênis, relógio, jaqueta.",tip:"Preto com um ponto de cor focal cria contraste visual poderoso. Funciona com vermelho, branco, dourado, verde oliva.",dur:"Dia todo",xp:25},
+    {t:"Combine 3 cores máximo",d:"Monte seu look hoje usando no máximo 3 cores (incluindo sapato). Se passar de 3, tire algo.",tip:"Regra dos 3: mais de 3 cores no mesmo look cria ruído visual. Menos é mais. Contar preto e branco como cores.",dur:"Dia todo",xp:20},
+    {t:"Descubra se você é quente ou frio",d:"Olhe as veias do pulso sob luz natural: verdes = tom quente (use marrom, bege, terra). Azuis = tom frio (use cinza, azul, preto).",tip:"Usar cores do seu subtom correto faz sua pele parecer mais saudável e o rosto mais definido. Impacto sutil mas poderoso.",dur:"5 min",xp:25},
+    {t:"Azul marinho + branco",d:"Vista a combinação mais segura e elegante que existe: parte de cima azul marinho + parte de baixo mais clara (ou vice-versa).",tip:"Azul marinho é a cor mais versátil do guarda-roupa masculino. Combina com praticamente tudo e transmite confiança.",dur:"Dia todo",xp:20},
+    {t:"Elimine uma peça estampada barulhenta",d:"Abra o guarda-roupa e retire 1 peça com estampa exagerada, logo gigante ou combinação de cores gritante.",tip:"Estampas grandes e logos enormes distraem do shape e parecem juvenis. Peças lisas ou com padronagem sutil sempre vencem.",dur:"10 min",xp:25},
+    {t:"Earth tones day",d:"Vista apenas tons terrosos hoje: marrom, bege, cáqui, verde oliva, ferrugem, areia.",tip:"Tons terrosos são masculinos, orgânicos e combinam com qualquer tom de pele. Ideal para looks casuais com presença.",dur:"Dia todo",xp:25},
+  ],
+  groom:[
+    {t:"Alinhe a barba ou faça a barba",d:"Se tem barba: alinhe as bordas com precisão (bochecha e pescoço). Se não tem: faça a barba rente e passe pós-barba.",tip:"A linha do pescoço é o detalhe que separa barba cuidada de barba desleixada. Trace uma linha imaginária 2 dedos acima do pomo de adão.",dur:"15 min",xp:25},
+    {t:"Cuide das sobrancelhas",d:"Remova os pelos entre as sobrancelhas e apare os fios mais longos com tesoura. Não faça formato — só limpeza.",tip:"Sobrancelha limpa (não modelada) muda o rosto inteiro. Remove o aspecto desleixado sem parecer produzido demais.",dur:"10 min",xp:20},
+    {t:"Hidrate o rosto de manhã",d:"Lave o rosto, aplique hidratante facial e protetor solar (FPS 30+). Mesmo em dia nublado.",tip:"Pele hidratada + protegida parece mais jovem e saudável. Protetor solar previne envelhecimento. Homens que cuidam da pele se destacam.",dur:"5 min",xp:20},
+    {t:"Corte as unhas e hidrate as mãos",d:"Corte unhas rentes, lixe as bordas e aplique creme hidratante nas mãos.",tip:"Mãos são a segunda coisa que as pessoas notam depois do rosto. Unhas compridas ou maltratadas destroem qualquer look.",dur:"10 min",xp:15},
+    {t:"Perfume estratégico",d:"Aplique perfume nos pontos de pulso: atrás da orelha, pulsos, pescoço. 2-3 borrifadas máximo.",tip:"Menos é mais com perfume. Aplique em pontos de calor (pulso, pescoço). Se os outros sentem seu perfume a mais de 1 braço de distância, é demais.",dur:"2 min",xp:15},
+    {t:"Skincare noturno",d:"Antes de dormir: lave o rosto, aplique sérum (vitamina C ou retinol se tiver) e hidratante.",tip:"A pele se regenera durante o sono. Skincare noturno é 2x mais efetivo que o diurno. Sérum de vitamina C = pele mais uniforme em 2 semanas.",dur:"5 min",xp:25},
+    {t:"Organize seus produtos de banho",d:"Jogue fora produtos vencidos, quase vazios ou que você não usa. Mantenha o essencial organizado.",tip:"Banheiro organizado = rotina otimizada. Se tem mais de 8 produtos, está complicando demais. Simplifique.",dur:"15 min",xp:20},
+    {t:"Cuide dos lábios",d:"Aplique lip balm/protetor labial 2x hoje. Se tiver pele morta nos lábios, esfolie suavemente com escova de dente macia.",tip:"Lábios rachados são um dos detalhes mais notados inconscientemente. Lip balm com FPS é investimento mínimo com retorno visual alto.",dur:"2 min",xp:10},
+  ],
+  shoes:[
+    {t:"Limpe seus tênis principais",d:"Tire os cadarços, lave com escova + sabão neutro, seque na sombra. Cadarços separados.",tip:"Tênis limpo transforma qualquer look. Tênis sujo destrói qualquer look. 5 minutos de limpeza = upgrade visual instantâneo.",dur:"15 min",xp:25},
+    {t:"Monte 3 looks com 1 calçado",d:"Escolha seu calçado favorito e monte 3 combinações diferentes na frente do espelho.",tip:"Versatilidade é o teste de um bom calçado. Se um tênis combina com 3+ looks, é essencial. Se combina com 1, é dispensável.",dur:"10 min",xp:20},
+    {t:"Avalie a sola dos seus sapatos",d:"Vire todos os seus calçados e verifique as solas. Desgastadas? Descosturando? Hora de trocar ou consertar.",tip:"Sola gasta é sinal de desleixo que a maioria não percebe conscientemente — mas sente. Sapateiro resolve por R$20-40.",dur:"10 min",xp:15},
+    {t:"Use um calçado diferente do habitual",d:"Se sempre usa tênis, vista uma bota ou mocassim. Se sempre usa formal, vista um sneaker limpo.",tip:"Sair da zona de conforto no calçado muda a energia do look inteiro. Uma bota Chelsea com jeans slim é game changer.",dur:"Dia todo",xp:25},
+    {t:"Organize seus calçados",d:"Alinhe todos os calçados. Descarte os que não usa há 6+ meses. Mantenha no máximo 5-7 pares essenciais.",tip:"5 pares essenciais: 1 tênis branco, 1 tênis escuro, 1 bota, 1 social, 1 chinelo/slide de qualidade. O resto é extra.",dur:"15 min",xp:20},
+    {t:"Combine o calçado com o cinto",d:"Se está usando cinto, combine o material/cor com o calçado: couro com couro, preto com preto, marrom com marrom.",tip:"Calçado e cinto na mesma família de cor é uma regra clássica que transmite atenção ao detalhe. Quebrá-la exige experiência.",dur:"Dia todo",xp:15},
+  ],
+  style:[
+    {t:"Defina seu estilo em 3 palavras",d:"Escolha 3 adjetivos que definem como você quer ser percebido. Ex: limpo, forte, elegante. Ou: urbano, minimalista, sólido.",tip:"Sem direção, você veste o que aparece. Com 3 palavras-âncora, cada compra e cada look passam por um filtro. Isso é ter estilo.",dur:"10 min",xp:30},
+    {t:"Crie 1 look assinatura",d:"Monte uma combinação que te represente e que você poderia usar toda semana sem enjoar. Seu 'uniforme'.",tip:"Steve Jobs usava gola rolê + jeans. Mark Zuckerberg usa cinza + jeans. Seu uniforme economiza decisão e cria identidade visual.",dur:"15 min",xp:35},
+    {t:"Copie 1 referência de estilo",d:"Encontre 1 foto de um cara cujo estilo te inspira. Tente replicar o look com o que você já tem no guarda-roupa.",tip:"Copiar é aprender. Todos os grandes estilistas começaram copiando. Adapte ao seu corpo e ao seu contexto — não copie cegamente.",dur:"20 min",xp:25},
+    {t:"Vista o look mais ousado que tem",d:"Pegue a peça mais diferente do seu guarda-roupa (cor, corte, textura) e construa um look ao redor dela.",tip:"Ousadia controlada constrói confiança. Se você nunca usa algo 'diferente', sua zona de conforto é sua prisão estilística.",dur:"Dia todo",xp:30},
+    {t:"Auditoria de guarda-roupa: 15 min",d:"Separe 15 minutos para retirar 3 peças que não te representam mais. Doe ou descarte.",tip:"Regra: se não usou nos últimos 3 meses e não é peça sazonal, sai. Espaço no guarda-roupa = clareza de estilo.",dur:"15 min",xp:25},
+    {t:"Pesquise 1 tendência atual",d:"Abra o Pinterest ou Instagram e pesquise 'men streetwear 2025' ou 'minimalist menswear'. Salve 5 fotos que te atraem.",tip:"Estar atualizado não é seguir toda tendência — é saber o que está acontecendo e filtrar o que funciona pra VOCÊ e pro seu corpo.",dur:"15 min",xp:20},
+    {t:"Layering: vista 3 camadas",d:"Camiseta + camisa aberta + jaqueta. Ou camiseta + moletom + colete. 3 camadas criam profundidade.",tip:"Layering é a técnica mais avançada do estilo masculino casual. Cria textura, profundidade e permite ajuste ao longo do dia.",dur:"Dia todo",xp:30},
+  ],
+  body:[
+    {t:"Ombros pra trás o dia todo",d:"Conscientemente mantenha ombros puxados levemente pra trás e pra baixo durante todo o dia.",tip:"Ombros caídos escondem peitoral e passam insegurança. Ombros abertos projetam peito, abrem o torso e transmitem dominância. Postura é a roupa invisível.",dur:"Dia todo",xp:30},
+    {t:"Caminhe 10% mais devagar",d:"Reduza sua velocidade de caminhada em 10%. Passos firmes, sem pressa.",tip:"Homens que caminham devagar são percebidos como mais confiantes e de status mais alto. Correr transmite urgência e subordinação. Domine o ritmo.",dur:"Dia todo",xp:25},
+    {t:"Contato visual 3 segundos",d:"Em toda conversa hoje, mantenha contato visual por pelo menos 3 segundos antes de desviar.",tip:"Contato visual de 3-5 segundos transmite confiança e conexão. Menos que 2 = insegurança. Mais que 5 = intimidação. O sweet spot é 3.",dur:"Dia todo",xp:25},
+    {t:"Ocupe espaço quando sentar",d:"Quando sentar, abra levemente as pernas, descanse os braços nos apoios e ocupe seu espaço sem invadir o dos outros.",tip:"Ocupar espaço é sinal biológico de confiança em primatas. Encolher-se é sinal de submissão. Não exagere — apenas não se diminua.",dur:"Dia todo",xp:20},
+    {t:"Pratique o aperto de mão",d:"Em todo cumprimento hoje: firme (não esmague), olho no olho, sorriso leve, 2-3 bombas.",tip:"Primeiro contato físico = primeira impressão permanente. Mão mole = fraqueza percebida. Mão-vise = compensação. Firme e breve é o padrão.",dur:"Dia todo",xp:20},
+    {t:"Fale 10% mais grave",d:"Conscientemente fale num tom levemente mais baixo e grave hoje. Não forçado — relaxado.",tip:"Tom de voz mais grave é percebido como mais confiante e atraente em estudos de psicologia evolutiva. Relaxar a garganta naturalmente abaixa o tom.",dur:"Dia todo",xp:25},
+    {t:"Check de postura a cada hora",d:"Coloque alarme a cada hora. Quando tocar: ombros atrás, queixo paralelo ao chão, coluna reta, core ativado.",tip:"A cada hora, seu corpo volta ao padrão. O alarme reseta a postura. Em 21 dias vira automático. Consciência repetida = hábito.",dur:"Dia todo",xp:30},
+    {t:"Entre num ambiente com presença",d:"Na próxima vez que entrar num lugar (café, loja, reunião): pare na porta 1 segundo, olhe o ambiente, depois entre com calma.",tip:"A pausa de 1 segundo na entrada cria o que atores chamam de 'momento de presença'. Inconscientemente, todos registram quem faz isso.",dur:"1 min",xp:20},
+  ],
+  accs:[
+    {t:"Use um relógio hoje",d:"Coloque um relógio no pulso — analógico ou digital, não importa. Use durante todo o dia.",tip:"Relógio é o acessório masculino nº1. Mesmo barato, transmite que você valoriza tempo e detalhes. Melhor investimento abaixo de R$100.",dur:"Dia todo",xp:20},
+    {t:"Escolha 1 acessório focal",d:"Adicione UM acessório que não costuma usar: óculos escuros, pulseira, corrente discreta, anel.",tip:"1 acessório focal cria ponto de interesse visual. 2 é sofisticado. 3+ é excessivo. Comece com 1 e observe a diferença na percepção.",dur:"Dia todo",xp:25},
+    {t:"Limpe seus óculos escuros",d:"Lave as lentes com sabão neutro e água, seque com pano de microfibra. Verifique se os parafusos estão firmes.",tip:"Óculos sujos ou tortos destroem a proposta de estilo. Óculos limpos e bem ajustados ao rosto = upgrade facial instantâneo.",dur:"5 min",xp:15},
+    {t:"Organize seus acessórios",d:"Separe um lugar fixo pra relógio, óculos, pulseiras, carteira. Tudo visível e acessível.",tip:"Acessórios organizados = você realmente os usa. Guardados no fundo da gaveta = esquecidos. Visibilidade incentiva uso.",dur:"10 min",xp:20},
+    {t:"Pesquise 1 acessório que quer comprar",d:"Pesquise online um acessório que complementaria seu estilo. Salve 3 opções com preço acessível.",tip:"Compra intencional > compra por impulso. Pesquisar antes evita acessórios que ficam na gaveta. Defina o que complementa seu estilo.",dur:"15 min",xp:15},
+    {t:"Cinto como acessório",d:"Hoje, trate o cinto como acessório visível: camisa por dentro ou camiseta que mostra o cinto. Escolha um bom.",tip:"Cinto visível com fivela limpa e couro em bom estado eleva qualquer look. Cinto descascado ou fivela oxidada destrói.",dur:"Dia todo",xp:20},
+  ]
+};
+
+const LEVELS=[
+  {name:'Cru',icon:'🪨',min:0},
+  {name:'Aprendiz',icon:'✂️',min:150},
+  {name:'Atento',icon:'👁️',min:400},
+  {name:'Refinado',icon:'🪞',min:800},
+  {name:'Elegante',icon:'👔',min:1400},
+  {name:'Magnético',icon:'🧲',min:2200},
+  {name:'Ícone',icon:'👑',min:3500}
+];
+
+const TIPS=[
+  "Roupa não faz o homem. Mas o homem certo na roupa certa é imbatível.",
+  "Estilo não é o que você veste. É o que sobra quando tiram tudo.",
+  "Vista-se pro homem que você está se tornando, não pro que você era.",
+  "Menos peças, mais impacto. Guarda-roupa editado é guarda-roupa poderoso.",
+  "O shape é a base. A roupa é a moldura. Sem moldura, até obra-prima se perde.",
+  "Confiança é o acessório mais caro — e o único que não se compra.",
+  "Os detalhes que ninguém nota conscientemente são os que mais impactam.",
+  "Postura é a primeira peça de roupa que você veste todo dia.",
+  "Homem com shape e sem estilo é Ferrari com pintura fosca. Funciona — mas podia ser mais.",
+  "Cheiro, textura, caimento, cor. Nessa ordem, o cérebro processa presença."
+];
+
+const LS={get(k){try{return JSON.parse(localStorage.getItem("ei_"+k))}catch{return null}},set(k,v){try{localStorage.setItem("ei_"+k,JSON.stringify(v))}catch{}}};
+let S={
+  screen:'home',streak:LS.get('streak')||0,xp:LS.get('xp')||0,
+  completedToday:LS.get('completedToday')||{},lastDay:LS.get('lastDay')||'',
+  totalCompleted:LS.get('totalCompleted')||0,daysActive:LS.get('daysActive')||0,
+  catFilter:'all'
+};
+function save(){LS.set('streak',S.streak);LS.set('xp',S.xp);LS.set('completedToday',S.completedToday);LS.set('lastDay',S.lastDay);LS.set('totalCompleted',S.totalCompleted);LS.set('daysActive',S.daysActive)}
+function today(){return new Date().toISOString().slice(0,10)}
+function dayOfYear(){const n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/864e5)}
+function checkDay(){const t=today();if(S.lastDay!==t){if(S.lastDay){const y=new Date();y.setDate(y.getDate()-1);if(S.lastDay===y.toISOString().slice(0,10))S.streak++;else S.streak=1}else S.streak=1;S.completedToday={};S.lastDay=t;S.daysActive++;save()}}
+
+function getDailyMissions(){
+  const doy=dayOfYear(),missions=[],cats=Object.keys(MISSIONS);
+  for(let i=0;i<7;i++){
+    const cIdx=(doy+i)%cats.length;
+    const cat=cats[cIdx];
+    const pool=MISSIONS[cat];
+    const mIdx=(doy*7+i*11+doy%5)%pool.length;
+    missions.push({...pool[mIdx],cat,id:`${doy}-${i}`});
+  }
+  return missions;
+}
+function getLevel(){return[...LEVELS].reverse().find(l=>S.xp>=l.min)||LEVELS[0]}
+function getNextLevel(){const c=getLevel();const i=LEVELS.indexOf(c);return i<LEVELS.length-1?LEVELS[i+1]:null}
+function getLevelProg(){const c=getLevel(),n=getNextLevel();if(!n)return 100;return Math.min(100,Math.round((S.xp-c.min)/(n.min-c.min)*100))}
+function completeMission(id,xp){if(S.completedToday[id])return;S.completedToday[id]=true;S.xp+=xp;S.totalCompleted++;save();render()}
+function todayProg(){const m=getDailyMissions();return Math.round(m.filter(x=>S.completedToday[x.id]).length/m.length*100)}
+function getCatInfo(id){return CATS.find(c=>c.id===id)}
+
+function render(){
+  checkDay();
+  const app=document.getElementById('app');
+  const screens={home:renderHome,wardrobe:renderWardrobe,progress:renderProgress,settings:renderSettings};
+  const content=screens[S.screen]?screens[S.screen]():'';
+  const navItems=[{id:'home',icon:'👔',label:'Hoje'},{id:'wardrobe',icon:'📖',label:'Guias'},{id:'progress',icon:'📊',label:'Nível'},{id:'settings',icon:'⚙️',label:'Config'}];
+  const nav=`<div class="nav">${navItems.map(n=>`<div class="nav-item" onclick="S.screen='${n.id}';render()" style="color:${S.screen===n.id?'var(--gold)':'var(--dim)'}"><div style="font-size:18px">${n.icon}</div><div style="font-size:9px;font-weight:700;margin-top:2px">${n.label}</div></div>`).join('')}</div>`;
+  app.innerHTML=renderHeader()+`<div class="content fade">${content}</div>`+nav;
+}
+
+function renderHeader(){
+  const lvl=getLevel();
+  return`<div class="header"><div class="h-brand"><div class="h-logo">👔</div><div><div class="h-title">ESTILO & IMAGEM</div><div class="h-sub">${lvl.icon} ${lvl.name} · DIA ${S.daysActive||1}</div></div></div><div class="h-streak"><div class="h-streak-num">🔥 ${S.streak}</div><div class="h-streak-label">STREAK</div></div></div>`;
+}
+
+function renderHome(){
+  const missions=getDailyMissions(),prog=todayProg(),quote=TIPS[dayOfYear()%TIPS.length];
+  const filtered=S.catFilter==='all'?missions:missions.filter(m=>m.cat===S.catFilter);
+  const doneCount=missions.filter(m=>S.completedToday[m.id]).length;
+  let h='';
+
+  // Score ring
+  const r=58,c=2*Math.PI*r,o=c-c*prog/100;
+  h+=`<div class="score-card"><div class="score-ring"><svg class="score-svg" viewBox="0 0 140 140"><circle class="score-bg" cx="70" cy="70" r="${r}"/><circle class="score-fill" cx="70" cy="70" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${o}"/></svg><div class="score-center"><div class="score-val">${prog}%</div><div class="score-label">STYLE SCORE</div></div></div><div class="score-status">${doneCount}/${missions.length} MISSÕES · ${prog>=100?'COMPLETO ✓':'EM PROGRESSO'}</div></div>`;
+
+  // Level
+  const lvl=getLevel(),next=getNextLevel(),lp=getLevelProg();
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lvl.icon} ${lvl.name}</div><div class="level-next">${next?next.icon+' '+next.name+' →':''} ${S.xp} XP</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+
+  // Daily tip
+  h+=`<div class="daily-tip"><div class="daily-tip-label">💎 INSIGHT DO DIA</div><div class="daily-tip-text">"${quote}"</div></div>`;
+
+  // Category filter
+  h+=`<div class="cat-scroll"><div class="cat-pill ${S.catFilter==='all'?'active':''}" onclick="S.catFilter='all';render()">TODAS</div>`;
+  CATS.forEach(c=>{h+=`<div class="cat-pill ${S.catFilter===c.id?'active':''}" onclick="S.catFilter='${c.id}';render()" style="${S.catFilter===c.id?'border-color:'+c.color+';color:'+c.color:''}">${c.icon} ${c.name}</div>`});
+  h+=`</div>`;
+
+  // Missions
+  filtered.forEach(m=>{
+    const c=getCatInfo(m.cat),done=S.completedToday[m.id];
+    h+=`<div class="mission ${done?'done':''}"><div class="mission-dur">${m.dur}</div><div class="mission-top"><div class="mission-check ${done?'checked':''}" onclick="completeMission('${m.id}',${m.xp})">${done?'✓':''}</div><div class="mission-body"><div class="mission-cat" style="color:${c.color}">${c.icon} ${c.name}</div><div class="mission-title" style="${done?'text-decoration:line-through':''}">${m.t}</div><div class="mission-desc">${m.d}</div><div class="mission-tip">💡 <b>Pro tip:</b> ${m.tip}</div><div class="mission-xp">✨ +${m.xp} XP</div></div></div></div>`;
+  });
+  return h;
+}
+
+function renderWardrobe(){
+  const guides=[
+    {icon:'👕',bg:'linear-gradient(135deg,#1a1520,#0f0f12)',title:'Camisetas que Valorizam o Shape',sub:'Guia completo de caimento',cat:'CAIMENTO',color:'var(--gold)',items:['Manga ideal','Comprimento','Tecido','Gola']},
+    {icon:'👖',bg:'linear-gradient(135deg,#14120a,#0f0f12)',title:'Calças: Slim, Regular ou Wide',sub:'Como escolher pelo seu corpo',cat:'FIT',color:'#fb923c',items:['Cintura','Coxa','Barra','Tecido']},
+    {icon:'🎨',bg:'linear-gradient(135deg,#1a0a1a,#0f0f12)',title:'Paleta de Cores Masculina',sub:'Combinações que nunca falham',cat:'CORES',color:'#e879f9',items:['Monocromático','Complementar','Neutros','Ponto focal']},
+    {icon:'💈',bg:'linear-gradient(135deg,#0a1520,#0f0f12)',title:'Grooming Essencial',sub:'Rotina mínima de alto impacto',cat:'GROOMING',color:'#38bdf8',items:['Barba','Pele','Cabelo','Unhas']},
+    {icon:'👟',bg:'linear-gradient(135deg,#1a1008,#0f0f12)',title:'Os 5 Calçados Essenciais',sub:'Tudo que você precisa ter',cat:'CALÇADOS',color:'#fb923c',items:['Tênis branco','Tênis escuro','Bota','Social','Slide']},
+    {icon:'🧍',bg:'linear-gradient(135deg,#1a0808,#0f0f12)',title:'Linguagem Corporal Alpha',sub:'Postura, presença e poder',cat:'PRESENÇA',color:'#f87171',items:['Postura','Voz','Olhar','Movimentos']},
+    {icon:'⌚',bg:'linear-gradient(135deg,#12081a,#0f0f12)',title:'Acessórios com Propósito',sub:'O que usar e o que evitar',cat:'ACESSÓRIOS',color:'#a78bfa',items:['Relógio','Óculos','Corrente','Anel']},
+    {icon:'🪞',bg:'linear-gradient(135deg,#0a1510,#0f0f12)',title:'Criando seu Estilo Pessoal',sub:'3 palavras, 1 uniforme, infinita confiança',cat:'IDENTIDADE',color:'#4ade80',items:['Definição','Uniforme','Referências','Evolução']},
+  ];
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:36px;margin-bottom:6px">📖</div><div style="font-size:18px;font-weight:900;color:var(--gold)">GUIAS DE ESTILO</div><div style="font-size:10px;color:var(--dim);margin-top:4px">Conhecimento que transforma presença</div></div>`;
+  guides.forEach(g=>{
+    h+=`<div class="guide"><div class="guide-img" style="background:${g.bg}">${g.icon}</div><div class="guide-body"><div class="guide-cat" style="color:${g.color}">${g.cat}</div><div class="guide-title">${g.title}</div><div class="guide-desc">${g.sub}</div><div class="ward-items" style="margin-top:8px">${g.items.map(i=>`<div class="ward-item">${i}</div>`).join('')}</div></div></div>`;
+  });
+  return h;
+}
+
+function renderProgress(){
+  const lvl=getLevel(),next=getNextLevel(),lp=getLevelProg();
+  let h='';
+  h+=`<div style="text-align:center;padding:10px 0"><div style="font-size:48px;margin-bottom:6px">${lvl.icon}</div><div style="font-size:20px;font-weight:900;color:var(--gold);font-family:Georgia,serif">${lvl.name}</div><div style="font-size:12px;color:var(--dim);margin-top:4px">${S.xp} XP</div></div>`;
+  h+=`<div class="level-bar"><div class="level-top"><div class="level-name">${lvl.icon} ${lvl.name}</div><div class="level-next">${next?'→ '+next.icon+' '+next.name+' ('+next.min+' XP)':'NÍVEL MÁXIMO'}</div></div><div class="level-track"><div class="level-fill" style="width:${lp}%"></div></div></div>`;
+  h+=`<div class="prog-grid"><div class="prog-card"><div class="prog-card-icon">🔥</div><div class="prog-card-val">${S.streak}</div><div class="prog-card-label">STREAK</div></div><div class="prog-card"><div class="prog-card-icon">📅</div><div class="prog-card-val">${S.daysActive||1}</div><div class="prog-card-label">DIAS</div></div><div class="prog-card"><div class="prog-card-icon">✅</div><div class="prog-card-val">${S.totalCompleted}</div><div class="prog-card-label">MISSÕES</div></div></div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:12px">👑 HIERARQUIA DE ESTILO</div>`;
+  LEVELS.forEach(l=>{const u=S.xp>=l.min;h+=`<div class="rank-item" style="opacity:${u?1:.35}"><div class="rank-icon">${l.icon}</div><div style="flex:1"><div class="rank-name" style="color:${u?'var(--cream)':'var(--dim)'}">${l.name}</div><div class="rank-req">${l.min} XP</div></div>${u?'<span style="color:var(--green)">✓</span>':''}</div>`});
+  h+=`</div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:12px">📊 CATEGORIAS</div>`;
+  CATS.forEach(c=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:18px">${c.icon}</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:${c.color}">${c.name}</div><div style="font-size:10px;color:var(--dim)">${c.desc}</div></div></div>`});
+  h+=`</div>`;
+  return h;
+}
+
+function renderSettings(){
+  let h=`<div style="text-align:center;padding:10px 0 20px"><div style="font-size:32px;margin-bottom:6px">⚙️</div><div style="font-size:18px;font-weight:900;color:var(--gold)">CONFIGURAÇÕES</div></div>`;
+  h+=`<div class="card"><div style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:12px">📊 DADOS</div><div style="font-size:12px;color:var(--muted);line-height:2.2">Dias ativos: <b style="color:var(--cream)">${S.daysActive||1}</b><br>Missões: <b style="color:var(--cream)">${S.totalCompleted}</b><br>XP: <b style="color:var(--cream)">${S.xp}</b><br>Nível: <b style="color:var(--gold)">${getLevel().name}</b><br>Streak: <b style="color:var(--cream)">${S.streak}</b></div></div>`;
+  h+=`<div class="card" style="text-align:center"><button onclick="if(confirm('Resetar progresso?')){S.streak=0;S.xp=0;S.completedToday={};S.lastDay='';S.totalCompleted=0;S.daysActive=0;save();render()}" style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:12px 24px;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:1px">🔄 RESETAR</button></div>`;
+  return h;
+}
+
+checkDay();render();
+</script>
+</body>
+</html>
