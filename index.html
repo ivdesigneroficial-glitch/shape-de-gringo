@@ -131,6 +131,18 @@ body:not(.v2-onboarding){max-width:480px;padding-bottom:72px;background:#0B0F19;
   .v2-login-inner{padding:20px 0;align-items:flex-start}
   .v2-avatar{width:36px;height:36px}
 }
+/* V2 · pilares do login (preenchem espaço vazio) */
+.v2-pillars{margin-top:16px;padding-top:20px;border-top:1px solid #1E1E1E}
+.v2-pillars-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A4A4A;letter-spacing:2.5px;text-align:center;margin-bottom:16px;font-weight:600}
+.v2-pillars-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.v2-pillar{padding:14px 10px;background:#141414;border:1px solid #2A2A2A;border-radius:4px;text-align:center;transition:border-color .2s,transform .2s}
+.v2-pillar:hover{border-color:#DC2626;transform:translateY(-2px)}
+.v2-pillar-num{font-family:'Anton',sans-serif;font-size:40px;color:#DC2626;line-height:1;letter-spacing:1px}
+.v2-pillar-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:#B0B0B0;letter-spacing:1.5px;margin-top:6px;font-weight:600}
+.v2-pillars-cta{text-align:center;padding:8px 0 4px}
+.v2-pillars-cta-quote{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:#F5F5F5;line-height:1.3;letter-spacing:-.3px}
+.v2-pillars-cta-arrow{font-family:'JetBrains Mono',monospace;font-size:9px;color:#DC2626;letter-spacing:2.5px;margin-top:14px;font-weight:600;animation:v2ArrowBounce 2s ease-in-out infinite}
+@keyframes v2ArrowBounce{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(-4px);opacity:1}}
 /* ===== V2 · HOME (Netflix-style QG) ===== */
 body.v2-home-active{max-width:none!important;padding-bottom:0!important;background:#050505!important;color:#F5F5F5!important;font-family:'Inter',sans-serif!important;display:block!important}
 .v2-home{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
@@ -304,7 +316,9 @@ body.v2-home-active{max-width:none!important;padding-bottom:0!important;backgrou
 .v2-workout-section{margin-top:24px}
 .v2-workout-section-title{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:2px;color:#F5F5F5;margin-bottom:12px;display:flex;align-items:center;gap:12px}
 .v2-workout-section-title::after{content:'';flex:1;height:1px;background:#2A2A2A;max-width:80px}
-.v2-ex-list{display:flex;flex-direction:column;gap:12px}
+.v2-ex-list{display:flex;flex-direction:column;gap:12px;min-width:0}
+.v2-ex-list > div{min-width:0}
+.v2-ex-name,.v2-ex-reps{word-break:break-word;overflow-wrap:anywhere}
 .v2-ex-card{display:flex;gap:12px;padding:12px;background:#141414;border:1px solid #2A2A2A;border-radius:4px;align-items:center;cursor:pointer;transition:border-color .15s,background .15s}
 .v2-ex-card:hover{background:#1C1C1C;border-color:#3A3A3A}
 .v2-ex-card.done{opacity:.6;border-color:transparent}
@@ -344,11 +358,11 @@ body.v2-home-active{max-width:none!important;padding-bottom:0!important;backgrou
 .v2-workout-done-badge{padding:20px;background:rgba(61,153,112,.08);border:1px solid #3D9970;border-radius:4px;text-align:center;font-family:'Anton',sans-serif;letter-spacing:2px;font-size:16px;color:#3D9970;margin-top:24px;display:flex;align-items:center;justify-content:center;gap:12px}
 .v2-workout-done-badge svg{width:24px;height:24px;stroke:#3D9970;fill:none;stroke-width:2}
 /* Desktop 2 columns */
-.v2-workout-grid{display:grid;grid-template-columns:1fr;gap:32px}
+.v2-workout-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
 .v2-workout-aside{display:none}
 @media(min-width:1024px){
   .v2-workout-page{padding:32px 40px}
-  .v2-workout-grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px}
+  .v2-workout-grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:40px;align-items:start}
   .v2-workout-title{font-size:48px}
   .v2-workout-aside{display:flex;flex-direction:column;gap:20px;position:sticky;top:80px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto}
   .v2-workout-aside-card{background:#141414;border:1px solid #2A2A2A;border-radius:4px;padding:24px}
@@ -1098,6 +1112,22 @@ function rL(){
         LEMBRAR-ME NESTE APARELHO
       </label>
       <button class="v2-btn ${accent}" onclick="doReg()">ENTRAR NA ACADEMIA ${arrow}</button>`;
+    } else {
+      // Pilares — preenche o espaço quando gênero ainda não escolhido
+      card+=`
+      <div class="v2-pillars">
+        <div class="v2-pillars-title">O QUE VOCÊ VAI ENCONTRAR</div>
+        <div class="v2-pillars-grid">
+          <div class="v2-pillar"><div class="v2-pillar-num">30</div><div class="v2-pillar-label">DIAS DE MISSÃO</div></div>
+          <div class="v2-pillar"><div class="v2-pillar-num">10</div><div class="v2-pillar-label">AULAS MENTAIS</div></div>
+          <div class="v2-pillar"><div class="v2-pillar-num">10</div><div class="v2-pillar-label">PDFs DE GUERRA</div></div>
+          <div class="v2-pillar"><div class="v2-pillar-num">12</div><div class="v2-pillar-label">SELOS DE HONRA</div></div>
+        </div>
+        <div class="v2-pillars-cta">
+          <div class="v2-pillars-cta-quote">"Escolha seu lado. Comece hoje."</div>
+          <div class="v2-pillars-cta-arrow">↑ TOQUE ACIMA PARA COMEÇAR</div>
+        </div>
+      </div>`;
     }
   }
 
