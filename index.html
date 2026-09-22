@@ -1261,9 +1261,11 @@ function renderHome(){
   // ROW: Aulas Mentais (5 primeiras)
   const aulasRow=VIDEOS.slice(0,5).map(v=>{
     const locked=v.pro&&!pro;
+    const cover=AULA_COVERS[v.id];
+    const bgStyle=cover?`background:url(${cover}) center 20%/cover;filter:contrast(1.08) brightness(.85);opacity:1`:'';
     return `
       <div class="v2-card-aula ${v.pro?'pro':''}" onclick="${locked?"S.modal={type:'proBuy'};render()":`openVideoModal(${v.id})`}">
-        <div class="v2-card-bg ${cine}"></div>
+        <div class="v2-card-bg ${cine}" ${bgStyle?`style="${bgStyle}"`:''}></div>
         <div class="v2-card-fade"></div>
         ${v.pro?'<div class="v2-card-tag">🔒 PRO</div>':`<div class="v2-card-tag free ${accent}">LIVRE</div>`}
         <div class="v2-card-content">
@@ -1429,6 +1431,20 @@ function renderHome(){
 // Helpers para abrir modais direto do renderHome
 function openVideoModal(id){const v=VIDEOS.find(x=>x.id===id);if(!v)return;if(v.pro&&!isPro()){S.modal={type:'proBuy'};render();return}const u=gVU(v.id);if(u){S.modal={type:'videoPlay',video:v};render();}else{S.modal={type:'videoSoon',video:v};render();}}
 function openPdfModal(id){const pdf=PDFS.find(x=>x.id===id);if(!pdf)return;if(pdf.paid&&!isPdfUl(pdf.id)){S.modal={type:'pdfBuy',pdf};render();}else{S.modal={type:'pdf',pdf};render();}}
+
+// V2 · Capas das aulas mentais (usadas em renderHome e renderMentalV2)
+const AULA_COVERS={
+  1:'imagens/aula-01-disciplina.webp',
+  2:'imagens/aula-02-semana1.webp',
+  3:'imagens/aula-03-guerra.webp',
+  4:'imagens/aula-04-ambiente.webp',
+  5:'imagens/aula-05-barcos.webp',
+  6:'imagens/aula-06-habitos.webp',
+  7:'imagens/aula-07-emocional.webp',
+  8:'imagens/aula-08-visualizacao.webp',
+  9:'imagens/aula-09-performance.webp',
+  10:'imagens/aula-10-posdesafio.webp'
+};
 
 // V2 · Textos editoriais por fase
 const PHASE_LEAD={
@@ -1641,19 +1657,6 @@ function renderMentalV2(){
   if(!S._mentalFilter)S._mentalFilter='all';
   const filt=S._mentalFilter;
   const list=VIDEOS.filter(v=>filt==='all'||(filt==='free'&&!v.pro)||(filt==='pro'&&v.pro));
-
-  const AULA_COVERS={
-    1:'imagens/aula-01-disciplina.webp',
-    2:'imagens/aula-02-semana1.webp',
-    3:'imagens/aula-03-guerra.webp',
-    4:'imagens/aula-04-ambiente.webp',
-    5:'imagens/aula-05-barcos.webp',
-    6:'imagens/aula-06-habitos.webp',
-    7:'imagens/aula-07-emocional.webp',
-    8:'imagens/aula-08-visualizacao.webp',
-    9:'imagens/aula-09-performance.webp',
-    10:'imagens/aula-10-posdesafio.webp'
-  };
 
   const posters=list.map(v=>{
     const locked=v.pro&&!pro;
