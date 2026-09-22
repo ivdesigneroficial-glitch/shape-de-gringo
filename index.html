@@ -1642,14 +1642,28 @@ function renderMentalV2(){
   const filt=S._mentalFilter;
   const list=VIDEOS.filter(v=>filt==='all'||(filt==='free'&&!v.pro)||(filt==='pro'&&v.pro));
 
+  const AULA_COVERS={
+    1:'imagens/aula-01-disciplina.webp',
+    2:'imagens/aula-02-semana1.webp',
+    3:'imagens/aula-03-guerra.webp',
+    4:'imagens/aula-04-ambiente.webp',
+    5:'imagens/aula-05-barcos.webp'
+  };
+
   const posters=list.map(v=>{
     const locked=v.pro&&!pro;
     const cine=v.id%2===0?'v2-cine':(isF?'v2-cine-f':'v2-cine');
     const u=gVU(v.id),vi=ytId(u);
-    const bg=vi?`background:url(https://img.youtube.com/vi/${vi}/mqdefault.jpg) center/cover;filter:grayscale(1) contrast(1.15) brightness(.7)`:'';
+    const cover=AULA_COVERS[v.id];
+    let bg='';
+    if(cover){
+      bg=`background:url(${cover}) center 20%/cover;filter:contrast(1.08) brightness(.85)`;
+    } else if(vi){
+      bg=`background:url(https://img.youtube.com/vi/${vi}/mqdefault.jpg) center/cover;filter:grayscale(1) contrast(1.15) brightness(.7)`;
+    }
     return `
       <div class="v2-poster ${v.pro?'pro':''}" onclick="openVideo(${v.id})">
-        <div class="v2-poster-bg ${cine}" ${bg?`style="${bg};opacity:.85"`:''}></div>
+        <div class="v2-poster-bg ${cine}" ${bg?`style="${bg};opacity:1"`:''}></div>
         <div class="v2-poster-fade"></div>
         ${v.pro?'<div class="v2-poster-tag pro">PRO</div>':`<div class="v2-poster-tag ${accent}">LIVRE</div>`}
         ${locked?'<div class="v2-poster-lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>':''}
