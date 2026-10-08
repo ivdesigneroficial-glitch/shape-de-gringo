@@ -1,7 +1,7 @@
 // SHAPE DE GRINGO 2.0 · service worker
 // Estratégia: network-first pra HTML (sempre pega a versão nova),
 // cache-first pra assets estáticos (ícones, manifest).
-const CACHE = 'sdg-v2-2026-10-08';
+const CACHE = 'sdg-v2-2026-10-08b';
 const STATIC = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', (e) => {
