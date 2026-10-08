@@ -1,7 +1,7 @@
 // SHAPE DE GRINGO 2.0 · service worker
 // Estratégia: network-first pra HTML (sempre pega a versão nova),
 // cache-first pra assets estáticos (ícones, manifest).
-const CACHE = 'sdg-v2-2026-09-20';
+const CACHE = 'sdg-v2-2026-10-08';
 const STATIC = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -21,6 +21,8 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   // Sempre network pra hosts externos (YouTube, Kiwify, Netlify)
   if (url.origin !== location.origin) return;
+  // Vídeos .mp4: sempre network (muito pesados pra cache do service worker)
+  if (/\.mp4$/i.test(url.pathname)) return;
   const isDoc = req.mode === 'navigate' || req.destination === 'document';
   if (isDoc) {
     // network-first
