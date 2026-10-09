@@ -163,9 +163,7 @@ body.v2-home-active{max-width:none!important;padding-bottom:0!important;backgrou
 /* Imagem hero da Missão — ativa apenas em desktop/notebook (900px+). Mobile/tablet aguardam capa própria. */
 @media (min-width:900px){
   .v2-hero-missao-bg{background:url('imagens/hero-missao-desktop.webp') center top/cover no-repeat !important;filter:none !important;box-shadow:none !important}
-  /* Gradient diagonal: escuro só no canto inferior esquerdo (onde fica o texto),
-     transparente no resto pra revelar a imagem */
-  .v2-hero-missao-fade{background:linear-gradient(to top right,rgba(0,0,0,.95) 0%,rgba(0,0,0,.75) 18%,rgba(0,0,0,.35) 38%,rgba(0,0,0,.08) 58%,transparent 72%) !important}
+  .v2-hero-missao-fade{background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,.92) 100%) !important}
 }
 .v2-hero-content{position:absolute;left:20px;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:2}
 .v2-hero-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;color:#DC2626;letter-spacing:2px;font-weight:600}
