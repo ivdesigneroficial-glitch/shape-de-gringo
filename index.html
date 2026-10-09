@@ -162,8 +162,14 @@ body.v2-home-active{max-width:none!important;padding-bottom:0!important;backgrou
 .v2-hero-fade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.95) 100%)}
 /* Imagem hero da Missão — ativa apenas em desktop/notebook (900px+). Mobile/tablet aguardam capa própria. */
 @media (min-width:900px){
-  .v2-hero-missao-bg{background:url('imagens/hero-missao-desktop.webp') center top/cover no-repeat !important;filter:none !important;box-shadow:none !important}
+  /* Hero cresce pra encaixar imagem 16:9 (altura proporcional à largura, com teto em telas enormes) */
+  .v2-hero-missao-active{height:auto !important;aspect-ratio:16/9;max-height:720px;min-height:520px}
+  .v2-hero-missao-bg{background:url('imagens/hero-missao-desktop.webp') center center/cover no-repeat !important;filter:none !important;box-shadow:none !important}
   .v2-hero-missao-fade{background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,.92) 100%) !important}
+  /* Tipografia escala pra combinar com a hero maior */
+  .v2-hero-missao-active .v2-hero-title{font-size:64px !important;max-width:720px}
+  .v2-hero-missao-active .v2-hero-sub{font-size:16px}
+  .v2-hero-missao-active .v2-hero-content{bottom:48px;left:48px;right:48px;gap:14px}
 }
 .v2-hero-content{position:absolute;left:20px;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:2}
 .v2-hero-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;color:#DC2626;letter-spacing:2px;font-weight:600}
@@ -1369,7 +1375,7 @@ function renderHome(){
       </div>
     </header>
 
-    <section class="v2-hero">
+    <section class="v2-hero v2-hero-missao-active">
       <div class="v2-hero-bg ${cine} v2-hero-missao-bg"></div>
       <div class="v2-hero-fade v2-hero-missao-fade"></div>
       <div class="v2-hero-content">
